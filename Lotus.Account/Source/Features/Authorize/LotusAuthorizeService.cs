@@ -70,7 +70,7 @@ namespace Lotus.Account
             // которые будут использоваться для создания id_token, токена или кода.
             var principal = new ClaimsPrincipal(identity);
 
-            return XResponse.Succeed(principal);
+            return Response<ClaimsPrincipal>.Succeed(principal);
         }
 
         /// <inheritdoc/>
@@ -87,12 +87,12 @@ namespace Lotus.Account
 
             if (user is not null)
             {
-                return XResponse.Failed(XUserErrors.LoginAlreadyUse);
+                return Response.Failed(XUserErrors.LoginAlreadyUse);
             }
 
             if (registerParameters.Password.Length < 5)
             {
-                return XResponse.Failed(XUserErrors.InsecurePassword);
+                return Response.Failed(XUserErrors.InsecurePassword);
             }
 
             // Создаем нового пользователя
@@ -111,7 +111,7 @@ namespace Lotus.Account
             await _dataStorage.AddAsync(user, token);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

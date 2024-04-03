@@ -39,7 +39,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserPositionDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserPositionDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -52,7 +52,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserPositionDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserPositionDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -61,12 +61,12 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserPosition, int>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed<UserPositionDto>(XUserPositionErrors.NotFound);
+                return Response<UserPositionDto>.Failed(XUserPositionErrors.NotFound);
             }
 
             var result = entity.Adapt<UserPositionDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserPositionDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -89,18 +89,18 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserPosition, int>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed<UserPositionDto>(XUserPositionErrors.NotFound);
+                return Response.Failed(XUserPositionErrors.NotFound);
             }
 
             if (entity.Id < 4)
             {
-                return XResponse.Failed(XUserPositionErrors.NotDeleteConst);
+                return Response.Failed(XUserPositionErrors.NotDeleteConst);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

@@ -1,5 +1,4 @@
 using Lotus.Repository;
-
 using Lotus.Web;
 
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +9,7 @@ using OpenIddict.Validation.AspNetCore;
 namespace Lotus.Account
 {
     /** \addtogroup AccountWebApiController
-*@{*/
+    *@{*/
     /// <summary>
     /// Контролёр для работы с группами.
     /// </summary>

@@ -40,7 +40,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserNotificationDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserNotificationDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -54,7 +54,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserNotificationDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserNotificationDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -63,12 +63,12 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserNotification, Guid>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed<UserNotificationDto>(XUserNotificationErrors.NotFound);
+                return Response<UserNotificationDto>.Failed(XUserNotificationErrors.NotFound);
             }
 
             var result = entity.Adapt<UserNotificationDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserNotificationDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -91,13 +91,13 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserNotification, Guid>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed(XUserNotificationErrors.NotFound);
+                return Response.Failed(XUserNotificationErrors.NotFound);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

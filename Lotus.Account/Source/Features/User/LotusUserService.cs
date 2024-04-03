@@ -39,7 +39,7 @@ namespace Lotus.Account
 
             if (user is not null)
             {
-                return XResponse.Failed<UserDto>(XUserErrors.LoginAlreadyUse);
+                return Response<UserDto>.Failed(XUserErrors.LoginAlreadyUse);
             }
 
             // Создаем нового пользователя
@@ -60,7 +60,7 @@ namespace Lotus.Account
 
             var result = user.Adapt<UserDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -73,7 +73,7 @@ namespace Lotus.Account
 
             var result = user.Adapt<UserDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -83,12 +83,12 @@ namespace Lotus.Account
 
             if (entity == null)
             {
-                return XResponse.Failed<UserDto>(XUserErrors.UserNotFound);
+                return Response<UserDto>.Failed(XUserErrors.UserNotFound);
             }
 
             var result = entity.Adapt<UserDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -112,18 +112,18 @@ namespace Lotus.Account
 
             if (entity == null)
             {
-                return XResponse.Failed<UserDto>(XUserErrors.UserNotFound);
+                return Response.Failed(XUserErrors.UserNotFound);
             }
 
             if (entity.Id == XUserConstants.Admin.Id)
             {
-                return XResponse.Failed<UserDto>(XUserErrors.NotDeleteConst);
+                return Response.Failed(XUserErrors.NotDeleteConst);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

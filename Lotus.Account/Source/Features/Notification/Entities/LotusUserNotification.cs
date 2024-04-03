@@ -57,11 +57,6 @@ namespace Lotus.Account
         public string Content { get; set; } = null!;
 
         /// <summary>
-        /// Время создания уведомления.
-        /// </summary>
-        public DateTime Created { get; set; }
-
-        /// <summary>
         /// Статус прочитания уведомления.
         /// </summary>
         public bool IsRead { get; set; }

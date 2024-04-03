@@ -39,7 +39,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserGroupDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserGroupDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -52,7 +52,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserGroupDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserGroupDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -61,12 +61,12 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserGroup, int>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed<UserGroupDto>(XUserGroupErrors.NotFound);
+                return Response<UserGroupDto>.Failed(XUserGroupErrors.NotFound);
             }
 
             var result = entity.Adapt<UserGroupDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserGroupDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -89,18 +89,18 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserGroup, int>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed(XUserGroupErrors.NotFound);
+                return Response.Failed(XUserGroupErrors.NotFound);
             }
 
             if (entity.Id < 4)
             {
-                return XResponse.Failed(XUserGroupErrors.NotDeleteConst);
+                return Response.Failed(XUserGroupErrors.NotDeleteConst);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

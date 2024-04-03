@@ -39,7 +39,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserPermissionDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserPermissionDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -52,7 +52,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserPermissionDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserPermissionDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -75,18 +75,18 @@ namespace Lotus.Account
             var entity = await _dataStorage.GetByIdAsync<UserPermission, int>(id, token);
             if (entity == null)
             {
-                return XResponse.Failed(XUserPermissionErrors.NotFound);
+                return Response.Failed(XUserPermissionErrors.NotFound);
             }
 
             if (entity.Id < 4)
             {
-                return XResponse.Failed(XUserPermissionErrors.NotDeleteConst);
+                return Response.Failed(XUserPermissionErrors.NotDeleteConst);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

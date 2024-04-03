@@ -39,7 +39,7 @@ namespace Lotus.Account
 
             var result = entity.Adapt<UserRoleDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserRoleDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -75,10 +75,10 @@ namespace Lotus.Account
 
                 var result = entity.Adapt<UserRoleDto>();
 
-                return XResponse.Succeed(result);
+                return Response<UserRoleDto>.Succeed(result);
             }
 
-            return XResponse.Failed<UserRoleDto>(XUserRoleErrors.NotFound);
+            return Response<UserRoleDto>.Failed(XUserRoleErrors.NotFound);
         }
 
         /// <inheritdoc/>
@@ -88,12 +88,12 @@ namespace Lotus.Account
 
             if (entity == null)
             {
-                return XResponse.Failed<UserRoleDto>(XUserRoleErrors.NotFound);
+                return Response<UserRoleDto>.Failed(XUserRoleErrors.NotFound);
             }
 
             var result = entity.Adapt<UserRoleDto>();
 
-            return XResponse.Succeed(result);
+            return Response<UserRoleDto>.Succeed(result);
         }
 
         /// <inheritdoc/>
@@ -117,18 +117,18 @@ namespace Lotus.Account
 
             if (entity == null)
             {
-                return XResponse.Failed<UserRoleDto>(XUserRoleErrors.NotFound);
+                return Response.Failed(XUserRoleErrors.NotFound);
             }
 
             if (entity.Id < 4)
             {
-                return XResponse.Failed(XUserRoleErrors.NotDeleteConst);
+                return Response.Failed(XUserRoleErrors.NotDeleteConst);
             }
 
             _dataStorage.Remove(entity!);
             await _dataStorage.SaveChangesAsync(token);
 
-            return XResponse.Succeed();
+            return Response.Succeed();
         }
         #endregion
     }

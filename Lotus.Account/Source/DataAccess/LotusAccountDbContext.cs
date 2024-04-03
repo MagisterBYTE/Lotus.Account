@@ -14,7 +14,7 @@ namespace Lotus.Account
     /// <summary>
     /// Контекст базы данных представляющий собой всех пользователей и учетных данных.
     /// </summary>
-    public class AccountDbContext : DbContext
+    public class AccountDbContext : ContextDbStorageStructure
     {
         #region Properties
         /// <summary>
