@@ -8,5 +8,5 @@
  - `Lotus.Account.WebClient` - модуль клиентского Web-приложения учетной записи пользователя.
 
 ## Зависит от:
- - Lotus.Core, версия 3.0.1
- - Lotus.Repository, версия 3.0.1
+ - Lotus.Core, версия 3.0.2
+ - Lotus.Repository, версия 3.0.2
