@@ -49,8 +49,8 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
-    <PackageReference Include="OpenIddict.Abstractions" Version="5.6.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
+    <PackageReference Include="OpenIddict.Abstractions" Version="5.7.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
   </ItemGroup>
 
   <ItemGroup>
