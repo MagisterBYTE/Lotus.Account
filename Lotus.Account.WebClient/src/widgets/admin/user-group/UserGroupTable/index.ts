@@ -1,1 +1,0 @@
-export { UserGroupTable } from './UserGroupTable';

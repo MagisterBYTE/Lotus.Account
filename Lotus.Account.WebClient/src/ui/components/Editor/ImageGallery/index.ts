@@ -1,1 +1,0 @@
-export { ImageGallery, type IImageGalleryProps } from './ImageGallery';

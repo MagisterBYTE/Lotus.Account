@@ -1,1 +1,0 @@
-export { OneSelect, type IOneSelectProps } from './OneSelect';

@@ -1,1 +1,0 @@
-export { ColoredSpan, type IColoredSpanProps } from './ColoredSpan';

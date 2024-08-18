@@ -1,1 +1,0 @@
-export { SquareChip, type ISquareChipProps } from './SquareChip';

@@ -1,1 +1,0 @@
-Модуль Account.React платформы Lotus

@@ -1,1 +1,0 @@
-export { UserNotificationGroup } from './UserNotificationGroup';
