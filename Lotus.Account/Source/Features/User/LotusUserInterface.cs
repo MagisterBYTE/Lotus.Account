@@ -42,7 +42,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="userRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок пользователей.</returns>
+        /// <returns>Список пользователей.</returns>
         Task<ResponsePage<UserDto>> GetAllAsync(UsersRequest userRequest, CancellationToken token);
 
         /// <summary>

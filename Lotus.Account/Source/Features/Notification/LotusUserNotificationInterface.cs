@@ -38,7 +38,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="notificationRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок уведомлений.</returns>
+        /// <returns>Список уведомлений.</returns>
         Task<ResponsePage<UserNotificationDto>> GetAllAsync(UserNotificationsRequest notificationRequest, CancellationToken token);
 
         /// <summary>

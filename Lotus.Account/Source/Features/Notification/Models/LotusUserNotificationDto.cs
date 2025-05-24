@@ -35,7 +35,7 @@ namespace Lotus.Account
         public DateTime Created { get; set; }
 
         /// <summary>
-        /// Статус прочитания уведомления.
+        /// Статус прочтения уведомления.
         /// </summary>
         public bool IsRead { get; set; }
 

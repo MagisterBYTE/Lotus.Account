@@ -84,7 +84,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="groupRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок групп.</returns>
+        /// <returns>Список групп.</returns>
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(ResponsePage<UserGroupDto>), StatusCodes.Status200OK)]
         [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]

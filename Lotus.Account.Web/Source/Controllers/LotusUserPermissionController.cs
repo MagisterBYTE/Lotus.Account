@@ -70,7 +70,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="positionRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок разрешений.</returns>
+        /// <returns>Список разрешений.</returns>
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(ResponsePage<UserPermissionDto>), StatusCodes.Status200OK)]
         [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]

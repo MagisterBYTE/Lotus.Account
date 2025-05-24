@@ -32,7 +32,7 @@ namespace Lotus.Account
         public string? Email { get; set; }
 
         /// <summary>
-        /// Статус потверждение почты.
+        /// Статус подтверждения почты.
         /// </summary>
         public bool EmailConfirmed { get; set; }
 
@@ -87,6 +87,7 @@ namespace Lotus.Account
         /// Список имен групп пользователя в виде текста.
         /// </summary>
         public string GroupNamesAsText { get; set; } = string.Empty;
+
         //
         // CФЕРЫ ДЕЯТЕЛЬНОСТИ
         //

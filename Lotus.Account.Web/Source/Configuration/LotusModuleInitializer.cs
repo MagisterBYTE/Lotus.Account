@@ -44,15 +44,15 @@ namespace Lotus.Account
 
                     options
                         .SetTokenEndpointUris(XRoutesConstants.TokenEndpoint)
-                    .SetLogoutEndpointUris(XRoutesConstants.LogoutEndpoint)
-                    .SetUserinfoEndpointUris(XRoutesConstants.UserInfoEndpoint);
+                        .SetEndSessionEndpointUris(XRoutesConstants.LogoutEndpoint)
+                        .SetUserInfoEndpointUris(XRoutesConstants.UserInfoEndpoint);
 
                     // Register the signing and encryption credentials.
-                    options.AddDevelopmentEncryptionCertificate()
-                               .AddDevelopmentSigningCertificate();
-
                     options
-                                .AcceptAnonymousClients();
+                        .AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+
+                    options.AcceptAnonymousClients();
 
                     options
                         .AddEphemeralEncryptionKey()     //  В рабочей среде рекомендуется использовать сертификат X.509
@@ -65,8 +65,8 @@ namespace Lotus.Account
                         .UseAspNetCore()
                         .DisableTransportSecurityRequirement()
                         .EnableTokenEndpointPassthrough()
-                    .EnableLogoutEndpointPassthrough()
-                    .EnableUserinfoEndpointPassthrough();
+                        .EnableEndSessionEndpointPassthrough()
+                        .EnableUserInfoEndpointPassthrough();
                 })
 
                 // Register the OpenIddict validation components.

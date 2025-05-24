@@ -38,7 +38,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="roleRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок ролей.</returns>
+        /// <returns>Список ролей.</returns>
         Task<ResponsePage<UserRoleDto>> GetAllAsync(UserRolesRequest roleRequest, CancellationToken token);
 
         /// <summary>

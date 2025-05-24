@@ -139,7 +139,7 @@ namespace Lotus.Account
         /// <summary>
         /// Конструктор инициализирует объект класса указанными параметрами.
         /// </summary>
-        /// <param name="context">Контекс базы данных.</param>
+        /// <param name="context">Контекст базы данных.</param>
         public DataStorageContextAccount(AccountDbContext context)
             : base(context)
         {

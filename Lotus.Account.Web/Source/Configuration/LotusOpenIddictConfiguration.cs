@@ -22,11 +22,11 @@ namespace Lotus.Account
         {
             return new string[]
             {
-                    Scopes.OpenId,
-                    Scopes.Email,
-                    Scopes.Profile,
-                    Scopes.OfflineAccess,
-                    Scopes.Roles
+                Scopes.OpenId,
+                Scopes.Email,
+                Scopes.Profile,
+                Scopes.OfflineAccess,
+                Scopes.Roles
             };
         }
         #endregion

@@ -9,7 +9,7 @@ namespace Lotus.Account
     /** \addtogroup AccountGroup
     *@{*/
     /// <summary>
-    /// Cервис для работы с группами.
+    /// Сервис для работы с группами.
     /// </summary>
     public class UserGroupService : ILotusUserGroupService
     {

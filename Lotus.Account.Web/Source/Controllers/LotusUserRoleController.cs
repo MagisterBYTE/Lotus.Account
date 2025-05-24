@@ -84,7 +84,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="roleRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок ролей.</returns>
+        /// <returns>Список ролей.</returns>
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(ResponsePage<UserRoleDto>), StatusCodes.Status200OK)]
         [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]

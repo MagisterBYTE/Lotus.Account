@@ -22,7 +22,7 @@ namespace Lotus.Account
         public const string TokenEndpoint = "/connect/token";
 
         /// <summary>
-        /// Конечная точка для получение информации пользвателе.
+        /// Конечная точка для получение информации пользователе.
         /// </summary>
         public const string UserInfoEndpoint = "/connect/userinfo";
 

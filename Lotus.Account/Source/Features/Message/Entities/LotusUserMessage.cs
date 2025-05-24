@@ -49,7 +49,7 @@ namespace Lotus.Account
         public DateTime Time { get; set; }
 
         /// <summary>
-        /// Статус прочитания сообщения.
+        /// Статус прочтения сообщения.
         /// </summary>
         public bool IsRead { get; set; }
 

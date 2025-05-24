@@ -22,7 +22,7 @@ namespace Lotus.Account
         /// <summary>
         /// Список идентификатор разрешений для данной роли.
         /// </summary>
-        public int[] PermissionIds { get; set; } = Array.Empty<int>();
+        public int[] PermissionIds { get; set; } = [];
     }
     /**@}*/
 }

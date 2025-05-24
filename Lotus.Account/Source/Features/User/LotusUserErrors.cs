@@ -61,7 +61,7 @@ namespace Lotus.Account
         };
 
         /// <summary>
-        /// Данный логин уже используется.
+        /// Небезопасный пароль.
         /// </summary>
         public static readonly Result InsecurePassword = new()
         {

@@ -1,7 +1,5 @@
 ﻿using System;
-
 using Microsoft.EntityFrameworkCore.Migrations;
-
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -77,7 +75,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +92,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,9 +111,10 @@ namespace Lotus.Account.Migrations
                     Sender = table.Column<string>(type: "text", nullable: true),
                     Importance = table.Column<int>(type: "integer", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsRead = table.Column<bool>(type: "boolean", nullable: false),
-                    IsArchive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsArchive = table.Column<bool>(type: "boolean", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,7 +129,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,7 +146,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,7 +163,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true)
+                    DisplayName = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,7 +214,9 @@ namespace Lotus.Account.Migrations
                     Birthday = table.Column<DateOnly>(type: "date", nullable: true),
                     RoleId = table.Column<int>(type: "integer", nullable: true),
                     PostId = table.Column<int>(type: "integer", nullable: true),
-                    AvatarId = table.Column<Guid>(type: "uuid", nullable: true)
+                    AvatarId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,7 +243,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
-                    PermissionId = table.Column<int>(type: "integer", nullable: false)
+                    PermissionId = table.Column<int>(type: "integer", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -297,7 +310,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FieldActivityId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -326,7 +341,9 @@ namespace Lotus.Account.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     GroupId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -357,7 +374,9 @@ namespace Lotus.Account.Migrations
                     Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsRead = table.Column<bool>(type: "boolean", nullable: false),
                     AuthorId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ReceiverId = table.Column<Guid>(type: "uuid", nullable: true)
+                    ReceiverId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -379,65 +398,65 @@ namespace Lotus.Account.Migrations
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "UserGroup",
-                columns: new[] { "Id", "DisplayName", "Name" },
+                columns: new[] { "Id", "Created", "DisplayName", "Modified", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Хранители", "Хранители" },
-                    { 2, "Север", "Север" },
-                    { 3, "Юг", "Юг" },
-                    { 4, "Восток", "Восток" },
-                    { 5, "Запад", "Запад" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Хранители", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Хранители" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Север", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Север" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Юг", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Юг" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Восток", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Восток" },
+                    { 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Запад", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Запад" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "UserPermission",
-                columns: new[] { "Id", "DisplayName", "Name" },
+                columns: new[] { "Id", "Created", "DisplayName", "Modified", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Администратор", "admin" },
-                    { 2, "Модератор", "editor" },
-                    { 3, "Пользователь", "user" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Администратор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Модератор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "editor" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Пользователь", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "UserPosition",
-                columns: new[] { "Id", "DisplayName", "Name" },
+                columns: new[] { "Id", "Created", "DisplayName", "Modified", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Инспектор", "Инспектор" },
-                    { 2, "Старший инспектор", "Старший инспектор" },
-                    { 3, "Ведущий специалист", "Ведущий специалист" },
-                    { 4, "Начальник отдела", "Начальник отдела" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Инспектор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Инспектор" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Старший инспектор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Старший инспектор" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ведущий специалист", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Ведущий специалист" },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Начальник отдела", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Начальник отдела" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "UserRole",
-                columns: new[] { "Id", "DisplayName", "Name" },
+                columns: new[] { "Id", "Created", "DisplayName", "Modified", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Администратор", "admin" },
-                    { 2, "Редактор", "editor" },
-                    { 3, "Пользователь", "user" }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Администратор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Редактор", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "editor" },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Пользователь", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "user" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "User",
-                columns: new[] { "Id", "AvatarId", "Birthday", "Email", "EmailConfirmed", "Login", "Name", "PasswordHash", "Patronymic", "PostId", "RoleId", "Surname" },
-                values: new object[] { new Guid("e3182c8f-87bc-4e27-a27f-b32e3e2b8018"), null, null, "dementevds@gmail.com", false, "DanielDem", "Даниил", "012f28fd2973783520fa3115f886102a09c8a15e", "Сергеевич", null, 1, "Дементьев" });
+                columns: new[] { "Id", "AvatarId", "Birthday", "Created", "Email", "EmailConfirmed", "Login", "Modified", "Name", "PasswordHash", "Patronymic", "PostId", "RoleId", "Surname" },
+                values: new object[] { new Guid("e3182c8f-87bc-4e27-a27f-b32e3e2b8018"), null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "dementevds@gmail.com", false, "DanielDem", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Даниил", "012f28fd2973783520fa3115f886102a09c8a15e", "Сергеевич", null, 1, "Дементьев" });
 
             migrationBuilder.InsertData(
                 schema: "adm",
                 table: "UserRolePermissionRelation",
-                columns: new[] { "Id", "PermissionId", "RoleId" },
+                columns: new[] { "Id", "Created", "Modified", "PermissionId", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 2, 2 },
-                    { 3, 3, 3 }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 1 },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 2 },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3 }
                 });
 
             migrationBuilder.CreateIndex(

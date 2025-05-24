@@ -30,7 +30,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="permissionRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок разрешений.</returns>
+        /// <returns>Список разрешений.</returns>
         Task<ResponsePage<UserPermissionDto>> GetAllAsync(UserPermissionsRequest permissionRequest, CancellationToken token);
 
         /// <summary>

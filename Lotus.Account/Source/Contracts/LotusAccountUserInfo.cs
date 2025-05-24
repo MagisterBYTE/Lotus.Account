@@ -28,7 +28,7 @@ namespace Lotus.Account
         public string? Email { get; set; }
 
         /// <summary>
-        /// Статус потверждение почты.
+        /// Статус подтверждения почты.
         /// </summary>
         public bool EmailConfirmed { get; set; }
 

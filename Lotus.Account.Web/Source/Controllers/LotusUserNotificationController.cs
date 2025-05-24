@@ -85,7 +85,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="notificationRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок уведомлений.</returns>
+        /// <returns>Список уведомлений.</returns>
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(ResponsePage<UserNotificationDto>), StatusCodes.Status200OK)]
         [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]

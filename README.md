@@ -11,8 +11,8 @@
  - `Lotus.Account` - проект протестирован, актуальная версия **3.0.2** от **14.06.2024**, загружено на github и Nuget
  - `Lotus.Account.Web` - проект протестирован, актуальная версия **3.0.2** от **14.06.2024**, загружено на github и Nuget
  - `Lotus.Account.App.WebServer` - проект протестирован, актуальная версия **3.0.2** от **14.06.2024**, загружено на github
- - `Lotus.Account.App.Frontend` -  в разработке
+ - `Lotus.Account.App.Frontend` - в разработке
 
 ## Зависит от:
- - Lotus.Core, версия 3.0.2
- - Lotus.Repository, версия 3.0.2
+ - Lotus.Core, версия 4.0.0
+ - Lotus.Repository, версия 4.0.0

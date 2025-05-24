@@ -57,7 +57,7 @@ namespace Lotus.Account
         public string Content { get; set; } = null!;
 
         /// <summary>
-        /// Статус прочитания уведомления.
+        /// Статус прочтения уведомления.
         /// </summary>
         public bool IsRead { get; set; }
 

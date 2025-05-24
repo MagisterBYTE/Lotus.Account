@@ -53,7 +53,7 @@ namespace Lotus.Account
         /// <summary>
         /// Список разрешений для данной роли.
         /// </summary>
-        public ICollection<UserPermission> Permissions { get; set; } = new List<UserPermission>();
+        public ICollection<UserPermission> Permissions { get; set; } = [];
 
         /// <summary>
         /// Все пользователи данной роли.

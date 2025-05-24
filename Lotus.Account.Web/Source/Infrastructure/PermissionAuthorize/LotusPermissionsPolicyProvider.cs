@@ -30,7 +30,7 @@ namespace Lotus.Account
 
         #region Main methods
         /// <summary>
-        /// Получение политки по умолчанию.
+        /// Получение политики по умолчанию.
         /// </summary>
         /// <returns>Задача.</returns>
         public Task<AuthorizationPolicy> GetDefaultPolicyAsync()
@@ -42,7 +42,7 @@ namespace Lotus.Account
         }
 
         /// <summary>
-        /// Получение политки по умолчанию.
+        /// Получение политики по умолчанию.
         /// </summary>
         /// <returns>Задача.</returns>
         public Task<AuthorizationPolicy?> GetFallbackPolicyAsync()

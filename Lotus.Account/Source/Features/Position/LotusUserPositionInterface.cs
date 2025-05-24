@@ -38,7 +38,7 @@ namespace Lotus.Account
         /// </summary>
         /// <param name="positionRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
-        /// <returns>Cписок должностей.</returns>
+        /// <returns>Список должностей.</returns>
         Task<ResponsePage<UserPositionDto>> GetAllAsync(UserPositionsRequest positionRequest, CancellationToken token);
 
         /// <summary>
