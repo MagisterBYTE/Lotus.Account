@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Lotus.Account</RootNamespace>
@@ -40,8 +40,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Publish'">
-    <PackageReference Include="Lotus.Web.Common" Version="4.0.0" />
-    <PackageReference Include="Lotus.Account" Version="4.0.0" />
+    <PackageReference Include="Lotus.Web.Common" Version="5.0.0" />
+    <PackageReference Include="Lotus.Account" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Publish'">
@@ -54,12 +54,12 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="7.0.0" />
     <PackageReference Include="UAParser" Version="3.1.47" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageReference Include="OpenIddict" Version="6.3.0" />
-    <PackageReference Include="OpenIddict.AspNetCore" Version="6.3.0" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="6.3.0" />
-    <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="6.3.0" />
-    <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageReference Include="OpenIddict" Version="7.2.0" />
+    <PackageReference Include="OpenIddict.AspNetCore" Version="7.2.0" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="7.2.0" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="7.2.0" />
+    <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <Target Name="PublishToNuget" Condition="'$(Configuration)'=='Publish'" AfterTargets="Build">

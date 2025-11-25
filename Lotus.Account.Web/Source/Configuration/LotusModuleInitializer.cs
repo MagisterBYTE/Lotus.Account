@@ -120,7 +120,7 @@ namespace Lotus.Account
             IConfiguration configuration, string connectString = XDbConstants.ConnectingUserDb,
             bool replaceMigrationHistoryTableName = true)
         {
-            // Добавление CAccountDbContext для взаимодействия с базой данных учетных записей
+            // Добавление AccountDbContext для взаимодействия с базой данных учетных записей
             // Используем для корректной работы OpenIddict
             services.AddDbContext<AccountDbContext>(options =>
         {
