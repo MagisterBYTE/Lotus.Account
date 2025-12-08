@@ -47,8 +47,8 @@ namespace Lotus.Account
         {
             var queryRoles = _dataStorage.Query<UserRole>();
 
-            var entity = queryRoles.Include(x => x.Permissions)
-                    .FirstOrDefault(x => x.Id == roleUpdate.Id);
+            var entity = await queryRoles.Include(x => x.Permissions)
+                    .FirstOrDefaultAsync(x => x.Id == roleUpdate.Id);
 
             if (entity is not null)
             {
@@ -56,9 +56,9 @@ namespace Lotus.Account
 
                 var queryPermissions = _dataStorage.Query<UserPermission>();
 
-                var actualPermissions = queryPermissions
+                var actualPermissions = await queryPermissions
                     .Where(x => roleUpdate.PermissionIds.Contains(x.Id))
-                    .ToArray();
+                    .ToArrayAsync();
 
                 entity.Permissions.Clear();
 

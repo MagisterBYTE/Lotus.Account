@@ -3,7 +3,6 @@ using System.Security.Claims;
 
 using Lotus.Core;
 using Lotus.Repository;
-
 using Lotus.Web;
 
 using Microsoft.AspNetCore;
@@ -271,9 +270,9 @@ namespace Lotus.Account
 
             if (response.Result!.Succeeded)
             {
-                if (response.Result is ILotusResultHttp resultHttp)
+                if (response.Result.HttpCode.HasValue)
                 {
-                    switch (resultHttp.HttpCode)
+                    switch (response.Result.HttpCode)
                     {
                         case HttpStatusCode.Created: return Created("", response);
                         case HttpStatusCode.NoContent: return NoContent();
@@ -287,9 +286,9 @@ namespace Lotus.Account
             }
             else
             {
-                if (response.Result is ILotusResultHttp resultHttp)
+                if (response.Result.HttpCode.HasValue)
                 {
-                    switch (resultHttp.HttpCode)
+                    switch (response.Result.HttpCode)
                     {
                         case HttpStatusCode.NotFound: return NotFound(response);
                         case HttpStatusCode.Forbidden: return Forbid();

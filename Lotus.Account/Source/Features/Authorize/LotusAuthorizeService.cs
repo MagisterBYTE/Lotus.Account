@@ -83,7 +83,7 @@ namespace Lotus.Account
         public async Task<Response> RegisterAsync(RegisterParametersDto registerParameters, CancellationToken token)
         {
             var users = _dataStorage.Query<User>();
-            var user = users.FirstOrDefault(x => x.Login == registerParameters.Login);
+            var user = await users.FirstOrDefaultAsync(x => x.Login == registerParameters.Login);
 
             if (user is not null)
             {

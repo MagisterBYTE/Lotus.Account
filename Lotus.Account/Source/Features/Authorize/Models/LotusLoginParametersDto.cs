@@ -12,11 +12,14 @@ namespace Lotus.Account
         /// <summary>
         /// Логин.
         /// </summary>
+        [Required]
         public string Login { get; set; } = null!;
 
         /// <summary>
         /// Пароль.
         /// </summary>
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 
         /// <summary>

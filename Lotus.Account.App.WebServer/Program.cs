@@ -18,7 +18,8 @@ builder.Services.AddHttpContextAccessor();
 //
 // Сервисы контролеров и сессии
 //
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddInvalidModelToResult();
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
