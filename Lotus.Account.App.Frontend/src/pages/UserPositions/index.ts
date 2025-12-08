@@ -1,0 +1,1 @@
+export { UserPositionsPage } from './UserPositionsPage';

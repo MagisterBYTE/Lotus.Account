@@ -1,0 +1,1 @@
+export { type TEntranceType, TEntranceTypes } from './EntranceType'

@@ -1,0 +1,1 @@
+export { type IOpenViewSettingsEventData, OpenViewSettingsEventDiscriminator } from './OpenViewSettingsEvent';

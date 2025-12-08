@@ -1,0 +1,2 @@
+export { UserGroupsPage } from './UserGroupsPage';
+
