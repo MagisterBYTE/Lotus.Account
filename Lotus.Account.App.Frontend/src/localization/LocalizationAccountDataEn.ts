@@ -1,21 +1,39 @@
-export const LocalizationAccountDataEn = {
+export const LocalizationAccountDataEn =
+{
   auth: {
     account: 'Account',
-    entrance: 'Login',
+    entrance: 'Sign In',
+    continueWith: 'Or sign in with username or email',
     password: 'Password',
     remember: 'Remember me',
-    term: 'I accept terms and conditions',
-    comeIn: 'Log in',
-    autoComeIn: 'Auto-login',
+    term: 'I accept the terms of use',
+    comeIn: 'Sign In',
+    autoComeIn: 'Automatic sign-in',
     forgotPassword: 'Forgot password',
-    register: 'Sign up',
-    authFailed: 'Authentication error',
+    register: 'Register',
+    authFailed: 'An error occurred during authentication',
     registration: 'Registration',
-    registrationFailed: 'Registration error',
-    restorePassword: 'Enter email to reset password',
+    registrationFailed: 'An error occurred during registration',
+    restorePassword: 'Enter your email to reset your password',
     send: 'Send',
-    logout: 'Log out',
-    accessDenied: 'Access denied'
+    logout: 'Sign Out',
+    accessDenied: 'Access to the resource is denied',
+    placeholderLogin: 'Enter username/email',
+    placeholderPassword: 'Enter password',
+    infoLastLogin: 'Not authenticated. Last login: {formattedDate} ({timeAgo} ago)',
+    infoSavedSession: 'Session saved. Use automatic sign-in or enter credentials to log in',
+    infoNotAuth: 'Not authenticated. Sign in to access protected resources',
+  },
+  token: {
+    // Token expiry messages
+    expiredShort: 'Token expired',
+    expiredMedium: 'Token expired. Refresh required',
+    expiredFull: 'The token has expired. Please sign in again',
+
+    // Formatted messages for valid tokens
+    validShort: 'Valid until: {date}',
+    validMedium: 'Expires: {date} ({duration})',
+    validFull: 'Token valid until {date}. Time left: {duration}. Will expire {relative}.',
   },
   group: {
     groups: 'Groups',
@@ -23,7 +41,7 @@ export const LocalizationAccountDataEn = {
     idDesc: 'Group identifier',
     name: 'Name',
     nameDesc: 'Full group name',
-    displayName: 'Display name',
+    displayName: 'Display Name',
     displayNameDesc: 'Group display name',
     edit: 'Edit',
     editDesc: 'Edit group',
@@ -41,8 +59,8 @@ export const LocalizationAccountDataEn = {
     idDesc: 'Notification identifier',
     topic: 'Subject',
     topicDesc: 'Notification subject',
-    sender: 'Source',
-    senderDesc: 'Notification source',
+    sender: 'Sender',
+    senderDesc: 'Notification sender',
     importance: 'Priority',
     importanceDesc: 'Notification priority',
     content: 'Content',
@@ -53,8 +71,8 @@ export const LocalizationAccountDataEn = {
     importanceChief: 'High',
     importanceNormal: 'Normal',
     importanceService: 'Service',
-    read: 'Mark as read',
-    readCancel: 'Mark as unread',
+    read: 'Mark as Read',
+    readCancel: 'Mark as Unread',
     toArchive: 'Archive',
     fromArchive: 'Unarchive'
   },
@@ -64,7 +82,7 @@ export const LocalizationAccountDataEn = {
     idDesc: 'Permission identifier',
     name: 'Name',
     nameDesc: 'Internal permission name',
-    displayName: 'Display name',
+    displayName: 'Name',
     displayNameDesc: 'Permission display name'
   },
   position: {
@@ -73,7 +91,7 @@ export const LocalizationAccountDataEn = {
     idDesc: 'Position identifier',
     name: 'Name',
     nameDesc: 'Full position name',
-    displayName: 'Display name',
+    displayName: 'Display Name',
     displayNameDesc: 'Position display name',
     edit: 'Edit',
     editDesc: 'Edit position',
@@ -95,7 +113,7 @@ export const LocalizationAccountDataEn = {
     idDesc: 'Role identifier',
     name: 'Name',
     nameDesc: 'Internal role name',
-    displayName: 'Display name',
+    displayName: 'Name',
     displayNameDesc: 'Role display name',
     permissionIds: 'Permissions',
     permissionIdsDesc: 'List of permissions for this role'
@@ -105,27 +123,27 @@ export const LocalizationAccountDataEn = {
     theme: 'Theme',
     themeLight: 'Light theme',
     themeDark: 'Dark theme',
-    viewParams: 'Display settings',
+    viewParams: 'View Parameters',
     showHeader: 'Show header',
     showFooter: 'Show footer'
   },
   user: {
     users: 'Users',
-    fio: 'Full name',
-    name: 'First name',
-    surname: 'Last name',
-    fathersName: 'Middle name',
-    birthday: 'Date of birth',
-    snils: 'SNILS number',
-    phoneNumber: 'Phone number',
+    fio: 'Full Name',
+    name: 'First Name',
+    surname: 'Last Name',
+    fathersName: 'Middle Name',
+    birthday: 'Date of Birth',
+    snils: 'SNILS Number',
+    phoneNumber: 'Phone Number',
     roleName: 'Role',
     profileNames: 'Profiles',
-    organizationName: 'Organization'
+    organizationName: 'Organization',
   },
   account:
   {
-    profile: 'Личные данные',
-    settings: 'Настройки',
-    security: 'Безопасность'
+    profile: 'Personal Data',
+    settings: 'Settings',
+    security: 'Security'
   }
 };

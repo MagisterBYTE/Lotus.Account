@@ -4,6 +4,8 @@ import { TokenItemEnum } from "../domain/type/TokenItem";
 import type { IStorage } from "lotus-core/types";
 import { Assert } from "lotus-core/utils";
 import { DateTimeFormatter } from "lotus-core/formatters";
+import { LocalizationAccount, LocalizationAccountDispatcher } from "#localization";
+import { StringHelper } from "lotus-core/helpers";
 
 /**
  * Сервис для работы с токенами
@@ -99,6 +101,7 @@ export class TokenService
     const accessToken = this.getAccessToken();
     const expiresIn = this.getExpiresIn();
     const currentTime = Math.floor(Date.now() / 1000);
+    const lang = LocalizationAccountDispatcher.currentLanguage;
 
     if (!accessToken || expiresIn <= currentTime)
     {
@@ -107,9 +110,9 @@ export class TokenService
         expiryDate: undefined,
         remainingSeconds: 0,
         formatted: {
-          short: "Токен истек",
-          medium: "Токен истек. Требуется обновление",
-          full: "Срок действия токена истек. Необходимо повторно войти в систему",
+          short: LocalizationAccount.data.token.expiredShort,
+          medium: LocalizationAccount.data.token.expiredMedium,
+          full: LocalizationAccount.data.token.expiredFull,
         },
       };
     }
@@ -123,7 +126,7 @@ export class TokenService
       isExpired: false,
       expiryDate: expiryDate,
       remainingSeconds: remainingSeconds,
-      remainingTime: DateTimeFormatter.formatRelative(remainingSeconds),
+      remainingTime: DateTimeFormatter.formatRelative(remainingSeconds, lang),
       formatted: formatted,
     };
   }
@@ -133,15 +136,15 @@ export class TokenService
    */
   private formatExpiryInfo(expiryDate: Date, remainingSeconds: number): ITokenExpiryFormattedInfo
   {
-    const formattedDate = DateTimeFormatter.date(expiryDate);
-    const remainingTime = DateTimeFormatter.formatDuration(remainingSeconds);
-    const timeAgo = DateTimeFormatter.formatRelativeOfDate(expiryDate);
+    const lang = LocalizationAccountDispatcher.currentLanguage;
+    const formattedDate = DateTimeFormatter.date(expiryDate, lang);
+    const remainingTime = DateTimeFormatter.formatDuration(remainingSeconds, lang);
+    const timeAgo = DateTimeFormatter.formatRelativeOfDate(expiryDate, lang);
 
-    return {
-      short: `Действителен до: ${formattedDate}`,
-      medium: `Истекает: ${formattedDate} (${remainingTime})`,
-      full: `Токен действителен до ${formattedDate}. Осталось: ${remainingTime}. Истечет ${timeAgo}.`,
-    };
+    const short = StringHelper.stringFormat(LocalizationAccount.data.token.validShort, formattedDate);
+    const medium = StringHelper.stringFormat(LocalizationAccount.data.token.validMedium, formattedDate, remainingTime);
+    const full = StringHelper.stringFormat(LocalizationAccount.data.token.validFull, formattedDate, remainingTime, timeAgo);
+    return { short, medium, full };
   }
   //#endregion
 

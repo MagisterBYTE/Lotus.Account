@@ -23,7 +23,7 @@ export const AutoLoginPage: React.FC<IAutoLoginPageProps> = (props: IAutoLoginPa
     setLoading(true);
     try
     {
-      AuthService.loginAuthCookie(pathSuccess);
+      AuthService.loginSecureAuthCookie(pathSuccess);
       setLoading(false);
     } catch (error)
     {

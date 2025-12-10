@@ -20,6 +20,20 @@ export const LocalizationAccountDataRu =
     accessDenied: 'Доступ к ресурсу запрещён',
     placeholderLogin: 'Введите логин/email',
     placeholderPassword: 'Введите пароль',
+    infoLastLogin: 'Не аутентифицирован. Последний вход: {formattedDate} ({timeAgo} назад)',
+    infoSavedSession: 'Сессия сохранена. Для входа используйте автоматический вход или введите учетные данные',
+    infoNotAuth: 'Не аутентифицирован. Для доступа к защищенным ресурсам выполните вход',
+  },
+  token: {
+    // Сообщения о просроченности токена
+    expiredShort: 'Токен истек',
+    expiredMedium: 'Токен истек. Требуется обновление',
+    expiredFull: 'Срок действия токена истек. Необходимо повторно войти в систему',
+
+    // Форматированные сообщения при действующем токене
+    validShort: 'Действителен до: {date}',
+    validMedium: 'Истекает: {date} ({duration})',
+    validFull: 'Токен действителен до {date}. Осталось: {duration}. Истечет {relative}.',
   },
   group: {
     groups: 'Группы',

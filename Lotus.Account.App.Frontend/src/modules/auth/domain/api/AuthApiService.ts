@@ -16,31 +16,31 @@ export interface IRememberData
  */
 export class AuthApiService extends AppApiService
 {
-  //#region Static fields
+  //#region Const
   /**
    * Количество дней для хранения информации о входе
    */
-  private static readonly RememberDays: number = 7; // 5 минут в секундах
+  private static readonly RememberDays: number = 7  as const; // 5 минут в секундах
 
   /**
    * Дельта времени истечения срока действия токена, в секундах
    */
-  private static readonly RefreshTokenDelta: number = 300; // 5 минут в секундах
+  private static readonly RefreshTokenDelta: number = 300  as const; // 5 минут в секундах
 
   /**
    * Имя куки для автоматического входа на сайт
    */
-  private static readonly AuthCookieName: string = "lotus-account-app-frontend";
+  private static readonly AuthCookieName: string = "lotus-account-app-frontend"  as const;
 
   /**
    * Разделить для формирования хэшируемой строки авто доступа
    */
-  private static readonly DelimiterHash: string = "(!=====!)";
+  private static readonly DelimiterHash: string = "(!=====!)"  as const;
 
   /**
    * Маршруты для которых не требуется авторизации
    */
-  private static readonly RouteNotAuth: ReadonlyArray<string> = ["connect/token", "connect/logout", "api/Authorize/Register"];
+  private static readonly RouteNotAuth: ReadonlyArray<string> = ["connect/token", "connect/logout", "api/Authorize/Register"] as const;
 
   private static isRefreshing = false;
   //#endregion
@@ -263,6 +263,8 @@ export class AuthApiService extends AppApiService
     const config = this.getConfigAcceptJson();
 
     await this.api.post(url, null, config);
+
+    this.clearRememberMeCookie();
   }
 
   /**

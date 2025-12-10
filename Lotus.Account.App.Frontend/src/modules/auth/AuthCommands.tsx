@@ -1,4 +1,6 @@
-import { ActionCommand, CommandActionService, NavigationCommand } from "lotus-core";
+import { ActionCommand, CommandActionService, NavigationCommand } from "lotus-core/modules/actionCommand";
+import { FunctionHelper } from "lotus-core/helpers";
+import { LanguageChangeEventType, type LanguageChangeEvent } from "lotus-core/localization";
 import { LocalizationAccount } from "#localization";
 import { RoutesAccount } from "#app";
 import { IconLogout } from "@tabler/icons-react";
@@ -75,6 +77,19 @@ class AuthCommandsClass extends CommandActionService
       AuthService.logout();
     }
     this.commands.push(this.logout);
+
+    FunctionHelper.bindAllMethods(this);
+
+    window.addEventListener(LanguageChangeEventType, (e) => this.onTranslate(e));
+  }
+
+  public onTranslate(event: LanguageChangeEvent | any)
+  {
+    this.login.label = LocalizationAccount.data.auth.entrance;
+    this.autoLogin.label = LocalizationAccount.data.auth.autoComeIn;
+    this.register.label = LocalizationAccount.data.auth.register;
+    this.restorePassword.label = LocalizationAccount.data.auth.restorePassword;
+    this.logout.label = LocalizationAccount.data.auth.logout;
   }
 }
 

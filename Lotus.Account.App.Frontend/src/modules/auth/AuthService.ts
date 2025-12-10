@@ -1,11 +1,19 @@
-import { CookiesHelper, DateTimeFormatter, FunctionHelper } from "lotus-core";
+import { FunctionHelper, StringHelper } from "lotus-core/helpers";
+import { DateTimeFormatter } from "lotus-core/formatters";
 import { castToSuccessAuthResponse, type IRegisterParameters } from "./domain";
 import { TokenService } from "./domain/TokenService";
 import { AuthApiService } from "./domain/api";
-
+import { LocalizationAccount, LocalizationAccountDispatcher } from "#localization";
 
 class AuthServiceClass
 {
+  //#region Const
+  /**
+   * Время последнего входя на сайт
+   */
+  private static readonly LastLoginTime: string = "lotus-account-last-login-time" as const;
+  //#endregion
+
   //#region Static fields
   private static _authService: AuthServiceClass;
 
@@ -27,13 +35,16 @@ class AuthServiceClass
   }
   //#endregion
 
+  //#region Constructor
   constructor()
   {
     this.tokenService = new TokenService(window.localStorage);
     this.authApiService = new AuthApiService(this.tokenService);
     FunctionHelper.bindAllMethods(this);
   }
+  //#endregion
 
+  //#region Main methods
   /**
    * Вход через пароль и логин
    * @param login Логин
@@ -52,9 +63,11 @@ class AuthServiceClass
       {
         this.tokenService.setData(data);
 
+        this.saveLastLoginTime();
+
         if (rememberMe)
         {
-          this.setAuthCookie(login, password);
+          this.setSecureAuthCookie(login, password);
         }
 
         if (redirectUrl)
@@ -87,27 +100,25 @@ class AuthServiceClass
     try
     {
       await this.authApiService.logoutAsync();
-    }
-    catch (error)
+    } catch (error)
     {
       console.error(error);
     }
-
-    // Удаляем все куки
-    CookiesHelper.deleteAll();
 
     // Очищаем
     this.tokenService.clearAccessToken();
 
     location.assign("/");
   }
+  //#endregion
 
+  //#region SecureAuth methods
   /**
    * Установить куки для автоматического входа на сайт
    * @param login Логин
    * @param password Пароль
    */
-  public setAuthCookie(login: string, password: string)
+  public setSecureAuthCookie(login: string, password: string)
   {
     //this.authApiService.setAuthCookie(login, password);
   }
@@ -116,7 +127,7 @@ class AuthServiceClass
    * Проверка куки для автоматического входа на сайт
    * @returns
    */
-  public hasAuthCookie(): boolean
+  public hasSecureAuthCookie(): boolean
   {
     //return this.authApiService.hasAuthCookie();
     return false;
@@ -127,15 +138,17 @@ class AuthServiceClass
    * @param redirectUrl URL-адрес перенаправления в случае успешного входа
    * @returns
    */
-  public loginAuthCookie(redirectUrl?: string)
+  public loginSecureAuthCookie(redirectUrl?: string)
   {
     //this.authApiService.loginAuthCookie(redirectUrl);
   }
+  //#endregion
 
+  //#region Common methods
   /**
    * Проверяет, есть ли у пользователя сохраненная сессия
    * (токены или remember me cookie)
-   * 
+   *
    * @returns true если есть возможность восстановить сессию
    */
   public hasSavedSession(): boolean
@@ -161,14 +174,12 @@ class AuthServiceClass
     return false;
   }
 
-
-
   /**
    * Возвращает строку с информацией о статусе аутентификации
    * и времени истечения токена в удобном для пользователя формате
-   * 
+   *
    * @returns Строка с информацией об аутентификации
-   * 
+   *
    * @example
    * ```typescript
    * console.log(AuthService.getAuthInfo());
@@ -189,7 +200,6 @@ class AuthServiceClass
     return this.getTokenExpiryInfo();
   }
 
-
   /**
    * Получает информацию для неаутентифицированного пользователя
    */
@@ -203,16 +213,16 @@ class AuthServiceClass
       const formattedDate = DateTimeFormatter.dateTime(lastLogin);
       const timeAgo = DateTimeFormatter.formatRelativeOfDate(lastLogin);
 
-      return `Не аутентифицирован. Последний вход: ${formattedDate} (${timeAgo} назад)`;
+      return StringHelper.stringFormat(LocalizationAccount.data.auth.infoLastLogin, formattedDate, timeAgo);
     }
 
     // Проверяем, есть ли сохраненная сессия
     if (this.hasSavedSession())
     {
-      return "Сессия сохранена. Для входа используйте автоматический вход или введите учетные данные";
+      return LocalizationAccount.data.auth.infoSavedSession;
     }
 
-    return "Не аутентифицирован. Для доступа к защищенным ресурсам выполните вход";
+    return LocalizationAccount.data.auth.infoNotAuth;
   }
 
   /**
@@ -230,15 +240,20 @@ class AuthServiceClass
     // const userInfo = this.getUserInfo();
     const username = this.tokenService.getUserName() ?? "Пользователь";
 
+    console.log('expiryDetails', expiryDetails);
+
     const remainingTime = expiryDetails.remainingTime;
-    const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!);
+    const lang = LocalizationAccountDispatcher.currentLanguage;
+    const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!, lang);
 
     let status = "Аутентифицирован";
     if (this.tokenService.isTokenExpiringSoon(300))
-    { // 5 минут
+    {
+      // 5 минут
       status = "⚠️ Аутентифицирован (токен скоро истекает)";
     } else if (this.tokenService.isTokenExpiringSoon(60))
-    { // 1 минута
+    {
+      // 1 минута
       status = "🔴 Аутентифицирован (токен почти истек)";
     }
 
@@ -252,7 +267,7 @@ class AuthServiceClass
   {
     try
     {
-      const stored = localStorage.getItem('last_login_time');
+      const stored = localStorage.getItem("last_login_time");
       if (stored)
       {
         return new Date(parseInt(stored, 10));
@@ -272,7 +287,7 @@ class AuthServiceClass
   {
     try
     {
-      localStorage.setItem('last_login_time', Date.now().toString());
+      localStorage.setItem(AuthServiceClass.LastLoginTime, Date.now().toString());
     } catch
     {
       // ignore

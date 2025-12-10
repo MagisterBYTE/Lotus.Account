@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import { LocalizationProvider } from './provider/localization';
 
 const rootElement = document.getElementById('root');
 if (rootElement)
@@ -13,10 +14,12 @@ if (rootElement)
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
+      <LocalizationProvider>
         <MantineProvider theme={theme}>
-          <Notifications/>
+          <Notifications />
           <App />
         </MantineProvider>
+      </LocalizationProvider>
     </React.StrictMode>,
   );
 }

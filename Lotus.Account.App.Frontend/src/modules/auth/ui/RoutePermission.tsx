@@ -33,7 +33,7 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
 
   const tokenService =  AuthService.tokenService;
   const isAuth = tokenService.hasAccessToken();
-  const isAuthCookie = AuthService.hasAuthCookie();
+  const isAuthCookie = AuthService.hasSecureAuthCookie();
 
   const location = useLocation();
 
