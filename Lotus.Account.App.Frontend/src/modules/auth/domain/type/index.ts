@@ -1,4 +1,6 @@
-export { type IErrorAuthResponse, instanceOfErrorAuthResponse, castToErrorAuthResponse } from './ErrorAuthResponse';
-export { type ISuccessAuthResponse, instanceOfSuccessAuthResponse, castToSuccessAuthResponse } from './SuccessAuthResponse';
-export { type IRegisterParameters } from './RegisterParameters';
+export { castToErrorAuthResponse, instanceOfErrorAuthResponse, type IErrorAuthResponse } from './ErrorAuthResponse';
 export { type ILoginParameters } from './LoginParameters';
+export { type IRegisterParameters } from './RegisterParameters';
+export { castToSuccessAuthResponse, instanceOfSuccessAuthResponse, type ISuccessAuthResponse } from './SuccessAuthResponse';
+export { type ITokenExpiryDetails, type ITokenExpiryFormattedInfo } from './TokenExpiryTypes';
+

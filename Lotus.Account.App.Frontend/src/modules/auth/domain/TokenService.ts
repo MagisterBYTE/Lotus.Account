@@ -1,8 +1,9 @@
 ﻿import { jwtDecode, type JwtPayload } from "jwt-decode";
-import type { ISuccessAuthResponse } from "../domain/type";
+import type { ISuccessAuthResponse, ITokenExpiryDetails, ITokenExpiryFormattedInfo } from "../domain/type";
 import { TokenItemEnum } from "../domain/type/TokenItem";
 import type { IStorage } from "lotus-core/types";
 import { Assert } from "lotus-core/utils";
+import { DateTimeFormatter } from "lotus-core/formatters";
 
 /**
  * Сервис для работы с токенами
@@ -17,6 +18,132 @@ export class TokenService
   {
     this.storage = storage;
   }
+  //#region Expiry methods
+  /**
+   * Проверяет наличие валидного access токена
+   * Включает проверку срока действия
+   *
+   * @returns true если токен существует и не истек
+   */
+  public hasValidAccessToken(): boolean
+  {
+    const accessToken = this.getAccessToken();
+    if (!accessToken)
+    {
+      return false;
+    }
+
+    // Проверяем срок действия токена
+    const expiresIn = this.getExpiresIn();
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    // Добавляем буфер 60 секунд для учета задержек сети
+    const isExpired = currentTime + 60 >= expiresIn;
+
+    return !isExpired;
+  }
+
+  /**
+   * Проверяет возможность обновления токена
+   * (наличие валидного refresh токена)
+   *
+   * @returns true если можно обновить access токен
+   */
+  public canRefreshToken(): boolean
+  {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken)
+    {
+      return false;
+    }
+
+    // Проверяем, что refresh токен еще действителен
+    // Обычно refresh токены живут дольше, но можно добавить проверку
+    const refreshTokenExpiry = this.getExpiresIn() * 4; // По умолчанию в 4 раза дольше
+    if (refreshTokenExpiry)
+    {
+      const currentTime = Math.floor(Date.now() / 1000);
+      return currentTime + 300 < refreshTokenExpiry; // 5 минут буфера
+    }
+
+    return true;
+  }
+
+  /**
+   * Проверяет, истекает ли токен в ближайшее время
+   * (для предупреждения пользователя или автоматического обновления)
+   *
+   * @param thresholdSeconds Пороговое значение в секундах (по умолчанию 300 = 5 минут)
+   * @returns true если токен истекает в течение указанного времени
+   */
+  public isTokenExpiringSoon(thresholdSeconds: number = 300): boolean
+  {
+    if (!this.hasValidAccessToken())
+    {
+      return false;
+    }
+
+    const expiresIn = this.getExpiresIn();
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    return expiresIn - currentTime <= thresholdSeconds;
+  }
+
+  /**
+   * Возвращает детальную информацию о времени истечения токена
+   *
+   * @returns Объект с разными форматами времени истечения
+   */
+  public getTokenExpiryDetails(): ITokenExpiryDetails
+  {
+    const accessToken = this.getAccessToken();
+    const expiresIn = this.getExpiresIn();
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (!accessToken || expiresIn <= currentTime)
+    {
+      return {
+        isExpired: true,
+        expiryDate: undefined,
+        remainingSeconds: 0,
+        formatted: {
+          short: "Токен истек",
+          medium: "Токен истек. Требуется обновление",
+          full: "Срок действия токена истек. Необходимо повторно войти в систему",
+        },
+      };
+    }
+
+    const remainingSeconds = expiresIn - currentTime;
+    const expiryDate = new Date(expiresIn * 1000);
+
+    const formatted = this.formatExpiryInfo(expiryDate, remainingSeconds);
+
+    return {
+      isExpired: false,
+      expiryDate: expiryDate,
+      remainingSeconds: remainingSeconds,
+      remainingTime: DateTimeFormatter.formatRelative(remainingSeconds),
+      formatted: formatted,
+    };
+  }
+
+  /**
+   * Форматирует информацию об истечении токена
+   */
+  private formatExpiryInfo(expiryDate: Date, remainingSeconds: number): ITokenExpiryFormattedInfo
+  {
+    const formattedDate = DateTimeFormatter.date(expiryDate);
+    const remainingTime = DateTimeFormatter.formatDuration(remainingSeconds);
+    const timeAgo = DateTimeFormatter.formatRelativeOfDate(expiryDate);
+
+    return {
+      short: `Действителен до: ${formattedDate}`,
+      medium: `Истекает: ${formattedDate} (${remainingTime})`,
+      full: `Токен действителен до ${formattedDate}. Осталось: ${remainingTime}. Истечет ${timeAgo}.`,
+    };
+  }
+  //#endregion
 
   //#region Token methods
   public setData(data: ISuccessAuthResponse)

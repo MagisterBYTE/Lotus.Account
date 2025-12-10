@@ -1,7 +1,8 @@
-import { CookiesHelper, FunctionHelper } from "lotus-core";
+import { CookiesHelper, DateTimeFormatter, FunctionHelper } from "lotus-core";
 import { castToSuccessAuthResponse, type IRegisterParameters } from "./domain";
 import { TokenService } from "./domain/TokenService";
 import { AuthApiService } from "./domain/api";
+
 
 class AuthServiceClass
 {
@@ -22,7 +23,7 @@ class AuthServiceClass
   //#region Properties
   public get isAuth()
   {
-    return this.tokenService.hasAccessToken();
+    return this.tokenService.hasValidAccessToken();
   }
   //#endregion
 
@@ -46,7 +47,7 @@ class AuthServiceClass
     const response = await this.authApiService.loginAsync(login, password);
     if (response)
     {
-      const data = castToSuccessAuthResponse(response.data);
+      const data = castToSuccessAuthResponse(response);
       if (data)
       {
         this.tokenService.setData(data);
@@ -108,7 +109,7 @@ class AuthServiceClass
    */
   public setAuthCookie(login: string, password: string)
   {
-    this.authApiService.setAuthCookie(login, password);
+    //this.authApiService.setAuthCookie(login, password);
   }
 
   /**
@@ -117,7 +118,8 @@ class AuthServiceClass
    */
   public hasAuthCookie(): boolean
   {
-    return this.authApiService.hasAuthCookie();
+    //return this.authApiService.hasAuthCookie();
+    return false;
   }
 
   /**
@@ -127,7 +129,154 @@ class AuthServiceClass
    */
   public loginAuthCookie(redirectUrl?: string)
   {
-    this.authApiService.loginAuthCookie(redirectUrl);
+    //this.authApiService.loginAuthCookie(redirectUrl);
+  }
+
+  /**
+   * Проверяет, есть ли у пользователя сохраненная сессия
+   * (токены или remember me cookie)
+   * 
+   * @returns true если есть возможность восстановить сессию
+   */
+  public hasSavedSession(): boolean
+  {
+    // Проверяем валидный access токен
+    if (this.tokenService.hasValidAccessToken())
+    {
+      return true;
+    }
+
+    // Проверяем возможность обновления через refresh токен
+    if (this.tokenService.canRefreshToken())
+    {
+      return true;
+    }
+
+    // Проверяем наличие remember me cookie
+    if (this.authApiService.hasSecureAuthCookie())
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+  /**
+   * Возвращает строку с информацией о статусе аутентификации
+   * и времени истечения токена в удобном для пользователя формате
+   * 
+   * @returns Строка с информацией об аутентификации
+   * 
+   * @example
+   * ```typescript
+   * console.log(AuthService.getAuthInfo());
+   * // "Аутентифицирован. Токен истекает: 15.12.2024 14:30 (через 2 часа 15 минут)"
+   * // или
+   * // "Не аутентифицирован. Последний вход: 10.12.2024 09:15"
+   * // или
+   * // "Сессия истекла. Требуется повторный вход"
+   * ```
+   */
+  public getAuthInfo(): string
+  {
+    if (!this.tokenService.hasValidAccessToken())
+    {
+      return this.getUnauthenticatedInfo();
+    }
+
+    return this.getTokenExpiryInfo();
+  }
+
+
+  /**
+   * Получает информацию для неаутентифицированного пользователя
+   */
+  private getUnauthenticatedInfo(): string
+  {
+    // Проверяем, был ли ранее вход
+    const lastLogin = this.getLastLoginTime();
+
+    if (lastLogin)
+    {
+      const formattedDate = DateTimeFormatter.dateTime(lastLogin);
+      const timeAgo = DateTimeFormatter.formatRelativeOfDate(lastLogin);
+
+      return `Не аутентифицирован. Последний вход: ${formattedDate} (${timeAgo} назад)`;
+    }
+
+    // Проверяем, есть ли сохраненная сессия
+    if (this.hasSavedSession())
+    {
+      return "Сессия сохранена. Для входа используйте автоматический вход или введите учетные данные";
+    }
+
+    return "Не аутентифицирован. Для доступа к защищенным ресурсам выполните вход";
+  }
+
+  /**
+   * Формирует информацию о времени истечения токена
+   */
+  private getTokenExpiryInfo(): string
+  {
+    const expiryDetails = this.tokenService.getTokenExpiryDetails();
+
+    if (expiryDetails.isExpired)
+    {
+      return "Сессия истекла. Требуется повторный вход";
+    }
+
+    // const userInfo = this.getUserInfo();
+    const username = this.tokenService.getUserName() ?? "Пользователь";
+
+    const remainingTime = expiryDetails.remainingTime;
+    const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!);
+
+    let status = "Аутентифицирован";
+    if (this.tokenService.isTokenExpiringSoon(300))
+    { // 5 минут
+      status = "⚠️ Аутентифицирован (токен скоро истекает)";
+    } else if (this.tokenService.isTokenExpiringSoon(60))
+    { // 1 минута
+      status = "🔴 Аутентифицирован (токен почти истек)";
+    }
+
+    return `${status} как ${username}. Токен истекает: ${formattedDate} (${remainingTime})`;
+  }
+
+  /**
+   * Получает время последнего входа
+   */
+  private getLastLoginTime(): Date | undefined
+  {
+    try
+    {
+      const stored = localStorage.getItem('last_login_time');
+      if (stored)
+      {
+        return new Date(parseInt(stored, 10));
+      }
+    } catch
+    {
+      // ignore
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Сохраняет время последнего входа
+   */
+  private saveLastLoginTime(): void
+  {
+    try
+    {
+      localStorage.setItem('last_login_time', Date.now().toString());
+    } catch
+    {
+      // ignore
+    }
   }
 }
 

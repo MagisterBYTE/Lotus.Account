@@ -171,6 +171,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <Group h="100%" px="md" justify="space-between">
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+            {AuthService.getAuthInfo()}
             {renderAccount()}
           </Group>
         </AppShell.Header>

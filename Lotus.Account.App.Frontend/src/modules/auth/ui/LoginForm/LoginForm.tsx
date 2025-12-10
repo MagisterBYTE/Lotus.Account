@@ -68,7 +68,7 @@ export function LoginForm(props: ILoginFormProps)
   const renderGoogleButton = () =>
   {
     return (
-      <Button variant="default" w={"160px"} radius="sm" leftSection={<IconBrandGoogle color={theme.colors.red[5]} />}>
+      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={<IconBrandGoogle color={theme.colors.red[5]} />}>
         Google
       </Button>
     );
@@ -76,7 +76,7 @@ export function LoginForm(props: ILoginFormProps)
   const renderVkButton = () =>
   {
     return (
-      <Button variant="default" w={"160px"} radius="sm" leftSection={<IconBrandVk color={theme.colors.blue[5]} />}>
+      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={<IconBrandVk color={theme.colors.blue[5]} />}>
         Vk
       </Button>
     );
@@ -84,7 +84,7 @@ export function LoginForm(props: ILoginFormProps)
   //#endregion
 
   return (
-    <ContainerForm header={LocalizationAccount.data.auth.entrance} spacing={"lg"}>
+    <ContainerForm header={LocalizationAccount.data.auth.entrance} spacing={"lg"} hasDivider>
       <HorizontalStack mb="md" mt="md" hAlign="space-between" spacing={"md"}>
         {renderGoogleButton()}
         {renderVkButton()}
@@ -100,6 +100,7 @@ export function LoginForm(props: ILoginFormProps)
         }}
         label="Login/email"
         textInputProps={{
+          disabled: isLogging,
           value: loginParameters.login,
           placeholder: LocalizationAccount.data.auth.placeholderLogin,
           onChange: (event) => loginParameters.setLogin(event.target.value, true),
@@ -116,6 +117,7 @@ export function LoginForm(props: ILoginFormProps)
         inlinePlace
         label="Password"
         textInputProps={{
+          disabled: isLogging,
           value: loginParameters.password,
           placeholder: LocalizationAccount.data.auth.placeholderPassword,
           onChange: (event) => loginParameters.setPassword(event.target.value, true),
@@ -127,6 +129,7 @@ export function LoginForm(props: ILoginFormProps)
       {isDebug && (
         <HorizontalStack hAlign="space-between">
           <Checkbox
+            disabled={isLogging}
             label={LocalizationAccount.data.auth.remember}
             checked={loginParameters.rememberMe}
             onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
@@ -139,6 +142,7 @@ export function LoginForm(props: ILoginFormProps)
 
       {!isDebug && (
         <Checkbox
+          disabled={isLogging}
           label={LocalizationAccount.data.auth.remember}
           checked={loginParameters.rememberMe}
           onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
