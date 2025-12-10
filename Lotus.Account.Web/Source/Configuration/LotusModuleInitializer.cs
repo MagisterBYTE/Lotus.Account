@@ -40,7 +40,7 @@ namespace Lotus.Account
                         .AllowClientCredentialsFlow()   // Приложение
                         .AllowRefreshTokenFlow()        // RefreshToken
                         .SetAccessTokenLifetime(TimeSpan.FromMinutes(30))
-                        .SetRefreshTokenLifetime(TimeSpan.FromMinutes(60));
+                        .SetRefreshTokenLifetime(TimeSpan.FromMinutes(120));
 
                     options
                         .SetTokenEndpointUris(XRoutesConstants.TokenEndpoint)
