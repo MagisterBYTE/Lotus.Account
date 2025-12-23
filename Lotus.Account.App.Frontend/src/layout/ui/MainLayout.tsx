@@ -1,22 +1,25 @@
-import { PermissionsAccountConstants, RoutesAccount } from "#app";
+import { PermissionsAccountConstants, RoutesAccount, theme } from "#app";
 import { LocalizationAccount } from "#localization";
 import { AuthCommands, AuthService } from "#modules/auth";
-import { AppShell, Avatar, Burger, Group, Menu, NavLink } from "@mantine/core";
+import { AppShell, Avatar, Burger, Group, Menu, NavLink, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import * as React from "react";
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import { FaPeopleGroup, FaUsers } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router";
 import { LayoutService } from "../LayoutService";
 import { ActionCommand, DelimiterCommand } from "lotus-core/modules/actionCommand";
 import { AccountCommands } from "../../modules/account";
 import { CommandElement } from "lotus-ui-react/modules/commands";
-import { IconHome, IconInfoSquareRounded } from "@tabler/icons-react";
+import { IconBrandBitbucket, IconDrone, IconHome, IconInfoSquareRounded, IconLicense, IconUsers, IconUsersGroup } from "@tabler/icons-react";
+import { useAuthContext } from "../../provider/auth";
+import { Environment } from "lotus-core/environment";
 
 export interface IMainLayoutProps
 {
   page: ReactElement;
 }
+
 
 export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) =>
 {
@@ -25,9 +28,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const layoutState = LayoutService.layoutState;
-  const visibleHeader = layoutState.header.isVisibleUser && layoutState.header.isVisible;
-  const isAuth = AuthService.isAuth;
-  const tokenService = AuthService.tokenService;
+  const { userAuthInfo } = useAuthContext();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,26 +36,26 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
   const renderBaseNavigation = () => 
   {
     return <>
-            <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.home.path);
-            }}
-            label={'Home'}
-            leftSection={<IconHome />}
-            active={location.pathname === RoutesAccount.home.path}
-            variant="light"
-          />
-                      <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.about.path);
-            }}
-            label={'About'}
-            leftSection={<IconInfoSquareRounded />}
-            active={location.pathname === RoutesAccount.about.path}
-            variant="light"
-          />
+      <NavLink
+        onClick={() =>
+        {
+          navigate(RoutesAccount.home.path);
+        }}
+        label={'Home'}
+        leftSection={<IconHome />}
+        active={location.pathname === RoutesAccount.home.path}
+        variant="light"
+      />
+      <NavLink
+        onClick={() =>
+        {
+          navigate(RoutesAccount.about.path);
+        }}
+        label={'About'}
+        leftSection={<IconInfoSquareRounded />}
+        active={location.pathname === RoutesAccount.about.path}
+        variant="light"
+      />
     </>
   }
 
@@ -63,7 +64,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
     return (
       <>
         {/* // Пользователи */}
-        {tokenService.checkUserPermission(PermissionsAccountConstants.UserView) && (
+        {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.UserView) && (
           <NavLink
             variant="light"
             onClick={() =>
@@ -72,95 +73,104 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             }}
             label={LocalizationAccount.data.user.users}
             active={location.pathname === RoutesAccount.users.path}
-            leftSection={<FaUsers />}
+            leftSection={<IconUsers color={theme.colors!.green![2]} />}
           />
         )}
-        {tokenService.checkUserPermission(PermissionsAccountConstants.PermissionView) && (
+        {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.PermissionView) && (
           <NavLink
             onClick={() =>
             {
               navigate(RoutesAccount.userPermissions.path);
             }}
             label={LocalizationAccount.data.permission.permissions}
-            leftSection={<FaUsers />}
+            leftSection={<IconLicense color={theme.colors!.info![2]} />}
             active={location.pathname === RoutesAccount.userPermissions.path}
             variant="light"
           />
         )}
-        {tokenService.checkUserPermission(PermissionsAccountConstants.RoleView) && (
+        {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.RoleView) && (
           <NavLink
             onClick={() =>
             {
               navigate(RoutesAccount.userRoles.path);
             }}
             label={LocalizationAccount.data.role.roles}
-            leftSection={<FaUsers />}
+            leftSection={<IconDrone />}
             active={location.pathname === RoutesAccount.userRoles.path}
             variant="light"
           />
         )}
-        {tokenService.checkUserPermission(PermissionsAccountConstants.PositionView) && (
+        {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.PositionView) && (
           <NavLink
             onClick={() =>
             {
               navigate(RoutesAccount.userPositions.path);
             }}
             label={LocalizationAccount.data.position.positions}
-            leftSection={<FaUsers />}
+            leftSection={<IconBrandBitbucket />}
             active={location.pathname === RoutesAccount.userPositions.path}
             variant="light"
           />
         )}
-        {tokenService.checkUserPermission(PermissionsAccountConstants.GroupView) && (
+        {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.GroupView) && (
           <NavLink
             onClick={() =>
             {
               navigate(RoutesAccount.userGroups.path);
             }}
             label={LocalizationAccount.data.group.groups}
-            leftSection={<FaPeopleGroup />}
+            leftSection={<IconUsersGroup />}
             active={location.pathname === RoutesAccount.userGroups.path}
             variant="light"
           />
         )}
-
 
         {renderBaseNavigation()}
       </>
     );
   };
 
-  const accountMenu:ActionCommand[] = [
-    AccountCommands.profile, 
-    AccountCommands.settings, 
+  const accountMenu: ActionCommand[] = [
+    AccountCommands.profile,
+    AccountCommands.settings,
     AccountCommands.security,
-    DelimiterCommand.Instance, 
+    DelimiterCommand.Instance,
     AuthCommands.logout]
 
   const renderAccount = () =>
   {
-    if(!isAuth) return <></>
+    if (!userAuthInfo) return <></>
     return (
+      <>
+                <img 
+                  crossOrigin="anonymous"
+  referrerPolicy="no-referrer"
+                src={userAuthInfo.avatarId} />
+      
       <Menu shadow="md" width={200}>
         <Menu.Target>
-        <Avatar src={null} size={'md'} alt="no image here" />
+          <Avatar src={userAuthInfo.avatarId} size={'md'} alt="no image here" name={userAuthInfo.getInitials()} color="initials" />
         </Menu.Target>
         <Menu.Dropdown>
           {accountMenu.map((item, index) =>
           {
-            return <CommandElement key={index} command={item} size={'md'} elementType="menuItem"/>
+            return <CommandElement key={index} command={item} size={'md'} elementType="menuItem" />
           })}
         </Menu.Dropdown>
-      </Menu>
+      </Menu></>
     );
   };
 
   return (
     <AppShell
+          transitionDuration={500}
+      transitionTimingFunction="ease-in-out"
       padding="md"
-      header={{ height: 60 }}
+      layout="default"
+header={{ height: { base: 48, sm: 60, lg: 76 } }}
+      footer={{ height: 60, collapsed: true }}
       navbar={{
-        width: 300,
+        width: 400,
         breakpoint: "sm",
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
@@ -171,7 +181,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <Group h="100%" px="md" justify="space-between">
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-            {AuthService.getAuthInfo()}
+            {userAuthInfo && userAuthInfo.name}
             {renderAccount()}
           </Group>
         </AppShell.Header>
@@ -179,6 +189,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
 
       <AppShell.Navbar p="md">{renderLeftNavbar()}</AppShell.Navbar>
       <AppShell.Main>{page}</AppShell.Main>
+      <AppShell.Footer></AppShell.Footer>
     </AppShell>
   );
 };

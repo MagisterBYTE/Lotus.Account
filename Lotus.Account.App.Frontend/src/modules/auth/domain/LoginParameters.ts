@@ -26,10 +26,6 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters {
     FunctionHelper.bindAllMethods(this);
   }
 
-  public async loginAsync() {
-    await AuthService.login(this.login, this.password, this.rememberMe);
-  }
-
   public setLogin(login: string, isRefreshProxy: boolean = false) {
     this.login = login;
     this.hasInputLogin = true;

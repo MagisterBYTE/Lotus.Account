@@ -1,0 +1,1 @@
+export { type IUserPermission } from './UserPermission';

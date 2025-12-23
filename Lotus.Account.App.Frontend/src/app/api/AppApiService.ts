@@ -1,4 +1,4 @@
-import { ApiService, FunctionHelper } from 'lotus-core';
+import { ApiService, Environment, FunctionHelper } from 'lotus-core';
 
 /**
  * Класс для сервисов Api приложения 
@@ -7,7 +7,7 @@ export class AppApiService extends ApiService
 {
   constructor()
   {
-    const baseURL = process.env.PUBLIC_API!;
+    const baseURL = Environment.backendApi;
     super(baseURL);
 
     FunctionHelper.bindAllMethods(this, ['api']);

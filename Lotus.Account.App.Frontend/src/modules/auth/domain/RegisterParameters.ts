@@ -41,7 +41,7 @@ export class RegisterParameters implements IRegisterParameters, IRefreshProxy
  */
   public async register()
   {
-    await AuthService.register(this);
+    await AuthService.registerAsync(this);
   }
 
   public defaultRefreshProxy()

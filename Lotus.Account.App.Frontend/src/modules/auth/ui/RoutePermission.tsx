@@ -33,8 +33,6 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
 
   const tokenService =  AuthService.tokenService;
   const isAuth = tokenService.hasAccessToken();
-  const isAuthCookie = AuthService.hasSecureAuthCookie();
-
   const location = useLocation();
 
   const state = location.state as { from: Location };
@@ -69,16 +67,8 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
     }
     else
     {
-      if (isAuthCookie)
-      {
-        // Пользователь не авторизован - Но есть куки
-        return <Navigate to={RoutesAccount.autoLogin.path} state={{ from: location }} />
-      }
-      else
-      {
         // Пользователь не авторизован - возвращаем страницу авторизации
         return <Navigate to={RoutesAccount.login.path} state={{ from: location }} />
-      }
     }
   }
   else

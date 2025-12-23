@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createLanguageChangeEvent, LanguageChangeEventType, LocalizationCoreDispatcher, type TLanguageType } from 'lotus-core/localization';
+import { createLanguageChangeEvent, LocalizationCoreDispatcher, type TLanguageType } from 'lotus-core/localization';
 import { LocalizationAccountDispatcher } from '#localization';
 import { LocalizationContext } from './LocalizationContext';
 

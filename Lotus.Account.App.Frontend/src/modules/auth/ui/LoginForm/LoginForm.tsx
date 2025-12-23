@@ -5,11 +5,16 @@ import { IconBrandGoogle, IconBrandVk } from "@tabler/icons-react";
 import type { IResult } from "lotus-core/types";
 import { TextField } from "lotus-ui-react/components/Controls";
 import { HorizontalStack } from "lotus-ui-react/components/Layout";
+import { Text } from "lotus-ui-react/components/Display";
 import { useProxyObject } from "lotus-ui-react/hooks";
 import { Notifications } from "lotus-ui-react/modules/feedback";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import { LoginParameters } from "../../domain";
+import { Link, useNavigate } from "react-router";
+import { LoginParameters, UserAuthorizeInfo } from "../../domain";
+import { RoutesAccount } from "#app";
+import { AuthService } from "../../AuthService";
+import { useAuthContext } from "../../../../provider/auth";
+import { Environment } from "lotus-core/environment";
 
 export interface ILoginFormProps
 {
@@ -25,9 +30,10 @@ export function LoginForm(props: ILoginFormProps)
 
   const navigate = useNavigate();
   const theme = useMantineTheme();
-  const isDebug = Boolean(process.env.PUBLIC_DEBUG_MODE);
+  const isDebug = Environment.isDevelopment;
 
   const [isLogging, setLogging] = useState(false);
+  const { setUserAuthInfo } = useAuthContext();
 
   // Используем useMemo для создания единственного экземпляра
   const loginInstance = useMemo(() =>
@@ -37,12 +43,13 @@ export function LoginForm(props: ILoginFormProps)
   const loginParameters = useProxyObject({ object: loginInstance });
 
   //#region Handlers
-  const handleButtonLogin = async () =>
+  const handleLogin = async () =>
   {
     setLogging(true);
     try
     {
-      await loginParameters.loginAsync();
+      const userInfo = await AuthService.loginAsync(loginParameters);
+      setUserAuthInfo(new UserAuthorizeInfo(userInfo));
       setLogging(false);
 
       if (pathSuccess)
@@ -52,12 +59,35 @@ export function LoginForm(props: ILoginFormProps)
     } catch (error)
     {
       setLogging(false);
-      const response = error as any as IResult;
+      const response = error as IResult;
       Notifications.showResult(response);
+      setUserAuthInfo(undefined);
     }
   };
 
-  const handleButtonDebug = async () =>
+  const handleGoogle = async () =>
+  {
+    setLogging(true);
+    try
+    {
+      const userInfo = await AuthService.loginGoogleAsync();
+      setUserAuthInfo(new UserAuthorizeInfo(userInfo));
+      setLogging(false);
+
+      if (pathSuccess)
+      {
+        navigate(pathSuccess);
+      }
+    } catch (error)
+    {
+      setLogging(false);
+      const response = error as IResult;
+      Notifications.showResult(response);
+      setUserAuthInfo(undefined);
+    }
+  };
+
+  const handleDebug = async () =>
   {
     loginParameters.setLogin("DanielDem", false);
     loginParameters.setPassword("!198418dsfA!", true);
@@ -67,20 +97,22 @@ export function LoginForm(props: ILoginFormProps)
   //#region Render
   const renderGoogleButton = () =>
   {
+    const icon = <IconBrandGoogle color={theme.colors.red[3]} />;
     return (
-      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={<IconBrandGoogle color={theme.colors.red[5]} />}>
+      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={icon} onClick={handleGoogle}>
         Google
       </Button>
     );
-  };
+  }
   const renderVkButton = () =>
   {
+    const icon = <IconBrandVk color={theme.colors.blue[3]} />;
     return (
-      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={<IconBrandVk color={theme.colors.blue[5]} />}>
+      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={icon}>
         Vk
       </Button>
     );
-  };
+  }
   //#endregion
 
   return (
@@ -98,7 +130,7 @@ export function LoginForm(props: ILoginFormProps)
         labelProps={{
           w: "120px",
         }}
-        label="Login/email"
+        label={LocalizationAccount.data.auth.login}
         textInputProps={{
           disabled: isLogging,
           value: loginParameters.login,
@@ -115,7 +147,7 @@ export function LoginForm(props: ILoginFormProps)
         }}
         required
         inlinePlace
-        label="Password"
+        label={LocalizationAccount.data.auth.password}
         textInputProps={{
           disabled: isLogging,
           value: loginParameters.password,
@@ -134,7 +166,7 @@ export function LoginForm(props: ILoginFormProps)
             checked={loginParameters.rememberMe}
             onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
           />
-          <Button radius="sm" onClick={handleButtonDebug}>
+          <Button radius="sm" onClick={handleDebug}>
             Debug Input
           </Button>
         </HorizontalStack>
@@ -149,9 +181,11 @@ export function LoginForm(props: ILoginFormProps)
         />
       )}
 
-      <Button disabled={!loginParameters.validation()} loading={isLogging} radius="sm" onClick={handleButtonLogin}>
+      <Button disabled={!loginParameters.validation()} loading={isLogging} radius="sm" onClick={handleLogin}>
         {LocalizationAccount.data.auth.comeIn}
       </Button>
+
+      <Text fontSize={'sm'}>Нет аккаунта,<Link to={RoutesAccount.register.path}> зарегистрироваться</Link></Text>
     </ContainerForm>
   );
 }

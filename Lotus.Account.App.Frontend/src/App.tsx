@@ -31,9 +31,7 @@ export const routes: RouteObject[] = [
   //
   // Авторизация и регистрация
   //
-  { path: RoutesAccount.entrance.path, element: <LoginPage pathSuccess={RoutesAccount.home.path} /> },
   { path: RoutesAccount.login.path, element: <LoginPage pathSuccess={RoutesAccount.home.path} /> },
-  { path: RoutesAccount.autoLogin.path, element: <AutoLoginPage pathSuccess={RoutesAccount.home.path} /> },
   { path: RoutesAccount.register.path, element: <RegistrationPage pathSuccess={RoutesAccount.home.path} /> },
   /* { path: RoutesAccount.restorePassword.path, element: <RestorePasswordPage pathSuccess={RoutesAccount.login.path} /> }, */
 

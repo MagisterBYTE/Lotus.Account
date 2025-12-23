@@ -24,11 +24,6 @@ class AuthCommandsClass extends CommandActionService
   login: NavigationCommand;
 
   /**
-   * Автоматический вход на сайт
-   */
-  autoLogin: NavigationCommand;
-
-  /**
    * Зарегистрироваться
    */
   register: NavigationCommand;
@@ -53,11 +48,6 @@ class AuthCommandsClass extends CommandActionService
     this.login.group = "auth";
     this.commands.push(this.login);
 
-    this.autoLogin = new NavigationCommand("autoLogin", RoutesAccount.autoLogin);
-    this.autoLogin.label = LocalizationAccount.data.auth.autoComeIn;
-    this.autoLogin.group = "auth";
-    this.commands.push(this.autoLogin);
-
     this.register = new NavigationCommand("register", RoutesAccount.register);
     this.register.label = LocalizationAccount.data.auth.register;
     this.register.group = "auth";
@@ -74,7 +64,7 @@ class AuthCommandsClass extends CommandActionService
     this.logout.group = "auth";
     this.logout.execute = () =>
     {
-      AuthService.logout();
+      AuthService.logoutAsync();
     }
     this.commands.push(this.logout);
 
@@ -86,7 +76,6 @@ class AuthCommandsClass extends CommandActionService
   public onTranslate(event: LanguageChangeEvent | any)
   {
     this.login.label = LocalizationAccount.data.auth.entrance;
-    this.autoLogin.label = LocalizationAccount.data.auth.autoComeIn;
     this.register.label = LocalizationAccount.data.auth.register;
     this.restorePassword.label = LocalizationAccount.data.auth.restorePassword;
     this.logout.label = LocalizationAccount.data.auth.logout;

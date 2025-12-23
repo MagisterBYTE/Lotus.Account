@@ -3,7 +3,7 @@ export const LocalizationAccountDataRu =
   auth: {
     account: 'Аккаунт',
     entrance: 'Вход',
-    continueWith: 'Или вход по логину или почты',
+    continueWith: 'Или вход по логину/почте и паролю',
     password: 'Пароль',
     remember: 'Запомнить меня',
     term: 'Я принимаю пользовательское соглашение',
@@ -17,6 +17,7 @@ export const LocalizationAccountDataRu =
     restorePassword: 'Укажите почту для восстановления пароля',
     send: 'Отправить',
     logout: 'Выйти',
+    login: 'Логин/email',
     accessDenied: 'Доступ к ресурсу запрещён',
     placeholderLogin: 'Введите логин/email',
     placeholderPassword: 'Введите пароль',

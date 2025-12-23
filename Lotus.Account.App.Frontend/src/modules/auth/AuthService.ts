@@ -1,9 +1,10 @@
 import { FunctionHelper, StringHelper } from "lotus-core/helpers";
 import { DateTimeFormatter } from "lotus-core/formatters";
-import { castToSuccessAuthResponse, type IRegisterParameters } from "./domain";
+import { castToSuccessAuthResponse, type ILoginParameters, type IRegisterParameters, type IUserAuthorizeInfo } from "./domain";
 import { TokenService } from "./domain/TokenService";
 import { AuthApiService } from "./domain/api";
 import { LocalizationAccount, LocalizationAccountDispatcher } from "#localization";
+import { Environment } from "lotus-core/environment";
 
 class AuthServiceClass
 {
@@ -47,15 +48,62 @@ class AuthServiceClass
   //#region Main methods
   /**
    * Вход через пароль и логин
-   * @param login Логин
-   * @param password Пароль
-   * @param rememberMe Запомнить
-   * @param redirectUrl URL-адрес перенаправления в случае успешного входа
+   * @param loginParameters Параметры для входа
    * @returns
    */
-  public async login(login: string, password: string, rememberMe?: boolean, redirectUrl?: string)
+  public async loginAsync(loginParameters: ILoginParameters): Promise<IUserAuthorizeInfo>
   {
-    const response = await this.authApiService.loginAsync(login, password);
+    const response = await this.authApiService.loginCookieAsync(loginParameters);
+    return response;
+    // if (response)
+    // {
+    //   const data = castToSuccessAuthResponse(response);
+    //   if (data)
+    //   {
+    //     this.tokenService.setData(data);
+
+    //     this.saveLastLoginTime();
+
+    //     if (redirectUrl)
+    //     {
+    //       location.assign(redirectUrl);
+    //     }
+    //   }
+    // }
+  }
+
+  /**
+   * Вход через пароль и логин
+   * @param loginParameters Параметры для входа
+   * @returns
+   */
+  public async loginGoogleAsync(): Promise<IUserAuthorizeInfo>
+  {
+    const response = await this.authApiService.loginGoogleAsync();
+    return response;
+    // if (response)
+    // {
+    //   const data = castToSuccessAuthResponse(response);
+    //   if (data)
+    //   {
+    //     this.tokenService.setData(data);
+
+    //     this.saveLastLoginTime();
+
+    //     if (redirectUrl)
+    //     {
+    //       location.assign(redirectUrl);
+    //     }
+    //   }
+    // }
+  }
+
+  /**
+   * Вход через сохраненную куку
+   */
+  public async rememberMeAsync(redirectUrl?: string)
+  {
+    const response = await this.authApiService.rememberMeAsync();
     if (response)
     {
       const data = castToSuccessAuthResponse(response);
@@ -64,11 +112,6 @@ class AuthServiceClass
         this.tokenService.setData(data);
 
         this.saveLastLoginTime();
-
-        if (rememberMe)
-        {
-          this.setSecureAuthCookie(login, password);
-        }
 
         if (redirectUrl)
         {
@@ -83,7 +126,7 @@ class AuthServiceClass
    * @param registerParameters Параметры для регистрации нового пользователя
    * @param redirectUrl URL-адрес перенаправления в случае успешной регистрации
    */
-  public async register(registerParameters: IRegisterParameters, redirectUrl?: string)
+  public async registerAsync(registerParameters: IRegisterParameters, redirectUrl?: string)
   {
     await this.authApiService.registerAsync(registerParameters);
     if (redirectUrl)
@@ -95,56 +138,29 @@ class AuthServiceClass
   /**
    * Выход из сайта
    */
-  public async logout()
+  public async logoutAsync()
   {
-    try
-    {
-      await this.authApiService.logoutAsync();
-    } catch (error)
-    {
-      console.error(error);
-    }
+    await this.authApiService.logoutCookieAsync();
 
-    // Очищаем
-    this.tokenService.clearAccessToken();
+    // // Очищаем
+    // this.tokenService.clearData();
 
     location.assign("/");
   }
   //#endregion
 
-  //#region SecureAuth methods
-  /**
-   * Установить куки для автоматического входа на сайт
-   * @param login Логин
-   * @param password Пароль
-   */
-  public setSecureAuthCookie(login: string, password: string)
-  {
-    //this.authApiService.setAuthCookie(login, password);
-  }
-
-  /**
-   * Проверка куки для автоматического входа на сайт
-   * @returns
-   */
-  public hasSecureAuthCookie(): boolean
-  {
-    //return this.authApiService.hasAuthCookie();
-    return false;
-  }
-
-  /**
-   * Автоматического входа на сайт используя куку
-   * @param redirectUrl URL-адрес перенаправления в случае успешного входа
-   * @returns
-   */
-  public loginSecureAuthCookie(redirectUrl?: string)
-  {
-    //this.authApiService.loginAuthCookie(redirectUrl);
-  }
-  //#endregion
-
   //#region Common methods
+  public async getUserInfoAsync(): Promise<IUserAuthorizeInfo>
+  {
+    if (Environment.isCookieAuth)
+    {
+      return this.authApiService.getUserInfoCookieAsync();
+    } else
+    {
+      return this.authApiService.getUserInfoTokenAsync();
+    }
+  }
+
   /**
    * Проверяет, есть ли у пользователя сохраненная сессия
    * (токены или remember me cookie)
@@ -161,12 +177,6 @@ class AuthServiceClass
 
     // Проверяем возможность обновления через refresh токен
     if (this.tokenService.canRefreshToken())
-    {
-      return true;
-    }
-
-    // Проверяем наличие remember me cookie
-    if (this.authApiService.hasSecureAuthCookie())
     {
       return true;
     }
@@ -240,8 +250,6 @@ class AuthServiceClass
     // const userInfo = this.getUserInfo();
     const username = this.tokenService.getUserName() ?? "Пользователь";
 
-    console.log('expiryDetails', expiryDetails);
-
     const remainingTime = expiryDetails.remainingTime;
     const lang = LocalizationAccountDispatcher.currentLanguage;
     const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!, lang);
@@ -267,7 +275,7 @@ class AuthServiceClass
   {
     try
     {
-      const stored = localStorage.getItem("last_login_time");
+      const stored = localStorage.getItem(AuthServiceClass.LastLoginTime);
       if (stored)
       {
         return new Date(parseInt(stored, 10));
@@ -293,6 +301,7 @@ class AuthServiceClass
       // ignore
     }
   }
+  //#endregion
 }
 
 /**

@@ -1,12 +1,25 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginReact } from '@rsbuild/plugin-react';
+import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
   plugins: [pluginReact()],
+    server: {
+    https: {
+      // Укажите пути к созданным сертификатам
+      cert: fs.readFileSync(path.resolve(__dirname, './certificates/localhost.pem')),
+      key: fs.readFileSync(path.resolve(__dirname, './certificates/localhost-key.pem')),
+    },
+    port: 3000,
+    host: 'localhost',
+  },
   source: {
     entry: {
       index: './src/index.tsx',
-    }
+    },
+    // Файлы будут выполнены в порядке их следования в массиве
+    preEntry: ['./src/init.ts'],
   },
   resolve:
   {

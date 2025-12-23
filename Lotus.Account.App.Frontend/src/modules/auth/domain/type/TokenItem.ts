@@ -4,17 +4,45 @@
  */
 export const TokenItemEnum =
   {
+
+    /**
+     * Токен доступа
+     */
     AccessToken: 'AccessToken',
+
+    /**
+     * Токен Refresh
+     */
     RefreshToken: 'RefreshToken',
+
+    /**
+     * Дата истечения токена доступа
+     */
     ExpiresIn: 'ExpiresIn',
-    UserId: 'UserId',
-    UserLogin: 'UserLogin',
+
+    /**
+     * Логин пользователя (стандартное поле name)
+     */
+    Login: 'UserLogin',
+
+    /**
+     * Роль пользователя (стандартное поле role)
+     */
+    Role: 'UserRole',
+
+    /**
+     * Почта пользователя (стандартное поле email)
+     */
+    Email: 'UserEmail',
+
+    /**
+     * Имя пользователя (пользовательское поле user_name)
+     */
     UserName: 'UserName',
-    UserSurname: 'UserSurname',
-    UserFathersname: 'UserFathersname',
-    UserRole: 'UserRole',
-    UserPosition: 'UserPosition',
-    UserGroup: 'UserGroup',
+
+    /**
+     * Разрешения пользователя (пользовательское поле user_permissions)
+     */
     UserPermissions: 'UserPermissions'
   } as const;
 

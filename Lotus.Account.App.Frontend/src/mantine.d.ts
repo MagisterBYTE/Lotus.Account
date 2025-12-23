@@ -1,33 +1,13 @@
-// types/mantine.d.ts
-import '@mantine/core';
+import { DefaultMantineColor, MantineColorsTuple } from "@mantine/core";
 
-type ExtendedCustomColors = 
-  | 'primary' 
-  | 'secondary' 
-  | 'error' 
-  | 'warning' 
-  | 'info' 
-  | 'success'
-  | keyof MantineDefaultColors; // Добавляем стандартные цвета Mantine
+type TColorSemanticColors =  "primary" | "secondary" | "error" | "warning" | "info" | "success";
 
-declare module '@mantine/core' {
-  export interface MantineThemeColors {
-    primary: MantineThemeColors[number];
-    secondary: MantineThemeColors[number];
-    error: MantineThemeColors[number];
-    warning: MantineThemeColors[number];
-    info: MantineThemeColors[number];
-    success: MantineThemeColors[number];
-  }
-  
-  export interface MantineThemeOther {
-    // Можно добавить другие кастомные свойства если нужно
-  }
-}
+type ExtendedCustomColors = "blue" | "blueGray" | "indigo" | "green" | "teal" | "yellow" | "amber" | "red" | "brown" | "gray";
 
-// Дополнительно для автодополнения
-declare module '@mantine/core' {
+type AllCustomColors = TColorSemanticColors | ExtendedCustomColors | DefaultMantineColor;
+
+declare module "@mantine/core" {
   export interface MantineThemeColorsOverride {
-    colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+    colors: Record<AllCustomColors, MantineColorsTuple>;
   }
 }

@@ -160,32 +160,20 @@ export class TokenService
     const expToken = tokenItems.exp;
     this.storage.setItem(TokenItemEnum.ExpiresIn, expToken);
 
-    const userId = tokenItems.sub;
-    this.storage.setItem(TokenItemEnum.UserId, userId);
-
     const userLogin = tokenItems.name;
-    this.storage.setItem(TokenItemEnum.UserLogin, userLogin);
+    this.storage.setItem(TokenItemEnum.Login, userLogin);
 
-    const userUserRole = tokenItems.role;
-    this.storage.setItem(TokenItemEnum.UserRole, userUserRole);
+    const userRole = tokenItems.role;
+    this.storage.setItem(TokenItemEnum.Role, userRole);
+
+    const userEmail = tokenItems.email;
+    this.storage.setItem(TokenItemEnum.Email, userEmail); 
 
     const userName = tokenItems.user_name;
     this.storage.setItem(TokenItemEnum.UserName, userName);
 
-    const userSurname = tokenItems.user_surname;
-    this.storage.setItem(TokenItemEnum.UserSurname, userSurname);
-
-    const userFathersname = tokenItems.user_fathersname;
-    this.storage.setItem(TokenItemEnum.UserFathersname, userFathersname);
-
-    const userUserPosition = tokenItems.user_position;
-    this.storage.setItem(TokenItemEnum.UserPosition, userUserPosition);
-
-    const userUserGroup = tokenItems.user_group;
-    this.storage.setItem(TokenItemEnum.UserGroup, userUserGroup);
-
-    const userUserPermissions = tokenItems.user_permissions;
-    this.storage.setItem(TokenItemEnum.UserPermissions, userUserPermissions);
+    const userPermissions = tokenItems.user_permissions;
+    this.storage.setItem(TokenItemEnum.UserPermissions, userPermissions);
   }
 
   public getAccessToken(): string | null
@@ -214,67 +202,38 @@ export class TokenService
     return false;
   }
 
-  public clearAccessToken()
+  public clearData()
   {
     this.storage.removeItem(TokenItemEnum.AccessToken);
     this.storage.removeItem(TokenItemEnum.ExpiresIn);
     this.storage.removeItem(TokenItemEnum.RefreshToken);
-    this.storage.removeItem(TokenItemEnum.UserId);
-    this.storage.removeItem(TokenItemEnum.UserLogin);
+    this.storage.removeItem(TokenItemEnum.Login);
+    this.storage.removeItem(TokenItemEnum.Role);
+    this.storage.removeItem(TokenItemEnum.Email);
     this.storage.removeItem(TokenItemEnum.UserName);
-    this.storage.removeItem(TokenItemEnum.UserSurname);
-    this.storage.removeItem(TokenItemEnum.UserFathersname);
-    this.storage.removeItem(TokenItemEnum.UserRole);
-    this.storage.removeItem(TokenItemEnum.UserPosition);
-    this.storage.removeItem(TokenItemEnum.UserGroup);
     this.storage.removeItem(TokenItemEnum.UserPermissions);
   }
   //#endregion
 
   //#region Get payload methods
-  public getUserId(): string | null
+  public getLogin(): string | null
   {
-    return this.storage.getItem(TokenItemEnum.UserId);
+    return this.storage.getItem(TokenItemEnum.Login);
   }
 
-  public getUserLogin(): string | null
+  public getRole(): string | null
   {
-    return this.storage.getItem(TokenItemEnum.UserLogin);
+    return this.storage.getItem(TokenItemEnum.Role);
+  }
+
+  public getEmail(): string | null
+  {
+    return this.storage.getItem(TokenItemEnum.Email);
   }
 
   public getUserName(): string | null
   {
     return this.storage.getItem(TokenItemEnum.UserName);
-  }
-
-  public getUserSurname(): string | null
-  {
-    return this.storage.getItem(TokenItemEnum.UserSurname);
-  }
-
-  public getUserFathersName(): string | null
-  {
-    return this.storage.getItem(TokenItemEnum.UserFathersname);
-  }
-
-  public getCurrentUserFio(): string | null
-  {
-    return `${this.getUserSurname()} ${this.getUserName()} ${this.getUserFathersName()}`;
-  }
-
-  public getUserRole(): string | null
-  {
-    return this.storage.getItem(TokenItemEnum.UserRole);
-  }
-
-  public getUserPosition(): string | null
-  {
-    return this.storage.getItem(TokenItemEnum.UserPosition);
-  }
-
-  public getUserGroup(): string | null
-  {
-    return this.storage.getItem(TokenItemEnum.UserGroup);
   }
 
   public getUserPermissions(): string | null
@@ -296,7 +255,6 @@ export class TokenService
 
   public checkUserPermissions(permissions: string[] | undefined): boolean
   {
-    return true;
     if (permissions === undefined) return true;
 
     const accessUserPermissions = this.storage.getItem(TokenItemEnum.UserPermissions);

@@ -4,12 +4,12 @@ import { SegmentedField, SelectField } from "lotus-ui-react/components/Controls"
 import { Box, VerticalStack } from "lotus-ui-react/components/Layout";
 import { ThemeColorModeOptions, type TThemeColorMode } from "lotus-ui-react/theme";
 import React from "react";
-import { useLocalizationSelector } from "../../provider";
+import { useLocalizationContext } from "../../provider";
 
 export const AccountSettingsPage: React.FC = () =>
 {
   const { colorScheme, setColorScheme } = useMantineColorScheme();
-  const { languageType, setLanguageType } = useLocalizationSelector();
+  const { languageType, setLanguageType } = useLocalizationContext();
 
   const handleColorSchemeChange = (value: TThemeColorMode | undefined) =>
   {

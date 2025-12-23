@@ -14,6 +14,10 @@
     "#layout": "./src/layout/index.ts",
     "#localization": "./src/localization/index.ts",
     "#modules/auth": "./src/modules/auth/index.ts",
+    "#modules/userGroup": "./src/modules/userGroup/index.ts",
+    "#modules/userPermission": "./src/modules/userPermission/index.ts",
+    "#modules/userPosition": "./src/modules/userPosition/index.ts",
+    "#modules/userRole": "./src/modules/userRole/index.ts",
     "#pages": "./src/pages/index.ts"
   },
   "dependencies": {
@@ -38,6 +42,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "mkcert": "^3.2.0",
     "typescript": "^5.9.3"
   }
 }

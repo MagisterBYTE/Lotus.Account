@@ -3,7 +3,7 @@ export const LocalizationAccountDataEn =
   auth: {
     account: 'Account',
     entrance: 'Sign In',
-    continueWith: 'Or sign in with username or email',
+    continueWith: 'Or sign using login/email and password',
     password: 'Password',
     remember: 'Remember me',
     term: 'I accept the terms of use',
@@ -17,6 +17,7 @@ export const LocalizationAccountDataEn =
     restorePassword: 'Enter your email to reset your password',
     send: 'Send',
     logout: 'Sign Out',
+    login: 'Login/email',
     accessDenied: 'Access to the resource is denied',
     placeholderLogin: 'Enter username/email',
     placeholderPassword: 'Enter password',

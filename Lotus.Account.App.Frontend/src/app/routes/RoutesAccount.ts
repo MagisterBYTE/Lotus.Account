@@ -1,5 +1,4 @@
 import { FunctionHelper, type IRoute, TypedRoute } from 'lotus-core';
-import { TEntranceTypes } from './types';
 
 /**
  * Маршруты модуля аккаунта
@@ -20,19 +19,9 @@ export interface IRoutesAccount
   // АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ
   //
   /**
-   * Универсальный вход на сайт через логин или новую регистрацию или через соцсети
-   */
-  entrance: IRoute,
-
-  /**
    * Вход через логин
    */
   login: IRoute,
-
-  /**
-   * Автоматический вход на сайт
-   */
-  autoLogin: IRoute,
 
   /**
    * Зарегистрироваться
@@ -117,9 +106,7 @@ class RoutesAccountClass implements IRoutesAccount
   //
   // АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ
   //
-  public readonly entrance = TypedRoute.createWithConstraints('/auth/entrance/:mode', {mode: TEntranceTypes}); 
   public readonly login = TypedRoute.create('/auth/login');
-  public readonly autoLogin = TypedRoute.create('/auth/autoLogin');
   public readonly register = TypedRoute.create('/auth/register');
   public readonly restorePassword = TypedRoute.create('/auth/restorePassword');
 
