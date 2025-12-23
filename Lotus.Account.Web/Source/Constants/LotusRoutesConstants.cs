@@ -16,6 +16,9 @@ namespace Lotus.Account
         /// </summary>
         public const string ServerUri = "ServerUri";
 
+        //
+        // Маршруты аутентификации по токену
+        //
         /// <summary>
         /// Конечная точка для получения токена.
         /// </summary>
@@ -30,6 +33,32 @@ namespace Lotus.Account
         /// Конечная точка для выхода пользователя.
         /// </summary>
         public const string LogoutEndpoint = "/connect/logout";
+
+        //
+        // Маршруты аутентификации по куки
+        //
+        /// <summary>
+        /// Конечная точка для входа пользователя через логин/пароль используя куки
+        /// </summary>
+        public const string LoginCookieEndpoint = "api/Authorize/LoginCookie";
+
+        /// <summary>
+        /// Конечная точка для получение информации пользователе
+        /// </summary>
+        public const string UserCookieEndpoint = "api/Authorize/GetUserInfoCookie";
+
+        /// <summary>
+        /// Конечная точка для выхода пользователя используя куки
+        /// </summary>
+        public const string LogoutCookieEndpoint = "api/Authorize/LogoutCookie";
+
+        //
+        // Маршруты аутентификации через Google
+        //
+        /// <summary>
+        /// Конечная точка для входа пользователя через Google
+        /// </summary>
+        public const string LoginGoogleEndpoint = "api/Authorize/LoginGoogle";
 
         /// <summary>
         /// Конечная точка для регистрации пользователя.

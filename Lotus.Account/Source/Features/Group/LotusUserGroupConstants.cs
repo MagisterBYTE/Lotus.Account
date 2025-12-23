@@ -15,6 +15,8 @@ namespace Lotus.Account
             Id = 1,
             Name = "Хранители",
             DisplayName = "Хранители",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -25,6 +27,8 @@ namespace Lotus.Account
             Id = 2,
             Name = "Север",
             DisplayName = "Север",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -35,6 +39,8 @@ namespace Lotus.Account
             Id = 3,
             Name = "Юг",
             DisplayName = "Юг",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -45,6 +51,8 @@ namespace Lotus.Account
             Id = 4,
             Name = "Восток",
             DisplayName = "Восток",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -55,6 +63,8 @@ namespace Lotus.Account
             Id = 5,
             Name = "Запад",
             DisplayName = "Запад",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
     }
     /**@}*/

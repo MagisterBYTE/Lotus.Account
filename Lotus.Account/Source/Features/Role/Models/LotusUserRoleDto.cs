@@ -7,7 +7,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс роли.
     /// </summary>
-    public class UserRoleDto : IdentifierDtoId<int>
+    public class UserRoleDto : IdentifierDtoId<int>, ILotusNameable
     {
         /// <summary>
         /// Наименование роли.
@@ -23,6 +23,11 @@ namespace Lotus.Account
         /// Список идентификатор разрешений для данной роли.
         /// </summary>
         public int[] PermissionIds { get; set; } = [];
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     /**@}*/
 }

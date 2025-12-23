@@ -1,9 +1,11 @@
+using Lotus.Core;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace Lotus.Account
 {
     /** \addtogroup AccountWebApiInfrastructure
-*@{*/
+    *@{*/
     /// <summary>
     /// Обработчик для авторизации на основе разрешений.
     /// </summary>
@@ -37,7 +39,7 @@ namespace Lotus.Account
 
             if (info != null)
             {
-                var isPermission = requirement.Permissions.Any(x => info.PermissionsSystemNamesAsText.Contains(x));
+                var isPermission = requirement.Permissions.Any(x => info.Permissions.ContainsName(x));
                 if (isPermission)
                 {
                     context.Succeed(requirement);

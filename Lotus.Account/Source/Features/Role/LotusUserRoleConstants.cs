@@ -15,6 +15,8 @@ namespace Lotus.Account
             Id = 1,
             Name = "admin",
             DisplayName = "Администратор",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -25,6 +27,32 @@ namespace Lotus.Account
             Id = 2,
             Name = "editor",
             DisplayName = "Редактор",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
+        };
+
+        /// <summary>
+        /// Роль редактора/модератора должностей.
+        /// </summary>
+        public static readonly UserRole EditorPost = new()
+        {
+            Id = 3,
+            Name = "editorPost",
+            DisplayName = "Редактор должностей",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
+        };
+
+        /// <summary>
+        /// Роль редактора/модератора групп.
+        /// </summary>
+        public static readonly UserRole EditorGroup = new()
+        {
+            Id = 4,
+            Name = "editorGroup",
+            DisplayName = "Редактор групп",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -32,9 +60,11 @@ namespace Lotus.Account
         /// </summary>
         public static readonly UserRole User = new()
         {
-            Id = 3,
+            Id = 100,
             Name = "user",
             DisplayName = "Пользователь",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
     }
     /**@}*/

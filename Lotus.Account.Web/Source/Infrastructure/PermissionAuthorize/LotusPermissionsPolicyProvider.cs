@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
+using Lotus.Core;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
@@ -14,7 +16,7 @@ namespace Lotus.Account
     {
         #region Fields
         private readonly DefaultAuthorizationPolicyProvider _policyProvider;
-        private static readonly char[] separator = new[] { ',' };
+        private static readonly char[] separator = [XCharHelper.Comma];
         #endregion
 
         #region Constructors

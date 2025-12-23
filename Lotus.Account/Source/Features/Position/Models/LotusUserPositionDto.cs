@@ -7,7 +7,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс должности.
     /// </summary>
-    public class UserPositionDto : IdentifierDtoId<int>
+    public class UserPositionDto : IdentifierDtoId<int>, ILotusNameable
     {
         /// <summary>
         /// Наименование должности.
@@ -18,6 +18,11 @@ namespace Lotus.Account
         /// Отображаемое наименование должности.
         /// </summary>
         public string? DisplayName { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     /**@}*/
 }

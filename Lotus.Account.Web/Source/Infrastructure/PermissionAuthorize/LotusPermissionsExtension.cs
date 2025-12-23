@@ -31,7 +31,7 @@ namespace Lotus.Account
                         if (claimsIdentity is not null)
                         {
                             var info = new UserAuthorizeInfo();
-                            info.SetThisFrom(claimsIdentity);
+                            //info.SetThisFrom(claimsIdentity);
                             return info;
                         }
 

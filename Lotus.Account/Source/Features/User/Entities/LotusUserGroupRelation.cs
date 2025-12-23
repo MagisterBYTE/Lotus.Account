@@ -9,7 +9,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс для связывания пользователя и группы.
     /// </summary>
-    public class UserGroupRelation : EntityDb<int>
+    public class UserGroupRelation : BaseEntityDb<int>
     {
         #region Const
         /// <summary>

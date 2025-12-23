@@ -16,6 +16,8 @@ namespace Lotus.Account
             Id = 1,
             Name = "Инспектор",
             DisplayName = "Инспектор",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -26,6 +28,8 @@ namespace Lotus.Account
             Id = 2,
             Name = "Старший инспектор",
             DisplayName = "Старший инспектор",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -36,6 +40,8 @@ namespace Lotus.Account
             Id = 3,
             Name = "Ведущий специалист",
             DisplayName = "Ведущий специалист",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
 
         /// <summary>
@@ -46,6 +52,8 @@ namespace Lotus.Account
             Id = 4,
             Name = "Начальник отдела",
             DisplayName = "Начальник отдела",
+            Created = DateTime.UtcNow.Date,
+            Modified = DateTime.UtcNow.Date,
         };
         #endregion
     }

@@ -62,7 +62,7 @@ namespace Lotus.Account
         /// <summary>
         /// Отображаемое наименование разрешения.
         /// </summary>
-        [MaxLength(40)]
+        [MaxLength(60)]
         public string? DisplayName { get; set; }
 
         /// <summary>

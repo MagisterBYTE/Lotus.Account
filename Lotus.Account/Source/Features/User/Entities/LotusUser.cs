@@ -16,14 +16,9 @@ namespace Lotus.Account
     /// <summary>
     /// Класс для определения пользователя.
     /// </summary>
-    public class User : EntityDb<Guid>, IUserInfo
+    public class User : EntityDb<Guid>, IUserIdentifier, ILotusPersonInfo
     {
         #region Const
-        /// <summary>
-        /// Разделитель для формирования строковых список в одну строку.
-        /// </summary>
-        public const char SeparatorForText = ',';
-
         /// <summary>
         /// Имя таблицы.
         /// </summary>
@@ -88,14 +83,14 @@ namespace Lotus.Account
         /// <summary>
         /// Логин пользователя.
         /// </summary>
-        [MaxLength(10)]
+        [MaxLength(20)]
         public string Login { get; set; } = null!;
 
         /// <summary>
         /// Почта пользователя.
         /// </summary>
-        [MaxLength(20)]
-        public string? Email { get; set; }
+        [MaxLength(50)]
+        public string Email { get; set; }
 
         /// <summary>
         /// Статус подтверждения почты.
@@ -103,10 +98,39 @@ namespace Lotus.Account
         public bool EmailConfirmed { get; set; }
 
         /// <summary>
-        /// Хэшированное представление пароля.
+        /// Хешированное представление пароля.
         /// </summary>
         [MaxLength(256)]
         public string PasswordHash { get; set; } = null!;
+
+        /// <summary>
+        /// Хешированное значение идентификатора для прямого доступа.
+        /// </summary>
+        [MaxLength(256)]
+        public string HashId { get; set; }
+
+        /// <summary>
+        /// Статус блокировки пользователя.
+        /// </summary>
+        public bool IsLockout { get; set; }
+
+        /// <summary>
+        /// Дата начала блокировки пользователя.
+        /// </summary>
+        public DateTime? LockoutBeginDate { get; set; }
+
+        /// <summary>
+        /// Дата окончания блокировки пользователя.
+        /// </summary>
+        public DateTime? LockoutEndDate { get; set; }
+
+        //
+        // НАСТРОЙКИ ПОЛЬЗОВАТЕЛЯ
+        //
+        /// <summary>
+        /// Настройки пользователя в JSON формате.
+        /// </summary>
+        public string? Settings { get; set; }
 
         //
         // ПЕРСОНАЛЬНЫЕ ДАННЫЕ
@@ -130,30 +154,21 @@ namespace Lotus.Account
         public string? Patronymic { get; set; }
 
         /// <summary>
-        /// Полное имя (ФИО).
-        /// </summary>
-        [NotMapped]
-        public string FullName
-        {
-            get { return ($"{Surname} {Name} {Patronymic}"); }
-        }
-
-        /// <summary>
-        /// Краткое имя (Фамилия, инициалы).
-        /// </summary>
-        [NotMapped]
-        public string ShortName
-        {
-            get
-            {
-                return ($"{Surname} {Name?[0]}. {Patronymic?[0]}.");
-            }
-        }
-
-        /// <summary>
         /// День рождение.
         /// </summary>
         public DateOnly? Birthday { get; set; }
+
+        /// <summary>
+        /// Местонахождение пользователя.
+        /// </summary>
+        [MaxLength(30)]
+        public string? Whereabouts { get; set; }
+
+        /// <summary>
+        /// Интересы пользователя.
+        /// </summary>
+        [MaxLength(250)]
+        public string? Interests { get; set; }
 
         //
         // РОЛЬ И РАЗРЕШЕНИЯ
@@ -162,67 +177,12 @@ namespace Lotus.Account
         /// Роль.
         /// </summary>
         [ForeignKey(nameof(RoleId))]
-        public UserRole? Role { get; set; }
+        public UserRole Role { get; set; }
 
         /// <summary>
         /// Идентификатор роли.
         /// </summary>
-        public int? RoleId { get; set; }
-
-        /// <summary>
-        /// Служебное наименование роли.
-        /// </summary>
-        [NotMapped]
-        public string RoleSystemName
-        {
-            get
-            {
-                if (Role == null)
-                {
-                    return ("Нет роли");
-                }
-                else
-                {
-                    return (Role.Name);
-                }
-            }
-            set { }
-        }
-
-        /// <summary>
-        /// Список системных имен разрешений.
-        /// </summary>
-        [NotMapped]
-        public ICollection<string> PermissionsSystemNames
-        {
-            get
-            {
-                if (Role is not null && Role.Permissions is not null)
-                {
-                    return Role.Permissions.Select(p => p.Name).ToHashSet();
-                }
-
-                return new HashSet<string>();
-            }
-        }
-
-        /// <summary>
-        /// Список системных имен разрешений в виде текста.
-        /// </summary>
-        [NotMapped]
-        public string PermissionsSystemNamesAsText
-        {
-            get
-            {
-                if (Role is not null && Role.Permissions is not null)
-                {
-                    return string.Join(SeparatorForText, Role.Permissions.Select(p => p.Name).ToArray());
-                }
-
-                return string.Empty;
-            }
-            set { }
-        }
+        public int RoleId { get; set; }
 
         //
         // ДОЛЖНОСТЬ
@@ -238,26 +198,6 @@ namespace Lotus.Account
         /// </summary>
         public int? PostId { get; set; }
 
-        /// <summary>
-        /// Наименование должности.
-        /// </summary>
-        [NotMapped]
-        public string PostShortName
-        {
-            get
-            {
-                if (Post is not null && Post.DisplayName is not null)
-                {
-                    return (Post.DisplayName);
-                }
-                else
-                {
-                    return ("Нет должности");
-                }
-            }
-            set { }
-        }
-
         //
         // ГРУППЫ
         //
@@ -265,45 +205,6 @@ namespace Lotus.Account
         /// Группы пользователя.
         /// </summary>
         public List<UserGroup>? Groups { get; set; }
-
-        /// <summary>
-        /// Список имен групп пользователя.
-        /// </summary>
-        [NotMapped]
-        public IReadOnlyList<string> GroupNames
-        {
-            get
-            {
-                if (Groups is not null)
-                {
-                    return Groups.Select(x => x.Name).ToArray();
-                }
-                else
-                {
-                    return new List<string>();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Список имен групп пользователя в виде текста.
-        /// </summary>
-        [NotMapped]
-        public string GroupNamesAsText
-        {
-            get
-            {
-                if (Groups is not null)
-                {
-                    return string.Join(SeparatorForText, Groups.Select(x => x.Name).ToArray());
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            set { }
-        }
 
         //
         // CФЕРЫ ДЕЯТЕЛЬНОСТИ
@@ -313,52 +214,13 @@ namespace Lotus.Account
         /// </summary>
         public List<UserFieldActivity>? FieldActivities { get; set; }
 
-        /// <summary>
-        /// Список имен сфер деятельности пользователя.
-        /// </summary>
-        [NotMapped]
-        public IReadOnlyList<string> FieldActivityNames
-        {
-            get
-            {
-                if (FieldActivities is not null)
-                {
-                    return FieldActivities.Select(x => x.Name).ToArray();
-                }
-                else
-                {
-                    return new List<string>();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Список имен сфер деятельности пользователя в виде текста.
-        /// </summary>
-        [NotMapped]
-        public string FieldActivityNamesAsText
-        {
-            get
-            {
-                if (FieldActivities is not null)
-                {
-                    return string.Join(SeparatorForText, FieldActivities.Select(x => x.Name).ToArray());
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            set { }
-        }
-
         //
         // АВАТАР
         //
         /// <summary>
         /// Идентификатор аватара.
         /// </summary>
-        public Guid? AvatarId { get; set; }
+        public string? AvatarId { get; set; }
         #endregion
     }
     /**@}*/

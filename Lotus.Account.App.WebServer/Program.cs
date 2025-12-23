@@ -8,10 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 //
 // Базовые сервисы для работы
 //
-builder.Services.AddCors(x => x.AddDefaultPolicy(builder => builder
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowAnyOrigin()));
+builder.Services.AddLotusAccountCors(builder.Configuration);
 builder.Services.AddOptions();
 builder.Services.AddHttpContextAccessor();
 
@@ -19,7 +16,6 @@ builder.Services.AddHttpContextAccessor();
 // Сервисы контролеров и сессии
 //
 builder.Services.AddControllers().AddInvalidModelToResult();
-
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
@@ -32,12 +28,11 @@ builder.Services.AddLotusAccountDatabaseServices(builder.Configuration);
 //
 // Сервисы аутентификации и авторизации
 //
-builder.Services.AddAuthentication();
+builder.Services.AddLotusAccountAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 builder.Services.AddLotusAccountServices();
-builder.Services.AddLotusAccountOpenIddictServices(null);
+builder.Services.AddLotusAccountOpenIddictServices(builder.Configuration, null);
 builder.Services.AddLotusPermissionsExtension();
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -75,7 +70,14 @@ app.UseStaticFiles();
 
 app.UseSession();
 
-app.UseCors();
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(Lotus.Account.XModuleInitializer.AllowLocalWithCredentials);
+}
+else
+{
+    app.UseCors(Lotus.Account.XModuleInitializer.AllowProdWithCredentials);
+}
 
 app.UseRouting();
 

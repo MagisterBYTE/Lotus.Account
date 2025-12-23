@@ -9,7 +9,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс для связывания пользователя и сферы деятельности.
     /// </summary>
-    public class UserFieldActivityRelation : EntityDb<int>
+    public class UserFieldActivityRelation : BaseEntityDb<int>
     {
         #region Const
         /// <summary>

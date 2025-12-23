@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Lotus.Account
 {
     /** \addtogroup AccountRole
-        *@{*/
+    *@{*/
     /// <summary>
     /// Класс для связывания роли пользователя и разрешения.
     /// </summary>
-    public class UserRolePermissionRelation : EntityDb<int>
+    public class UserRolePermissionRelation : BaseEntityDb<int>
     {
         #region Const
         /// <summary>

@@ -52,10 +52,12 @@ namespace Lotus.Account
         {
             var identity = new ClaimsIdentity();
 
-            if (_userInfo != null && _userInfo.IsAuthenticated)
+            if (_userInfo != null 
+                //&& _userInfo.IsAuthenticated
+                )
             {
                 identity = new ClaimsIdentity("Server authentication");
-                _userInfo.FillClaims(identity);
+                //_userInfo.FillClaims(identity);
             }
 
             return Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
@@ -94,8 +96,8 @@ namespace Lotus.Account
             }
 
             _userInfo = new UserAuthorizeInfo();
-            _userInfo.SetThisFrom(tokenResponse.AccessToken!);
-            _userInfo.IsAuthenticated = true;
+            //_userInfo.SetThisFrom(tokenResponse.AccessToken!);
+            //_userInfo.IsAuthenticated = true;
 
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
@@ -131,7 +133,9 @@ namespace Lotus.Account
         /// <returns>Информация о статусе аутентификации текущего пользователя.</returns>
         public async Task<UserAuthorizeInfo> GetUserAuthorizeInfo()
         {
-            if (_userInfo != null && _userInfo.IsAuthenticated)
+            if (_userInfo != null 
+                // && _userInfo.IsAuthenticated
+                )
             {
                 return _userInfo;
             }

@@ -19,8 +19,23 @@ namespace Lotus.Account
         /// Аутентификация пользователя.
         /// </summary>
         /// <param name="loginParameters">Параметры для аутентификации пользователя.</param>
+        /// <returns>Информация о пользователе.</returns>
+        Task<Response<UserAuthorizeInfo>> LoginAsync(LoginParametersDto loginParameters);
+
+        /// <summary>
+        /// Получения набора утверждений для указанного пользователя.
+        /// </summary>
+        /// <param name="userInfo">Информация о пользователе.</param>
+        /// <param name="isCookie">Для куки или нет.</param>
         /// <returns>Набор утверждений.</returns>
-        Task<Response<ClaimsPrincipal>> LoginAsync(LoginParametersDto loginParameters);
+        List<Claim> GetClaims(UserAuthorizeInfo userInfo, bool isCookie);
+
+        /// <summary>
+        /// Получение информации о пользователе для указанного идентификатора.
+        /// </summary>
+        /// <param name="hashId">Идентификатор пользователя.</param>
+        /// <returns>Информация о пользователе.</returns>
+        Task<Response<UserAuthorizeInfo>> GetUserInfoAsync(string hashId);
 
         /// <summary>
         /// Выход из статуса аутентификации пользователя.

@@ -7,7 +7,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс группы.
     /// </summary>
-    public class UserGroupDto : IdentifierDtoId<int>
+    public class UserGroupDto : IdentifierDtoId<int>, ILotusNameable
     {
         /// <summary>
         /// Наименование группы.
@@ -18,6 +18,11 @@ namespace Lotus.Account
         /// Отображаемое наименование группы.
         /// </summary>
         public string? DisplayName { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     /**@}*/
 }

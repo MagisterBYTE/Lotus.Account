@@ -12,7 +12,7 @@ namespace Lotus.Account
         /// <summary>
         /// Набор разрешений.
         /// </summary>
-        public HashSet<string> Permissions { get; set; } = new HashSet<string>();
+        public HashSet<string> Permissions { get; set; } = [];
     }
     /**@}*/
 }

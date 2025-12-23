@@ -3,10 +3,9 @@ using System.Security.Claims;
 using Lotus.Core;
 using Lotus.Repository;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Mapster;
 
-using static OpenIddict.Abstractions.OpenIddictConstants;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lotus.Account
 {
@@ -34,43 +33,102 @@ namespace Lotus.Account
 
         #region ILotusAuthorizeService methods
         /// <inheritdoc/>
-        public async Task<Response<ClaimsPrincipal>> LoginAsync(LoginParametersDto loginParameters)
+        public async Task<Response<UserAuthorizeInfo>> LoginAsync(LoginParametersDto loginParameters)
+        {
+            var users = _dataStorage.Query<User>();
+
+            // 1. Пробуем найти пользователя с таким именем
+            var user = await users.
+                Include(x => x.Role).
+                ThenInclude(x => x.Permissions).
+                FirstOrDefaultAsync(x => (x.Login == loginParameters.Login || x.Email == loginParameters.Login));
+
+            if (user == null)
+            {
+                return Response<UserAuthorizeInfo>.Failed(XUserErrors.UserNotFound);
+            }
+
+            // 2. Проверка блокировки
+            if (user.IsLockout)
+            {
+                if (user.LockoutEndDate.HasValue && user.LockoutEndDate.Value < DateTime.UtcNow)
+                {
+                    // Разблокируем
+                    user.IsLockout = false;
+                    user.LockoutBeginDate = null;
+                    user.LockoutEndDate = null;
+
+                    _dataStorage.Update(user);
+                    await _dataStorage.SaveChangesAsync();
+                }
+                else
+                {
+                    return Response<UserAuthorizeInfo>.Failed(XUserErrors.UserLocked);
+                }
+            }
+
+            // 3. Проверяем пароль
+            var singInResult = XHashHelper.VerifyHash(loginParameters.Password, user.PasswordHash);
+
+            if (singInResult == false)
+            {
+                return Response<UserAuthorizeInfo>.Failed(XUserErrors.WrongPassword);
+            }
+
+            var userInfo = user.Adapt<UserAuthorizeInfo>();
+
+            return Response<UserAuthorizeInfo>.Succeed(userInfo);
+        }
+
+        /// <inheritdoc/>
+        public List<Claim> GetClaims(UserAuthorizeInfo userInfo, bool isCookie)
+        {
+            var baseClaims = new List<Claim>
+            {
+                new(ClaimTypes.Name, userInfo.Login!),
+                new(ClaimTypes.Email, userInfo.Email!),
+                new(ClaimTypes.Role, userInfo.Role.Name ?? "unknown"),
+                new(XClaimsConstants.UserName, userInfo.GetShortName()),
+            };
+
+            if (isCookie)
+            {
+                // Для кук сохраняем идентификатор пользователя
+                baseClaims.Insert(0, new(ClaimTypes.NameIdentifier, userInfo.HashId));
+                return baseClaims;
+            }
+            else
+            {
+                // Для токена сохраняем еще и все права
+                baseClaims.Add(new(XClaimsConstants.UserPermissions, string.Join(XCharHelper.Comma, userInfo.Permissions)));
+                return baseClaims;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Response<UserAuthorizeInfo>> GetUserInfoAsync(string hashId)
         {
             var users = _dataStorage.Query<User>();
 
             // Пробуем найти пользователя с таким именем
-            var user = await users.Where(x => (x.Login == loginParameters.Login || x.Email == loginParameters.Login))
-                    .Include(x => x.Role)
-                        .ThenInclude(a => a!.Permissions)
-                    .Include(x => x.Post)
-                    .Include(x => x.Groups)
-                    .FirstOrDefaultAsync();
+            var user = await users.
+                Include(x => x.Role).
+                ThenInclude(x => x.Permissions).
+                FirstOrDefaultAsync((x) => x.HashId == hashId);
 
             if (user == null)
             {
-                return new Response<ClaimsPrincipal>(XUserErrors.UserNotFound);
+                return Response<UserAuthorizeInfo>.Failed(XUserErrors.UserNotFound);
             }
 
-            // Проверяем пароль
-            var sing_in_result = XHashHelper.VerifyHash(loginParameters.Password, user.PasswordHash);
-
-            if (sing_in_result == false)
+            if (user.IsLockout)
             {
-                return new Response<ClaimsPrincipal>(XUserErrors.WrongPassword);
+                return Response<UserAuthorizeInfo>.Failed(XUserErrors.UserLocked);
             }
 
-            // Create a new ClaimsIdentity holding the user identity.
-            var identity = new ClaimsIdentity(TokenValidationParameters.DefaultAuthenticationType, Claims.Name,
-            Claims.Role);
+            var userInfo = user.Adapt<UserAuthorizeInfo>();
 
-            var sessionId = Guid.NewGuid().ToString("D");
-            user.FillClaims(identity, sessionId);
-
-            // Создаем новый ClaimsPrincipal, содержащий утверждения,
-            // которые будут использоваться для создания id_token, токена или кода.
-            var principal = new ClaimsPrincipal(identity);
-
-            return Response<ClaimsPrincipal>.Succeed(principal);
+            return Response<UserAuthorizeInfo>.Succeed(userInfo);
         }
 
         /// <inheritdoc/>
@@ -104,8 +162,6 @@ namespace Lotus.Account
                 Name = registerParameters.Name,
                 Surname = registerParameters.Surname,
                 Patronymic = registerParameters.Patronymic,
-                RoleId = XUserRoleConstants.User.Id,
-                PostId = XUserPositionConstants.Inspector.Id
             };
 
             await _dataStorage.AddAsync(user, token);

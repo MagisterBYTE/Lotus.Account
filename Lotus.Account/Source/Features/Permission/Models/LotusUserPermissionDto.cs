@@ -7,7 +7,7 @@ namespace Lotus.Account
     /// <summary>
     /// Класс разрешения.
     /// </summary>
-    public class UserPermissionDto : IdentifierDtoId<int>
+    public class UserPermissionDto : IdentifierDtoId<int>, ILotusNameable
     {
         /// <summary>
         /// Наименование разрешения.
@@ -18,6 +18,11 @@ namespace Lotus.Account
         /// Отображаемое наименование разрешения.
         /// </summary>
         public string? DisplayName { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     /**@}*/
 }
