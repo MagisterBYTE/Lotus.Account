@@ -156,11 +156,25 @@ namespace Lotus.Account
         /// <param name="claims">Список утверждений.</param>
         public UserAuthorizeInfo(IEnumerable<Claim> claims)
         {
-            Login = claims.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
-            Email = claims.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
-            Name = claims.FindFirstValue(XClaimsConstants.UserName);
-            Surname = claims.FindFirstValue(ClaimTypes.Surname);
-            AvatarId = claims.FindFirstValue("picture");
+            if(!claims.Any()) return;
+            var first = claims.First();
+            
+            if(first.Issuer == "Google")
+            {
+                Email = claims.FindFirstValue(ClaimTypes.Email)?.DecodeUnicode() ?? string.Empty;
+                Name = claims.FindFirstValue(ClaimTypes.GivenName)?.DecodeUnicode();
+                Surname = claims.FindFirstValue(ClaimTypes.Surname)?.DecodeUnicode();
+                AvatarId = claims.FindFirstValue("picture");
+                EmailConfirmed = XBooleanConverter.Parse(claims.FindFirstValue("email_verified") ?? string.Empty);
+            }
+            else
+            {
+                Login = claims.FindFirstValue(ClaimTypes.Name)?.DecodeUnicode() ?? string.Empty;
+                Email = claims.FindFirstValue(ClaimTypes.Email)?.DecodeUnicode() ?? string.Empty;
+                Name = claims.FindFirstValue(XClaimsConstants.UserName)?.DecodeUnicode();
+                Surname = claims.FindFirstValue(ClaimTypes.Surname)?.DecodeUnicode();
+                AvatarId = claims.FindFirstValue("picture");
+            }
         }
         #endregion
     }

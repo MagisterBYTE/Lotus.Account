@@ -19,11 +19,6 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Lotus.Account
 {
-    public class GoogleAuth
-    {
-        public string ReturnUrl { get; set; }
-    }
-
     /**
      * \defgroup AccountWebApiController Подсистема контролеров
      * \ingroup AccountWebApi
@@ -126,7 +121,7 @@ namespace Lotus.Account
             _logger.LogInformation("Вход пользователя через Password: {User}", userName);
 
             userInfo.AuthScheme = cookieAuth;
-            userInfo.AuthExpires = loginParameters.RememberMe ? DateTime.UtcNow.AddDays(XRememberMeConstants.CountDays) 
+            userInfo.AuthExpires = loginParameters.RememberMe ? DateTime.UtcNow.AddDays(XRememberMeConstants.CountDays)
                 : DateTime.UtcNow.AddHours(1);
 
             return Ok(userInfo);
@@ -144,7 +139,7 @@ namespace Lotus.Account
 
             var result = await HttpContext.AuthenticateAsync(cookieAuth)!;
 
-            if(result.Succeeded == false)
+            if (result.Succeeded == false)
             {
                 return BadRequest(result.Failure);
             }
@@ -169,10 +164,9 @@ namespace Lotus.Account
                     }
 
                     userInfo.AuthScheme = cookieAuth;
-
                     if (result.Properties is not null)
                     {
-
+                        userInfo.AuthExpires = result.Properties.ExpiresUtc.GetValueOrDefault().DateTime;
                     }
 
                     return new JsonResult(userInfo);
@@ -181,7 +175,13 @@ namespace Lotus.Account
                 {
                     // Есть минимальная информация в claims
                     var userInfo = new UserAuthorizeInfo(claimsPrincipal.Claims);
+
                     userInfo.AuthScheme = GoogleDefaults.AuthenticationScheme;
+                    if (result.Properties is not null)
+                    {
+                        userInfo.AuthExpires = result.Properties.ExpiresUtc.GetValueOrDefault().DateTime;
+                    }
+
                     return new JsonResult(userInfo);
                 }
 
@@ -475,27 +475,7 @@ namespace Lotus.Account
         [Authorize(AuthenticationSchemes = GoogleDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetUserInfoGoogle()
         {
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme)!;
-            var claimsPrincipal = result.Principal;
-
-            if (claimsPrincipal is not null)
-            {
-                // Всегда получаем актуальную информацию
-                var hashId = claimsPrincipal.GetClaim(ClaimTypes.NameIdentifier)!;
-
-                var response = await _authorizeService.GetUserInfoAsync(hashId);
-
-                // 1. Неавторизован. Конкретная причина в сообщении 
-                if (response.Result != null && response.Result.Succeeded == false)
-                {
-                    return Unauthorized(response.Result);
-                }
-                return new JsonResult(response.Payload);
-            }
-            else
-            {
-                return BadRequest("Пользователь не авторизован");
-            }
+            return await GetUserInfoCookie();
         }
         #endregion
 
