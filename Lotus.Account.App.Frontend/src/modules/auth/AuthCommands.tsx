@@ -1,10 +1,10 @@
-import { ActionCommand, CommandActionService, NavigationCommand } from "lotus-core/modules/actionCommand";
-import { FunctionHelper } from "lotus-core/helpers";
-import { LanguageChangeEventType, type LanguageChangeEvent } from "lotus-core/localization";
-import { LocalizationAccount } from "#localization";
-import { RoutesAccount } from "#app";
-import { IconLogout } from "@tabler/icons-react";
-import { AuthService } from "./AuthService";
+import { IconLogout } from '@tabler/icons-react';
+import { FunctionHelper } from 'lotus-core/helpers';
+import { LanguageChangeEventType, type LanguageChangeEvent } from 'lotus-core/localization';
+import { ActionCommand, CommandActionService, NavigationCommand } from 'lotus-core/modules/actionCommand';
+import { RoutesAccount } from '#app';
+import { LocalizationAccount } from '#localization';
+import { AuthService } from './AuthService';
 
 class AuthCommandsClass extends CommandActionService
 {
@@ -15,7 +15,7 @@ class AuthCommandsClass extends CommandActionService
   {
     return this._authCommands || (this._authCommands = new this());
   }
-  //#endregion
+  // #endregion
 
   // #region Fields
   /**
@@ -43,29 +43,29 @@ class AuthCommandsClass extends CommandActionService
   {
     super();
 
-    this.login = new NavigationCommand("login", RoutesAccount.login);
+    this.login = new NavigationCommand('login', RoutesAccount.login);
     this.login.label = LocalizationAccount.data.auth.entrance;
-    this.login.group = "auth";
+    this.login.group = 'auth';
     this.commands.push(this.login);
 
-    this.register = new NavigationCommand("register", RoutesAccount.register);
+    this.register = new NavigationCommand('register', RoutesAccount.register);
     this.register.label = LocalizationAccount.data.auth.register;
-    this.register.group = "auth";
+    this.register.group = 'auth';
     this.commands.push(this.register);
 
-    this.restorePassword = new NavigationCommand("restorePassword", RoutesAccount.restorePassword);
+    this.restorePassword = new NavigationCommand('restorePassword', RoutesAccount.restorePassword);
     this.restorePassword.label = LocalizationAccount.data.auth.restorePassword;
-    this.restorePassword.group = "auth";
+    this.restorePassword.group = 'auth';
     this.commands.push(this.restorePassword);
 
-    this.logout = new ActionCommand("logout");
+    this.logout = new ActionCommand('logout');
     this.logout.label = LocalizationAccount.data.auth.logout;
-    this.logout.icon = <IconLogout/>
-    this.logout.group = "auth";
+    this.logout.icon = <IconLogout />;
+    this.logout.group = 'auth';
     this.logout.execute = () =>
     {
-      AuthService.logoutAsync();
-    }
+      void AuthService.logoutAsync();
+    };
     this.commands.push(this.logout);
 
     FunctionHelper.bindAllMethods(this);
@@ -73,7 +73,8 @@ class AuthCommandsClass extends CommandActionService
     window.addEventListener(LanguageChangeEventType, (e) => this.onTranslate(e));
   }
 
-  public onTranslate(event: LanguageChangeEvent | any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public onTranslate(_event: LanguageChangeEvent | any)
   {
     this.login.label = LocalizationAccount.data.auth.entrance;
     this.register.label = LocalizationAccount.data.auth.register;

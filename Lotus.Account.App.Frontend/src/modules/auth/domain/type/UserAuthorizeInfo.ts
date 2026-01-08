@@ -1,7 +1,7 @@
-import type { IUserGroup } from "#modules/userGroup";
-import type { IUserPermission } from "#modules/userPermission";
-import type { IUserPosition } from "#modules/userPosition";
-import type { IUserRole } from "#modules/userRole";
+import type { IUserGroup } from '#modules/userGroup';
+import type { IUserPermission } from '#modules/userPermission';
+import type { IUserPosition } from '#modules/userPosition';
+import type { IUserRole } from '#modules/userRole';
 
 /**
  * Интерфейс определяющий минимальную информацию об авторизации пользователя.

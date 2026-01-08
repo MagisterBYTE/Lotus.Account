@@ -7,10 +7,10 @@ export const AccountSecurityPage: React.FC = () =>
 {
   return (
     <Box centerContent='center'>
-      <VerticalStack m={'lg'} p={'lg'} spacing={'md'} w={'min(600px, 80vw)'} borderRadius>
-        <Label fontSize={'lg'} fontBold children={'Сменить пароль'} />
-        <TextField inlinePlace label={"Новый пароль"} labelProps={{w: '160px'}}  textInputProps={{value: 'dddd'}} />
-        <TextField inlinePlace label={"Повторите пароль"} labelProps={{w: '160px'}}  />
+      <VerticalStack bdRadius m={'lg'} p={'lg'} spacing={'md'} w={'min(600px, 80vw)'}>
+        <Label fontBold fontSize={'lg'}>Сменить пароль</Label>
+        <TextField inlinePlace label={'Новый пароль'} labelProps={{ w: '160px' }}  textInputProps={{ value: 'dddd' }} />
+        <TextField inlinePlace label={'Повторите пароль'} labelProps={{ w: '160px' }}  />
       </VerticalStack>
     </Box>
   );

@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react';
 import { createLanguageChangeEvent, LocalizationCoreDispatcher, type TLanguageType } from 'lotus-core/localization';
+import { useEffect, useState } from 'react';
 import { LocalizationAccountDispatcher } from '#localization';
 import { LocalizationContext } from './LocalizationContext';
 
-export const LocalizationProvider = (props: { children: React.ReactNode }) => 
+export interface ILocalizationProviderProps
 {
+  children: React.ReactNode;
+}
+
+export const LocalizationProvider = (props: ILocalizationProviderProps) => 
+{
+  const { children } = props;
   const [languageType, setLanguageType] = useState<TLanguageType>('ru-RU');
   const [providerKey, setProviderKey] = useState(0); // Ключ для принудительного обновления
 
@@ -18,8 +24,7 @@ export const LocalizationProvider = (props: { children: React.ReactNode }) =>
     setProviderKey(prev => prev + 1);
 
     const eventData = createLanguageChangeEvent(languageType);
-    window.dispatchEvent(eventData)
-
+    window.dispatchEvent(eventData);
   }, [languageType]);
 
   return (
@@ -30,7 +35,7 @@ export const LocalizationProvider = (props: { children: React.ReactNode }) =>
         setLanguageType: setLanguageType
       }}
     >
-      {props.children}
+      {children}
     </LocalizationContext.Provider>
   );
 };

@@ -1,2 +1,1 @@
-export * from './CommandButton';
-export * from './LanguageSelect'
+export * from './LanguageSelect';

@@ -1,51 +1,51 @@
-import { FunctionHelper, StringHelper } from "lotus-core/helpers";
-import { DateTimeFormatter } from "lotus-core/formatters";
-import { castToSuccessAuthResponse, type ILoginParameters, type IRegisterParameters, type IUserAuthorizeInfo } from "./domain";
-import { TokenService } from "./domain/TokenService";
-import { AuthApiService } from "./domain/api";
-import { LocalizationAccount, LocalizationAccountDispatcher } from "#localization";
-import { Environment } from "lotus-core/environment";
+import { Environment } from 'lotus-core/environment';
+import { DateTimeFormatter } from 'lotus-core/formatters';
+import { FunctionHelper, StringHelper } from 'lotus-core/helpers';
+import { LocalizationAccount, LocalizationAccountDispatcher } from '#localization';
+import { castToSuccessAuthResponse, type ILoginParameters, type IRegisterParameters, type IUserAuthorizeInfo } from './domain';
+import { TokenService } from './domain/TokenService';
+import { AuthApiService } from './domain/api';
 
 class AuthServiceClass
 {
-  //#region Const
+  // #region Const
   /**
    * Время последнего входя на сайт
    */
-  private static readonly LastLoginTime: string = "lotus-account-last-login-time" as const;
-  //#endregion
+  private static readonly LastLoginTime: string = 'lotus-account-last-login-time' as const;
+  // #endregion
 
-  //#region Static fields
+  // #region Static fields
   private static _authService: AuthServiceClass;
 
   public static get Instance(): AuthServiceClass
   {
     return this._authService || (this._authService = new this());
   }
-  //#endregion
+  // #endregion
 
-  //#region Fields
+  // #region Fields
   public tokenService: TokenService;
   public authApiService: AuthApiService;
-  //#endregion
+  // #endregion
 
-  //#region Properties
+  // #region Properties
   public get isAuth()
   {
     return this.tokenService.hasValidAccessToken();
   }
-  //#endregion
+  // #endregion
 
-  //#region Constructor
+  // #region Constructor
   constructor()
   {
     this.tokenService = new TokenService(window.localStorage);
     this.authApiService = new AuthApiService(this.tokenService);
     FunctionHelper.bindAllMethods(this);
   }
-  //#endregion
+  // #endregion
 
-  //#region Main methods
+  // #region Main methods
   /**
    * Вход через пароль и логин
    * @param loginParameters Параметры для входа
@@ -145,17 +145,18 @@ class AuthServiceClass
     // // Очищаем
     // this.tokenService.clearData();
 
-    location.assign("/");
+    location.assign('/');
   }
-  //#endregion
+  // #endregion
 
-  //#region Common methods
-  public async getUserInfoAsync(): Promise<IUserAuthorizeInfo>
+  // #region Common methods
+  public getUserInfoAsync(): Promise<IUserAuthorizeInfo>
   {
     if (Environment.isCookieAuth)
     {
       return this.authApiService.getUserInfoCookieAsync();
-    } else
+    }
+    else
     {
       return this.authApiService.getUserInfoTokenAsync();
     }
@@ -244,25 +245,26 @@ class AuthServiceClass
 
     if (expiryDetails.isExpired)
     {
-      return "Сессия истекла. Требуется повторный вход";
+      return 'Сессия истекла. Требуется повторный вход';
     }
 
     // const userInfo = this.getUserInfo();
-    const username = this.tokenService.getUserName() ?? "Пользователь";
+    const username = this.tokenService.getUserName() ?? 'Пользователь';
 
     const remainingTime = expiryDetails.remainingTime;
     const lang = LocalizationAccountDispatcher.currentLanguage;
     const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!, lang);
 
-    let status = "Аутентифицирован";
+    let status = 'Аутентифицирован';
     if (this.tokenService.isTokenExpiringSoon(300))
     {
       // 5 минут
-      status = "⚠️ Аутентифицирован (токен скоро истекает)";
-    } else if (this.tokenService.isTokenExpiringSoon(60))
+      status = '⚠️ Аутентифицирован (токен скоро истекает)';
+    }
+    else if (this.tokenService.isTokenExpiringSoon(60))
     {
       // 1 минута
-      status = "🔴 Аутентифицирован (токен почти истек)";
+      status = '🔴 Аутентифицирован (токен почти истек)';
     }
 
     return `${status} как ${username}. Токен истекает: ${formattedDate} (${remainingTime})`;
@@ -280,7 +282,8 @@ class AuthServiceClass
       {
         return new Date(parseInt(stored, 10));
       }
-    } catch
+    }
+    catch
     {
       // ignore
     }
@@ -296,12 +299,13 @@ class AuthServiceClass
     try
     {
       localStorage.setItem(AuthServiceClass.LastLoginTime, Date.now().toString());
-    } catch
+    }
+    catch
     {
       // ignore
     }
   }
-  //#endregion
+  // #endregion
 }
 
 /**

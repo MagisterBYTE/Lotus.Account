@@ -1,19 +1,16 @@
-import { PermissionsAccountConstants, RoutesAccount, theme } from "#app";
-import { LocalizationAccount } from "#localization";
-import { AuthCommands, AuthService } from "#modules/auth";
-import { AppShell, Avatar, Burger, Group, Menu, NavLink, useMantineTheme } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import * as React from "react";
-import { useEffect, type ReactElement } from "react";
-import { FaPeopleGroup, FaUsers } from "react-icons/fa6";
-import { useLocation, useNavigate } from "react-router";
-import { LayoutService } from "../LayoutService";
-import { ActionCommand, DelimiterCommand } from "lotus-core/modules/actionCommand";
-import { AccountCommands } from "../../modules/account";
-import { CommandElement } from "lotus-ui-react/modules/commands";
-import { IconBrandBitbucket, IconDrone, IconHome, IconInfoSquareRounded, IconLicense, IconUsers, IconUsersGroup } from "@tabler/icons-react";
-import { useAuthContext } from "../../provider/auth";
-import { Environment } from "lotus-core/environment";
+import { AppShell, Avatar, Burger, Group, Menu, NavLink } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconBrandBitbucket, IconDrone, IconHome, IconInfoSquareRounded, IconLicense, IconUsers, IconUsersGroup } from '@tabler/icons-react';
+import { ActionCommand, DelimiterCommand } from 'lotus-core/modules/actionCommand';
+import { CommandElement } from 'lotus-ui-react/modules/commands';
+import * as React from 'react';
+import { type ReactElement } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { PermissionsAccountConstants, RoutesAccount, theme } from '#app';
+import { LocalizationAccount } from '#localization';
+import { AuthCommands } from '#modules/auth';
+import { AccountCommands } from '../../modules/account';
+import { useAuthContext } from '../../provider/auth';
 
 export interface IMainLayoutProps
 {
@@ -27,7 +24,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-  const layoutState = LayoutService.layoutState;
+  // const layoutState = LayoutService.layoutState;
   const { userAuthInfo } = useAuthContext();
 
   const location = useLocation();
@@ -35,29 +32,29 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
 
   const renderBaseNavigation = () => 
   {
-    return <>
+    return (<>
       <NavLink
-        onClick={() =>
-        {
-          navigate(RoutesAccount.home.path);
-        }}
+        active={location.pathname === RoutesAccount.home.path}
         label={'Home'}
         leftSection={<IconHome />}
-        active={location.pathname === RoutesAccount.home.path}
         variant="light"
-      />
-      <NavLink
         onClick={() =>
         {
-          navigate(RoutesAccount.about.path);
+          void navigate(RoutesAccount.home.path);
         }}
+      />
+      <NavLink
+        active={location.pathname === RoutesAccount.about.path}
         label={'About'}
         leftSection={<IconInfoSquareRounded />}
-        active={location.pathname === RoutesAccount.about.path}
         variant="light"
+        onClick={() =>
+        {
+          void navigate(RoutesAccount.about.path);
+        }}
       />
-    </>
-  }
+    </>);
+  };
 
   const renderLeftNavbar = () =>
   {
@@ -66,62 +63,62 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
         {/* // Пользователи */}
         {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.UserView) && (
           <NavLink
+            active={location.pathname === RoutesAccount.users.path}
+            label={LocalizationAccount.data.user.users}
+            leftSection={<IconUsers color={theme.colors!.green![2]} />}
             variant="light"
             onClick={() =>
             {
-              navigate(RoutesAccount.users.path);
+              void navigate(RoutesAccount.users.path);
             }}
-            label={LocalizationAccount.data.user.users}
-            active={location.pathname === RoutesAccount.users.path}
-            leftSection={<IconUsers color={theme.colors!.green![2]} />}
           />
         )}
         {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.PermissionView) && (
           <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.userPermissions.path);
-            }}
+            active={location.pathname === RoutesAccount.userPermissions.path}
             label={LocalizationAccount.data.permission.permissions}
             leftSection={<IconLicense color={theme.colors!.info![2]} />}
-            active={location.pathname === RoutesAccount.userPermissions.path}
             variant="light"
+            onClick={() =>
+            {
+              void navigate(RoutesAccount.userPermissions.path);
+            }}
           />
         )}
         {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.RoleView) && (
           <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.userRoles.path);
-            }}
+            active={location.pathname === RoutesAccount.userRoles.path}
             label={LocalizationAccount.data.role.roles}
             leftSection={<IconDrone />}
-            active={location.pathname === RoutesAccount.userRoles.path}
             variant="light"
+            onClick={() =>
+            {
+              void navigate(RoutesAccount.userRoles.path);
+            }}
           />
         )}
         {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.PositionView) && (
           <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.userPositions.path);
-            }}
+            active={location.pathname === RoutesAccount.userPositions.path}
             label={LocalizationAccount.data.position.positions}
             leftSection={<IconBrandBitbucket />}
-            active={location.pathname === RoutesAccount.userPositions.path}
             variant="light"
+            onClick={() =>
+            {
+              void navigate(RoutesAccount.userPositions.path);
+            }}
           />
         )}
         {userAuthInfo?.hasPermissionByName(PermissionsAccountConstants.GroupView) && (
           <NavLink
-            onClick={() =>
-            {
-              navigate(RoutesAccount.userGroups.path);
-            }}
+            active={location.pathname === RoutesAccount.userGroups.path}
             label={LocalizationAccount.data.group.groups}
             leftSection={<IconUsersGroup />}
-            active={location.pathname === RoutesAccount.userGroups.path}
             variant="light"
+            onClick={() =>
+            {
+              void navigate(RoutesAccount.userGroups.path);
+            }}
           />
         )}
 
@@ -135,52 +132,49 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
     AccountCommands.settings,
     AccountCommands.security,
     DelimiterCommand.Instance,
-    AuthCommands.logout]
+    AuthCommands.logout];
 
   const renderAccount = () =>
   {
-    if (!userAuthInfo) return <></>
+    if (!userAuthInfo) return <></>;
     return (
       <>
-                <img 
-                  crossOrigin="anonymous"
-  referrerPolicy="no-referrer"
-                src={userAuthInfo.avatarId} />
+        <img alt='' src={userAuthInfo.avatarId} />
       
-      <Menu shadow="md" width={200}>
-        <Menu.Target>
-          <Avatar src={userAuthInfo.avatarId} size={'md'} alt="no image here" name={userAuthInfo.getInitials()} color="initials" />
-        </Menu.Target>
-        <Menu.Dropdown>
-          {accountMenu.map((item, index) =>
-          {
-            return <CommandElement key={index} command={item} size={'md'} elementType="menuItem" />
-          })}
-        </Menu.Dropdown>
-      </Menu></>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <Avatar alt="no image here" color="initials" name={userAuthInfo.getInitials()} size={'md'} src={userAuthInfo.avatarId} />
+          </Menu.Target>
+          <Menu.Dropdown>
+            {accountMenu.map((item, index) =>
+            {
+              return <CommandElement key={index} command={item} elementType="menuItem" size={'md'} />;
+            })}
+          </Menu.Dropdown>
+        </Menu></>
     );
   };
 
   return (
     <AppShell
-          transitionDuration={500}
-      transitionTimingFunction="ease-in-out"
-      padding="md"
-      layout="default"
-header={{ height: { base: 48, sm: 60, lg: 76 } }}
       footer={{ height: 60, collapsed: true }}
+      header={{ height: { base: 48, sm: 60, lg: 76 } }}
+      layout="default"
       navbar={{
         width: 400,
-        breakpoint: "sm",
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+        breakpoint: 'sm',
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened }
       }}
+      padding="md"
+      transitionDuration={500}
+      transitionTimingFunction="ease-in-out"
     >
       {/* Заголовок */}
       {
         <AppShell.Header>
-          <Group h="100%" px="md" justify="space-between">
-            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-            <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+          <Group h="100%" justify="space-between" px="md">
+            <Burger hiddenFrom="sm" opened={mobileOpened} size="sm" onClick={toggleMobile} />
+            <Burger opened={desktopOpened} size="sm" visibleFrom="sm" onClick={toggleDesktop} />
             {userAuthInfo && userAuthInfo.name}
             {renderAccount()}
           </Group>
@@ -189,7 +183,7 @@ header={{ height: { base: 48, sm: 60, lg: 76 } }}
 
       <AppShell.Navbar p="md">{renderLeftNavbar()}</AppShell.Navbar>
       <AppShell.Main>{page}</AppShell.Main>
-      <AppShell.Footer></AppShell.Footer>
+      <AppShell.Footer />
     </AppShell>
   );
 };

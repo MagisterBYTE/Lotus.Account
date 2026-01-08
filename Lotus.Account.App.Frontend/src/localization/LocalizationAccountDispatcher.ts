@@ -1,5 +1,5 @@
-import { type ILocalizationDispatcher, type TLanguageType } from 'lotus-core/localization';
 import { FunctionHelper } from 'lotus-core/helpers';
+import { type ILocalizationDispatcher, type TLanguageType } from 'lotus-core/localization';
 import { LocalizationAccount } from './LocalizationAccount';
 import { LocalizationAccountDataEn } from './LocalizationAccountDataEn';
 import { LocalizationAccountDataRu } from './LocalizationAccountDataRu';
@@ -60,7 +60,7 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
     }
   }
   // #endregion
-};
+}
 
 /**
  * Глобальный доступ к диспетчеру локализации модуля Account

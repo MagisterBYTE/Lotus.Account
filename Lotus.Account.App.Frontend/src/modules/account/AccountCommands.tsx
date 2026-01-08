@@ -1,9 +1,9 @@
-import { ActionCommand, CommandActionService, NavigationCommand } from "lotus-core";
-import { LocalizationAccount } from "#localization";
-import { RoutesAccount } from "#app";
-import { IconSettings, IconUserScan, IconUserShield } from "@tabler/icons-react";
-import { LanguageChangeEventType, type LanguageChangeEvent } from "lotus-core/localization";
-import { FunctionHelper } from "lotus-core/helpers";
+import { IconSettings, IconUserScan, IconUserShield } from '@tabler/icons-react';
+import { ActionCommand, CommandActionService, NavigationCommand } from 'lotus-core';
+import { FunctionHelper } from 'lotus-core/helpers';
+import { LanguageChangeEventType, type LanguageChangeEvent } from 'lotus-core/localization';
+import { RoutesAccount } from '#app';
+import { LocalizationAccount } from '#localization';
 
 class AccountCommandsClass extends CommandActionService
 {
@@ -14,7 +14,7 @@ class AccountCommandsClass extends CommandActionService
   {
     return this._accountCommands || (this._accountCommands = new this());
   }
-  //#endregion
+  // #endregion
 
   // #region Fields
   account: ActionCommand;
@@ -27,27 +27,27 @@ class AccountCommandsClass extends CommandActionService
   {
     super();
 
-    this.account = new ActionCommand("account");
+    this.account = new ActionCommand('account');
     this.account.label = LocalizationAccount.data.auth.account;
-    this.account.group = "account";
+    this.account.group = 'account';
     this.commands.push(this.account);
 
-    this.profile = new NavigationCommand("profile", RoutesAccount.accountProfile);
+    this.profile = new NavigationCommand('profile', RoutesAccount.accountProfile);
     this.profile.label = LocalizationAccount.data.account.profile;
     this.profile.icon = <IconUserScan />;
-    this.profile.group = "account";
+    this.profile.group = 'account';
     this.commands.push(this.profile);
 
-    this.settings = new NavigationCommand("settings", RoutesAccount.accountSettings);
+    this.settings = new NavigationCommand('settings', RoutesAccount.accountSettings);
     this.settings.label = LocalizationAccount.data.account.settings;
     this.settings.icon = <IconSettings />;
-    this.settings.group = "account";
+    this.settings.group = 'account';
     this.commands.push(this.settings);
 
-    this.security = new NavigationCommand("security", RoutesAccount.accountSecurity);
+    this.security = new NavigationCommand('security', RoutesAccount.accountSecurity);
     this.security.label = LocalizationAccount.data.account.security;
     this.security.icon = <IconUserShield />;
-    this.security.group = "account";
+    this.security.group = 'account';
     this.commands.push(this.security);
 
     FunctionHelper.bindAllMethods(this);
@@ -55,7 +55,8 @@ class AccountCommandsClass extends CommandActionService
     window.addEventListener(LanguageChangeEventType, (e) => this.onTranslate(e));
   }
 
-  public onTranslate(event: LanguageChangeEvent | any)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public onTranslate(_event: LanguageChangeEvent | any)
   {
     this.account.label = LocalizationAccount.data.auth.account;
     this.profile.label = LocalizationAccount.data.account.profile;

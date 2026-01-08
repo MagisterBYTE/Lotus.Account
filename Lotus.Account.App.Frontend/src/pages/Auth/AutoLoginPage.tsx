@@ -1,8 +1,9 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { ToastWrapper, toastError } from "lotus-ui-react/components/Feedback";
-import { AuthService } from "#modules/auth";
-import { LocalizationAccount } from "#localization";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ToastWrapper, toastError } from 'lotus-ui-react/components/Feedback';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { LocalizationAccount } from '#localization';
 
 export interface IAutoLoginPageProps
 {
@@ -23,9 +24,10 @@ export const AutoLoginPage: React.FC<IAutoLoginPageProps> = (props: IAutoLoginPa
     setLoading(true);
     try
     {
-      AuthService.loginSecureAuthCookie(pathSuccess);
+      // AuthService.loginSecureAuthCookie(pathSuccess);
       setLoading(false);
-    } catch (error)
+    }
+    catch (error)
     {
       setLoading(false);
       const response = error as any;

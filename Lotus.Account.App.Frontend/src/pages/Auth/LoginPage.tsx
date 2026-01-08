@@ -1,5 +1,5 @@
-import { LoginForm } from "#modules/auth";
-import { Box } from "lotus-ui-react/components/Layout";
+import { Box } from 'lotus-ui-react/components/Layout';
+import { LoginForm } from '#modules/auth';
 
 export interface ILoginPageProps
 {
@@ -11,6 +11,6 @@ export interface ILoginPageProps
 
 export const LoginPage: React.FC<ILoginPageProps> = (props: ILoginPageProps) =>
 {
-   const { pathSuccess } = props;
-   return <Box p={'md'} centerContent={'center'}><LoginForm pathSuccess={pathSuccess}/></Box>
+  const { pathSuccess } = props;
+  return <Box centerContent={'center'} p={'md'}><LoginForm pathSuccess={pathSuccess} /></Box>;
 };

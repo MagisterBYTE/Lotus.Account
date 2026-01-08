@@ -1,4 +1,4 @@
-import { Box } from "lotus-ui-react/components/Layout";
+import { Box } from 'lotus-ui-react/components/Layout';
 
 export function UserPositionsPage() 
 {
@@ -7,4 +7,4 @@ export function UserPositionsPage()
       <h5>Страница UserPositions</h5>
     </Box>
   );
-};
+}

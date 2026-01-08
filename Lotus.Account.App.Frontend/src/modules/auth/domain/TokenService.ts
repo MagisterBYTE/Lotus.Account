@@ -1,26 +1,26 @@
-﻿import { jwtDecode, type JwtPayload } from "jwt-decode";
-import type { ISuccessAuthResponse, ITokenExpiryDetails, ITokenExpiryFormattedInfo } from "../domain/type";
-import { TokenItemEnum } from "../domain/type/TokenItem";
-import type { IStorage } from "lotus-core/types";
-import { Assert } from "lotus-core/utils";
-import { DateTimeFormatter } from "lotus-core/formatters";
-import { LocalizationAccount, LocalizationAccountDispatcher } from "#localization";
-import { StringHelper } from "lotus-core/helpers";
+﻿import { jwtDecode, type JwtPayload } from 'jwt-decode';
+import { DateTimeFormatter } from 'lotus-core/formatters';
+import { StringHelper } from 'lotus-core/helpers';
+import type { IStorage } from 'lotus-core/types';
+import { Assert } from 'lotus-core/utils';
+import { LocalizationAccount, LocalizationAccountDispatcher } from '#localization';
+import type { ISuccessAuthResponse, ITokenExpiryDetails, ITokenExpiryFormattedInfo } from './type';
+import { TokenItemEnum } from './type/TokenItem';
 
 /**
  * Сервис для работы с токенами
  */
 export class TokenService
 {
-  //#region Fields
+  // #region Fields
   public storage: IStorage;
-  //#endregion
+  // #endregion
 
   constructor(storage: IStorage)
   {
     this.storage = storage;
   }
-  //#region Expiry methods
+  // #region Expiry methods
   /**
    * Проверяет наличие валидного access токена
    * Включает проверку срока действия
@@ -112,8 +112,8 @@ export class TokenService
         formatted: {
           short: LocalizationAccount.data.token.expiredShort,
           medium: LocalizationAccount.data.token.expiredMedium,
-          full: LocalizationAccount.data.token.expiredFull,
-        },
+          full: LocalizationAccount.data.token.expiredFull
+        }
       };
     }
 
@@ -127,7 +127,7 @@ export class TokenService
       expiryDate: expiryDate,
       remainingSeconds: remainingSeconds,
       remainingTime: DateTimeFormatter.formatRelative(remainingSeconds, lang),
-      formatted: formatted,
+      formatted: formatted
     };
   }
 
@@ -146,9 +146,9 @@ export class TokenService
     const full = StringHelper.stringFormat(LocalizationAccount.data.token.validFull, formattedDate, remainingTime, timeAgo);
     return { short, medium, full };
   }
-  //#endregion
+  // #endregion
 
-  //#region Token methods
+  // #region Token methods
   public setData(data: ISuccessAuthResponse)
   {
     this.storage.setItem(TokenItemEnum.AccessToken, data.access_token);
@@ -213,9 +213,9 @@ export class TokenService
     this.storage.removeItem(TokenItemEnum.UserName);
     this.storage.removeItem(TokenItemEnum.UserPermissions);
   }
-  //#endregion
+  // #endregion
 
-  //#region Get payload methods
+  // #region Get payload methods
   public getLogin(): string | null
   {
     return this.storage.getItem(TokenItemEnum.Login);
@@ -240,9 +240,9 @@ export class TokenService
   {
     return this.storage.getItem(TokenItemEnum.UserPermissions);
   }
-  //#endregion
+  // #endregion
 
-  //#region Permission methods
+  // #region Permission methods
   public checkUserPermission(permission: string): boolean
   {
     const accessUserPermissions = this.storage.getItem(TokenItemEnum.UserPermissions);
@@ -260,10 +260,10 @@ export class TokenService
     const accessUserPermissions = this.storage.getItem(TokenItemEnum.UserPermissions);
     if (Assert.existValue<string>(accessUserPermissions))
     {
-      for (const element of permissions!)
+      for (const element of permissions)
       {
-        const permission = element!;
-        const exist = accessUserPermissions!.includes(permission);
+        const permission = element;
+        const exist = accessUserPermissions.includes(permission);
         if (exist)
         {
           return true;
@@ -272,5 +272,5 @@ export class TokenService
     }
     return false;
   }
-  //#endregion
+  // #endregion
 }

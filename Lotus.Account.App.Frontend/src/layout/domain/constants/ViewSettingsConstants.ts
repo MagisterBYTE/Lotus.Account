@@ -1,4 +1,4 @@
-import type { IViewSettings } from "../types";
+import type { IViewSettings } from '../types';
 
 export class ViewSettingsConstants
 {

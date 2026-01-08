@@ -1,8 +1,8 @@
-import { LocalizationAccount } from '#localization';
-import * as React from 'react';
-import { type IMainLayoutProps, MainLayout } from './MainLayout';
-import { RoutePermission } from '#modules/auth';
 import type { IRoute } from 'lotus-core/modules/route';
+import * as React from 'react';
+import { LocalizationAccount } from '#localization';
+import { RoutePermission } from '#modules/auth';
+import { type IMainLayoutProps, MainLayout } from './MainLayout';
 
 export interface IMainLayoutPermissionProps extends IMainLayoutProps, IRoute
 {
@@ -11,11 +11,11 @@ export interface IMainLayoutPermissionProps extends IMainLayoutProps, IRoute
 
 export const MainLayoutPermission: React.FC<IMainLayoutPermissionProps> = (props:IMainLayoutPermissionProps) => 
 {
-  const {page, isShouldBeAuthorized, permissions } = props;
+  const { page, isShouldBeAuthorized, permissions } = props;
 
-  return <RoutePermission 
+  return (<RoutePermission 
+    accessDenied={<MainLayout page={<>{LocalizationAccount.data.auth.accessDenied}</>} />}
     component={<MainLayout page={page} />}
-    accessDenied={<MainLayout page={<>{LocalizationAccount.data.auth.accessDenied}</>}/>}
     isShouldBeAuthorized={isShouldBeAuthorized}
-    permissions={permissions}/>
+    permissions={permissions} />);
 };

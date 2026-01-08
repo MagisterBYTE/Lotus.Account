@@ -1,4 +1,4 @@
-import type { IEntity } from "lotus-core/types";
+import type { IEntity } from 'lotus-core/types';
 
 /**
  * Интерфейс должности
@@ -19,6 +19,7 @@ export interface IUserPosition extends IEntity<number>
 /**
  * Интерфейс должности для сохранения
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IUserPositionDatasave extends IUserPosition
 {
 }

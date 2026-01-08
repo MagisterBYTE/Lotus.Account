@@ -1,4 +1,4 @@
-import type { TCssHeight, TCssWidth } from "lotus-ui-react/types";
+import type { TCssHeight, TCssWidth } from 'lotus-ui-react/types';
 
 /**
  * Визуальные настройки для каждого размера и ориентации устройства

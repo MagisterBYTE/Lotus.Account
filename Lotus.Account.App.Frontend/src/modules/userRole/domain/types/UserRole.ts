@@ -1,4 +1,4 @@
-import type { IEntity } from "lotus-core/types";
+import type { IEntity } from 'lotus-core/types';
 
 /**
  * Интерфейс роли
@@ -24,6 +24,7 @@ export interface IUserRole extends IEntity<number>
 /**
  * Интерфейс группы для сохранения
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IUserRoleDatasave extends IUserRole
 {
 

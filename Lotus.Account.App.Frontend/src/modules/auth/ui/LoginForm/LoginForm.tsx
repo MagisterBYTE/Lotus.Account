@@ -1,20 +1,20 @@
-import { ContainerForm } from "#components";
-import { LocalizationAccount } from "#localization";
-import { Button, Checkbox, Divider, useMantineTheme } from "@mantine/core";
-import { IconBrandGoogle, IconBrandVk } from "@tabler/icons-react";
-import type { IResult } from "lotus-core/types";
-import { TextField } from "lotus-ui-react/components/Controls";
-import { HorizontalStack } from "lotus-ui-react/components/Layout";
-import { Text } from "lotus-ui-react/components/Display";
-import { useProxyObject } from "lotus-ui-react/hooks";
-import { Notifications } from "lotus-ui-react/modules/feedback";
-import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { LoginParameters, UserAuthorizeInfo } from "../../domain";
-import { RoutesAccount } from "#app";
-import { AuthService } from "../../AuthService";
-import { useAuthContext } from "../../../../provider/auth";
-import { Environment } from "lotus-core/environment";
+import { Button, Checkbox, Divider, useMantineTheme } from '@mantine/core';
+import { IconBrandGoogle, IconBrandVk } from '@tabler/icons-react';
+import { Environment } from 'lotus-core/environment';
+import type { IResult } from 'lotus-core/types';
+import { TextField } from 'lotus-ui-react/components/Controls';
+import { Text } from 'lotus-ui-react/components/Display';
+import { HorizontalStack } from 'lotus-ui-react/components/Layout';
+import { useProxyObject } from 'lotus-ui-react/hooks';
+import { Notifications } from 'lotus-ui-react/modules/feedback';
+import { useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { RoutesAccount } from '#app';
+import { ContainerForm } from '#components';
+import { LocalizationAccount } from '#localization';
+import { useAuthContext } from '../../../../provider/auth';
+import { AuthService } from '../../AuthService';
+import { LoginParameters, UserAuthorizeInfo } from '../../domain';
 
 export interface ILoginFormProps
 {
@@ -42,7 +42,7 @@ export function LoginForm(props: ILoginFormProps)
   }, []);
   const loginParameters = useProxyObject({ object: loginInstance });
 
-  //#region Handlers
+  // #region Handlers
   const handleLogin = async () =>
   {
     setLogging(true);
@@ -54,9 +54,10 @@ export function LoginForm(props: ILoginFormProps)
 
       if (pathSuccess)
       {
-        navigate(pathSuccess);
+        void navigate(pathSuccess);
       }
-    } catch (error)
+    }
+    catch (error)
     {
       setLogging(false);
       const response = error as IResult;
@@ -76,9 +77,10 @@ export function LoginForm(props: ILoginFormProps)
 
       if (pathSuccess)
       {
-        navigate(pathSuccess);
+        void navigate(pathSuccess);
       }
-    } catch (error)
+    }
+    catch (error)
     {
       setLogging(false);
       const response = error as IResult;
@@ -87,37 +89,38 @@ export function LoginForm(props: ILoginFormProps)
     }
   };
 
-  const handleDebug = async () =>
+  const handleDebug = () =>
   {
-    loginParameters.setLogin("DanielDem", false);
-    loginParameters.setPassword("!198418dsfA!", true);
+    loginParameters.setLogin('DanielDem', false);
+    loginParameters.setPassword('!198418dsfA!', true);
   };
-  //#endregion
+  // #endregion
 
-  //#region Render
+  // #region Render
   const renderGoogleButton = () =>
   {
     const icon = <IconBrandGoogle color={theme.colors.red[3]} />;
     return (
-      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={icon} onClick={handleGoogle}>
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      <Button disabled={isLogging} leftSection={icon} radius="sm" variant="default" w={'160px'} onClick={handleGoogle}>
         Google
       </Button>
     );
-  }
+  };
   const renderVkButton = () =>
   {
     const icon = <IconBrandVk color={theme.colors.blue[3]} />;
     return (
-      <Button disabled={isLogging} variant="default" w={"160px"} radius="sm" leftSection={icon}>
+      <Button disabled={isLogging} leftSection={icon} radius="sm" variant="default" w={'160px'}>
         Vk
       </Button>
     );
-  }
-  //#endregion
+  };
+  // #endregion
 
   return (
-    <ContainerForm header={LocalizationAccount.data.auth.entrance} spacing={"lg"} hasDivider>
-      <HorizontalStack mb="md" mt="md" hAlign="space-between" spacing={"md"}>
+    <ContainerForm hasDivider header={LocalizationAccount.data.auth.entrance} spacing={'lg'}>
+      <HorizontalStack hAlign="space-between" mb="md" mt="md" spacing={'md'}>
         {renderGoogleButton()}
         {renderVkButton()}
       </HorizontalStack>
@@ -127,43 +130,43 @@ export function LoginForm(props: ILoginFormProps)
       <TextField
         inlinePlace
         required
-        labelProps={{
-          w: "120px",
-        }}
+        error={loginParameters.validationStatus.getErrorByKey('login')}
         label={LocalizationAccount.data.auth.login}
+        labelProps={{
+          w: '120px'
+        }}
         textInputProps={{
           disabled: isLogging,
           value: loginParameters.login,
           placeholder: LocalizationAccount.data.auth.placeholderLogin,
           onChange: (event) => loginParameters.setLogin(event.target.value, true),
-          radius: "sm",
+          radius: 'sm'
         }}
-        error={loginParameters.validationStatus.getErrorByKey("login")}
       />
 
       <TextField
-        labelProps={{
-          w: "120px",
-        }}
-        required
         inlinePlace
+        required
+        error={loginParameters.validationStatus.getErrorByKey('password')}
         label={LocalizationAccount.data.auth.password}
+        labelProps={{
+          w: '120px'
+        }}
         textInputProps={{
           disabled: isLogging,
           value: loginParameters.password,
           placeholder: LocalizationAccount.data.auth.placeholderPassword,
           onChange: (event) => loginParameters.setPassword(event.target.value, true),
-          radius: "sm",
+          radius: 'sm'
         }}
-        error={loginParameters.validationStatus.getErrorByKey("password")}
       />
 
       {isDebug && (
         <HorizontalStack hAlign="space-between">
           <Checkbox
+            checked={loginParameters.rememberMe}
             disabled={isLogging}
             label={LocalizationAccount.data.auth.remember}
-            checked={loginParameters.rememberMe}
             onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
           />
           <Button radius="sm" onClick={handleDebug}>
@@ -174,14 +177,14 @@ export function LoginForm(props: ILoginFormProps)
 
       {!isDebug && (
         <Checkbox
+          checked={loginParameters.rememberMe}
           disabled={isLogging}
           label={LocalizationAccount.data.auth.remember}
-          checked={loginParameters.rememberMe}
           onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
         />
       )}
 
-      <Button disabled={!loginParameters.validation()} loading={isLogging} radius="sm" onClick={handleLogin}>
+      <Button disabled={!loginParameters.validation()} loading={isLogging} radius="sm" onClick={void handleLogin}>
         {LocalizationAccount.data.auth.comeIn}
       </Button>
 

@@ -1,5 +1,5 @@
-import { FunctionHelper } from "lotus-core/helpers";
-import { RefreshProxy } from "lotus-core/modules/refreshProxy";
+import { FunctionHelper } from 'lotus-core/helpers';
+import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
 
 export class AccountProfile extends RefreshProxy
 {
@@ -9,8 +9,8 @@ export class AccountProfile extends RefreshProxy
   constructor()
   {
     super();
-    this.nickName = "";
-    this.email = "";
+    this.nickName = '';
+    this.email = '';
     FunctionHelper.bindAllMethods(this);
   }
 

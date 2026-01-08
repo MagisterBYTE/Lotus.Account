@@ -1,11 +1,11 @@
-import type { IUserGroup } from "#modules/userGroup";
-import type { IUserPermission } from "#modules/userPermission";
-import type { IUserPosition } from "#modules/userPosition";
-import type { IUserRole } from "#modules/userRole";
-import type { IPersonInfo } from "lotus-core/modules/humanizer";
-import type { IUserAuthorizeInfo } from "./type";
-import { DateTimeConverter } from "lotus-core/converters";
-import { Assert } from "lotus-core/utils";
+import { DateTimeConverter } from 'lotus-core/converters';
+import type { IPersonInfo } from 'lotus-core/modules/humanizer';
+import { Assert } from 'lotus-core/utils';
+import type { IUserGroup } from '#modules/userGroup';
+import type { IUserPermission } from '#modules/userPermission';
+import type { IUserPosition } from '#modules/userPosition';
+import type { IUserRole } from '#modules/userRole';
+import type { IUserAuthorizeInfo } from './type';
 
 /**
  * Класс, реализующий интерфейс IUserAuthorizeInfo
@@ -63,8 +63,8 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   //
   // АВАТАР
   //
-  avatarId?: string
-  //#endregion
+  avatarId?: string;
+  // #endregion
 
   // #region Constructors
   /**
@@ -83,13 +83,13 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   constructor(info?: Partial<IUserAuthorizeInfo>)
   {
     // Инициализация с значениями по умолчанию
-    this.authScheme = "";
+    this.authScheme = '';
     this.authExpires = new Date();
-    this.login = "";
-    this.email = "";
+    this.login = '';
+    this.email = '';
     this.emailConfirmed = false;
     this.isLockout = false;
-    this.settings = "";
+    this.settings = '';
     this.role = this.getDefaultRole();
     this.permissions = [];
     this.position = this.getDefaultPosition();
@@ -101,7 +101,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
       this.copyFrom(info);
     }
   }
-  //#endregion
+  // #endregion
 
   // #region System methods
   /**
@@ -180,7 +180,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
       role: { ...this.role },
       permissions: [...this.permissions],
       position: { ...this.position },
-      groups: [...this.groups],
+      groups: [...this.groups]
     });
   }
   // #endregion
@@ -191,15 +191,15 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
    */
   public getFullName(): string
   {
-    const parts = [this.surname, this.name, this.patronymic].filter((part) => part && part.trim() !== "");
+    const parts = [this.surname, this.name, this.patronymic].filter((part) => part && part.trim() !== '');
 
-    return parts.join(" ") || this.login;
+    return parts.join(' ') || this.login;
   }
 
   public getInitials(): string
   {
-    const n = this.name?.[0]
-    const f = this.surname?.[0]
+    const n = this.name?.[0];
+    const f = this.surname?.[0];
     return `${n}${f}`;
   }
   // #endregion
@@ -211,8 +211,8 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   {
     return {
       id: 0,
-      name: "",
-      permissionIds: [],
+      name: '',
+      permissionIds: []
     };
   }
 
@@ -223,7 +223,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   {
     return {
       id: 0,
-      name: "",
+      name: ''
     };
   }
 
@@ -307,7 +307,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
       role: this.role,
       permissions: this.permissions,
       position: this.position,
-      groups: this.groups,
+      groups: this.groups
     });
   }
 
@@ -323,11 +323,12 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
         ...data,
         authExpires: data.authExpires ? new Date(data.authExpires) : undefined,
         lockoutBeginDate: data.lockoutBeginDate ? new Date(data.lockoutBeginDate) : undefined,
-        lockoutEndDate: data.lockoutEndDate ? new Date(data.lockoutEndDate) : undefined,
+        lockoutEndDate: data.lockoutEndDate ? new Date(data.lockoutEndDate) : undefined
       });
-    } catch (error)
+    }
+    catch (error)
     {
-      console.error("Ошибка при парсинге JSON:", error);
+      console.error('Ошибка при парсинге JSON:', error);
       return new UserAuthorizeInfo();
     }
   }

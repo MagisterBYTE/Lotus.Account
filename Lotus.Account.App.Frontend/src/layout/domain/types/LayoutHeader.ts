@@ -1,4 +1,4 @@
-import type { TCssHeight } from "lotus-ui-react/types";
+import type { TCssHeight } from 'lotus-ui-react/types';
 
 /**
  * Параметры шапки сайта

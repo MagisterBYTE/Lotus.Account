@@ -1,4 +1,4 @@
-import { Box } from "lotus-ui-react/components/Layout";
+import { Box } from 'lotus-ui-react/components/Layout';
 
 export function UserPermissionsPage() 
 {
@@ -7,4 +7,4 @@ export function UserPermissionsPage()
       <h5>Страница UserPermissions</h5>
     </Box>
   );
-};
+}

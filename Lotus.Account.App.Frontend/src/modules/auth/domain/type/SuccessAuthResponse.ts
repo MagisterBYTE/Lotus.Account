@@ -7,7 +7,7 @@ export interface ISuccessAuthResponse
   expires_in: number;
   refresh_token: string;
   token_type: string;
-};
+}
 
 /**
  * Проверка объекта на поддержку интерфейса ISuccessAuthResponse
@@ -19,15 +19,15 @@ export const instanceOfSuccessAuthResponse = (value: any): value is ISuccessAuth
 {
   if (value && typeof value === 'object')
   {
-    const access_token = ('access_token' in value);
-    const expires_in = ('expires_in' in value);
-    const refresh_token = ('refresh_token' in value);
+    const accessToken = ('access_token' in value);
+    const expiresIn = ('expires_in' in value);
+    const refreshToken = ('refresh_token' in value);
 
-    return access_token && expires_in && refresh_token;
+    return accessToken && expiresIn && refreshToken;
   }
 
   return false;
-}
+};
 
 /**
  * Преобразование объекта к интерфейсу ISuccessAuthResponse 
@@ -39,10 +39,10 @@ export const castToSuccessAuthResponse = (value: any): ISuccessAuthResponse | un
 {
   if (instanceOfSuccessAuthResponse(value))
   {
-    return value as ISuccessAuthResponse;
+    return value;
   }
   else
   {
     return undefined;
   }
-}
+};

@@ -1,13 +1,13 @@
-import { FunctionHelper } from "lotus-core/helpers";
-import type { IRefreshProxy } from "lotus-core/modules/refreshProxy";
-import { ValidationHelper } from "lotus-core/modules/validation";
-import { Assert } from "lotus-core/utils";
-import { AuthService } from "../AuthService";
-import type { IRegisterParameters } from "./type";
+import { FunctionHelper } from 'lotus-core/helpers';
+import type { IRefreshProxy } from 'lotus-core/modules/refreshProxy';
+import { ValidationHelper } from 'lotus-core/modules/validation';
+import { Assert } from 'lotus-core/utils';
+import { AuthService } from '../AuthService';
+import type { IRegisterParameters } from './type';
 
 export class RegisterParameters implements IRegisterParameters, IRefreshProxy
 {
-  //#region Fields
+  // #region Fields
   //
   // ИДЕНТИФИКАЦИЯ
   //
@@ -19,13 +19,13 @@ export class RegisterParameters implements IRegisterParameters, IRefreshProxy
   public term: boolean;
 
   public onRefreshProxy: () => void;
-  //#endregion
+  // #endregion
 
   constructor()
   {
-    this.login = ''
-    this.email = ''
-    this.password = ''
+    this.login = '';
+    this.email = '';
+    this.password = '';
 
     this.rememberMe = false;
     this.term = false;
@@ -75,9 +75,9 @@ export class RegisterParameters implements IRegisterParameters, IRefreshProxy
 
   public invalidLogin():string|undefined
   {
-    if(this.login.length < 6)
+    if (this.login.length < 6)
     {
-      return 'Длина пароля не может быть мень 6 символов'
+      return 'Длина пароля не может быть мень 6 символов';
     }
 
     return undefined;
@@ -85,7 +85,7 @@ export class RegisterParameters implements IRegisterParameters, IRefreshProxy
 
   public invalidEmail():string|undefined
   {
-    if(ValidationHelper.isValidEmail(this.email))
+    if (ValidationHelper.isValidEmail(this.email))
     {
       return undefined;
     }

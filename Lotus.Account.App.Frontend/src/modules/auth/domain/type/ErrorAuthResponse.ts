@@ -6,7 +6,7 @@ export interface IErrorAuthResponse
   error: string;
   error_description: string;
   error_uri: string;
-};
+}
 
 /**
  * Проверка объекта на поддержку интерфейса IErrorAuthResponse
@@ -16,13 +16,13 @@ export interface IErrorAuthResponse
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const instanceOfErrorAuthResponse = (value: any): value is IErrorAuthResponse =>
 {
-  if (value && typeof value === "object")
+  if (value && typeof value === 'object')
   {
     return ('error' in value) && ('error_description' in value);
   }
 
   return false;
-}
+};
 
 /**
  * Преобразование объекта к интерфейсу IErrorAuthResponse 
@@ -34,10 +34,10 @@ export const castToErrorAuthResponse = (value: any): IErrorAuthResponse | undefi
 {
   if (instanceOfErrorAuthResponse(value))
   {
-    return value as IErrorAuthResponse;
+    return value;
   }
   else
   {
     return undefined;
   }
-}
+};

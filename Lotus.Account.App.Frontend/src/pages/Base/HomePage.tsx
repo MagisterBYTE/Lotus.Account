@@ -1,8 +1,8 @@
-import { RoutesAccount } from "#app";
-import { AuthService } from "#modules/auth";
-import { Box } from "lotus-ui-react/components/Layout";
-import { Link } from "react-router";
-import { Text } from "lotus-ui-react/components/Display";
+import { Text } from 'lotus-ui-react/components/Display';
+import { Box } from 'lotus-ui-react/components/Layout';
+import { Link } from 'react-router';
+import { RoutesAccount } from '#app';
+import { AuthService } from '#modules/auth';
 
 export function HomePage() 
 {
@@ -18,4 +18,4 @@ export function HomePage()
         </Text>}
     </Box>
   );
-};
+}

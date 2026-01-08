@@ -1,1 +1,1 @@
-export { type TEntranceType, TEntranceTypes } from './EntranceType'
+export { type TEntranceType, TEntranceTypes } from './EntranceType';

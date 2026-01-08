@@ -1,7 +1,7 @@
-import type { ILayoutFooter } from "./LayoutFooter";
-import type { ILayoutHeader } from "./LayoutHeader";
-import type { ILayoutSidePanel } from "./LayoutSidePanel";
-import type { TScreenType } from "./ScreenType";
+import type { ILayoutFooter } from './LayoutFooter';
+import type { ILayoutHeader } from './LayoutHeader';
+import type { ILayoutSidePanel } from './LayoutSidePanel';
+import type { TScreenType } from './ScreenType';
 
 /**
  * Состояние макета сайта

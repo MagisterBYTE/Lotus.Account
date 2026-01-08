@@ -1,7 +1,7 @@
+import { type ReactElement } from 'react';
+import { Navigate, useLocation } from 'react-router';
 import { RoutesAccount } from '#app';
 import { LocalizationAccount } from '#localization';
-import { type ReactElement } from 'react';
-import { Navigate, useLocation } from "react-router";
 import { AuthService } from '../AuthService';
 
 export interface IRouteUserPermissionProps
@@ -25,7 +25,7 @@ export interface IRouteUserPermissionProps
    * Должен ли он быть пользователь авторизован для доступа по данному маршруту
    */
   isShouldBeAuthorized?: boolean;
-};
+}
 
 export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement =>
 {
@@ -67,8 +67,8 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
     }
     else
     {
-        // Пользователь не авторизован - возвращаем страницу авторизации
-        return <Navigate to={RoutesAccount.login.path} state={{ from: location }} />
+      // Пользователь не авторизован - возвращаем страницу авторизации
+      return <Navigate state={{ from: location }} to={RoutesAccount.login.path} />;
     }
   }
   else
@@ -77,11 +77,11 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
     if (isAuth)
     {
       // Переходим на предыдущую страницу
-      return <Navigate to={prevPageUrl} state={{ from: location }} />
+      return <Navigate state={{ from: location }} to={prevPageUrl} />;
     }
     else
     {
       return component;
     }
   }
-}
+};

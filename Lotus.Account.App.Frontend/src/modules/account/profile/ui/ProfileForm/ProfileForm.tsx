@@ -1,26 +1,26 @@
-import { ContainerForm } from "#components"
-import { TextField } from "lotus-ui-react/components/Controls";
+import { TextField } from 'lotus-ui-react/components/Controls';
+import { ContainerForm } from '#components';
 
 export function ProfileForm()
 {
   return (
-    <ContainerForm header="Профиль" >
+    <ContainerForm header="Профиль">
       <TextField
         inlinePlace
         required
+        label="Nick"
         labelProps={{
-          w: "120px",
-        }}
-        label="Nick" />
+          w: '120px'
+        }} />
 
       <TextField
         inlinePlace
         required
-        labelProps={{
-          w: "120px",
-        }}
         label="Email"
+        labelProps={{
+          w: '120px'
+        }}
       />
     </ContainerForm>
   );
-};
+}

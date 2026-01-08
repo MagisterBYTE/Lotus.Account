@@ -1,5 +1,5 @@
-import type { ILayoutState } from "../types";
-import { ViewSettingsConstants } from "./ViewSettingsConstants";
+import type { ILayoutState } from '../types';
+import { ViewSettingsConstants } from './ViewSettingsConstants';
 
 export class LayoutStateConstants
 {
@@ -39,5 +39,5 @@ export class LayoutStateConstants
       isVisibleUser: true,
       isCollapsed: true
     }
-  }
+  };
 }

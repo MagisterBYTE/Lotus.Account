@@ -1,4 +1,4 @@
-import type { TCssWidth } from "lotus-ui-react/types";
+import type { TCssWidth } from 'lotus-ui-react/types';
 
 /**
  * Параметры боковой панели сайта

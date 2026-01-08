@@ -1,24 +1,38 @@
 import { useEffect, useState } from 'react';
-import { AuthContext } from './AuthContext';
 import { AuthService, UserAuthorizeInfo } from '#modules/auth';
+import { AuthContext } from './AuthContext';
 
-export const AuthProvider = (props: { children: React.ReactNode }) => 
+export interface IAuthProviderProps
 {
+  children: React.ReactNode;
+}
+
+export const AuthProvider = (props: IAuthProviderProps) => 
+{
+  const { children } = props;
   const [userAuthInfo, setUserAuthInfo] = useState<UserAuthorizeInfo|undefined>(undefined);
   const [providerKey, setProviderKey] = useState(0); // Ключ для принудительного обновления
 
   useEffect(() => 
   {
     AuthService.getUserInfoAsync()
-    .then((userInfo) => {
-      if (userInfo) 
+      .then((userInfo) => 
       {
-        setUserAuthInfo(new UserAuthorizeInfo(userInfo));
-    }})
-    .catch((error) => 
+        if (userInfo) 
+        {
+          setUserAuthInfo(new UserAuthorizeInfo(userInfo));
+        }
+        else
+        {
+          setUserAuthInfo(undefined);
+        }
+        setProviderKey((key) => key + 1);
+      })
+      .catch((_error) => 
       {
         setUserAuthInfo(undefined);
-      })
+        setProviderKey((key) => key + 1);
+      });
   }, []);
 
   return (
@@ -29,7 +43,7 @@ export const AuthProvider = (props: { children: React.ReactNode }) =>
         setUserAuthInfo: setUserAuthInfo
       }}
     >
-      {props.children}
+      {children}
     </AuthContext.Provider>
   );
 };

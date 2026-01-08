@@ -97,9 +97,9 @@ class RoutesAccountClass implements IRoutesAccount
   {
     return (this._routesAccount || (this._routesAccount = new this()));
   }
-  //#endregion
+  // #endregion
 
-  //#region Fields
+  // #region Fields
   public readonly home = TypedRoute.create('/');
   public readonly about = TypedRoute.create('/about');
 
@@ -126,14 +126,14 @@ class RoutesAccountClass implements IRoutesAccount
   public readonly userRoles = TypedRoute.create('/user/roles', true);
   public readonly userPositions = TypedRoute.create('/user/positions', true);
   public readonly userGroups = TypedRoute.create('/user/groups', true);
-  //#endregion
+  // #endregion
 
   constructor()
   {
     FunctionHelper.bindAllMethods(this);
   }
 
-  //#region Methods
+  // #region Methods
 
   /**
    * Проверяет, требуется ли авторизация для указанного URI
@@ -163,7 +163,7 @@ class RoutesAccountClass implements IRoutesAccount
     // Проходим по всем полям класса, которые являются маршрутами
     for (const key in this)
     {
-      if (this.hasOwnProperty(key))
+      if (Object.prototype.hasOwnProperty.call(this, key))
       {
         const route = this[key] as IRoute;
 
@@ -223,7 +223,7 @@ class RoutesAccountClass implements IRoutesAccount
 
     for (const key in this)
     {
-      if (this.hasOwnProperty(key))
+      if (Object.prototype.hasOwnProperty.call(this, key))
       {
         const route = this[key] as IRoute;
         if (route && typeof route === 'object' && route.path)
@@ -243,11 +243,11 @@ class RoutesAccountClass implements IRoutesAccount
    */
   public addRoute(key: string, route: IRoute): void
   {
-    // @ts-expect-error
+    // @ts-expect-error route
     this[key] = route;
   }
 
-  //#endregion
+  // #endregion
 
 }
 

@@ -1,1 +1,1 @@
-export { PermissionsAccountConstants } from './PermissionsAccountConstants'
+export { PermissionsAccountConstants } from './PermissionsAccountConstants';

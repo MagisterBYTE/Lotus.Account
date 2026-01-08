@@ -1,13 +1,13 @@
-﻿import type { TCssWidth } from "lotus-ui-react/types";
-import { LayoutStateConstants, ViewSettingsConstants } from "./domain/constants";
-import type { ILayoutState, TScreenType } from "./domain/types";
+﻿import type { TCssWidth } from 'lotus-ui-react/types';
+import { LayoutStateConstants, ViewSettingsConstants } from './domain/constants';
+import type { ILayoutState, TScreenType } from './domain/types';
 
 /**
  * Сервис для работы с токенами
  */
 class LayoutServiceClass
 {
-  //#region Static fields
+  // #region Static fields
   /**
   * Ключ под которым сохраняется макет сайта
   */
@@ -19,9 +19,9 @@ class LayoutServiceClass
   {
     return (this._layoutService || (this._layoutService = new this()));
   }
-  //#endregion
+  // #endregion
 
-  //#region Static methods
+  // #region Static methods
   /**
    * Загрузка макета сайта из локального хранилища 
    * @returns Макет сайта или макет сайта по умолчанию
@@ -49,18 +49,18 @@ class LayoutServiceClass
     const value = JSON.stringify(layoutState);
     localStorage.setItem(LayoutServiceClass.LayoutStateKey, value);
   }
-  //#endregion
+  // #endregion
 
-  //#region Fields
+  // #region Fields
   public layoutState: ILayoutState;
-  //#endregion
+  // #endregion
 
   constructor()
   {
     this.layoutState = { ...LayoutStateConstants.Desktop };
   }
 
-  //#region LayoutState methods
+  // #region LayoutState methods
   public setScreenType(screenType: TScreenType)
   {
     switch (screenType)
@@ -161,7 +161,7 @@ class LayoutServiceClass
 
   public setCommandsLeftPanel(commandsName: string[])
   {
-    this.layoutState.leftPanelCommands = [...commandsName]
+    this.layoutState.leftPanelCommands = [...commandsName];
   }
 
   public showRightPanel(visible: boolean)
@@ -188,7 +188,7 @@ class LayoutServiceClass
   {
     this.layoutState.footer.isCollapsed = collapsed;
   }
-  //#endregion
+  // #endregion
 }
 
 /**

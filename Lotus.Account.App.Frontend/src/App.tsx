@@ -1,24 +1,23 @@
-import { RoutesAccount } from "#app";
+import React from 'react';
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router';
+import { RoutesAccount } from '#app';
+import { MainLayout } from '#layout';
 import
-  {
-    AboutPage,
-    AccountNotificationsPage,
-    AccountProfilePage,
-    AccountSecurityPage,
-    AccountSettingsPage,
-    AutoLoginPage,
-    HomePage,
-    LoginPage,
-    UserGroupsPage,
-    UserPermissionsPage,
-    UserPositionsPage,
-    UserRolesPage,
-    UsersPage,
-  } from "#pages";
-import React from "react";
-import { createBrowserRouter, RouterProvider, type RouteObject } from "react-router";
-import { RegistrationPage } from "./pages/Auth/RegistrationPage";
-import { MainLayout } from "#layout";
+{
+  AboutPage,
+  AccountNotificationsPage,
+  AccountProfilePage,
+  AccountSecurityPage,
+  AccountSettingsPage,
+  HomePage,
+  LoginPage,
+  UserGroupsPage,
+  UserPermissionsPage,
+  UserPositionsPage,
+  UserRolesPage,
+  UsersPage
+} from '#pages';
+import { RegistrationPage } from './pages/Auth/RegistrationPage';
 
 // Определяем маршруты как RouteObject[]
 export const routes: RouteObject[] = [
@@ -50,7 +49,7 @@ export const routes: RouteObject[] = [
   { path: RoutesAccount.userPermissions.path, element: <MainLayout {...RoutesAccount.userPermissions} page={<UserPermissionsPage />} /> },
   { path: RoutesAccount.userRoles.path, element: <MainLayout {...RoutesAccount.userRoles} page={<UserRolesPage />} /> },
   { path: RoutesAccount.userPositions.path, element: <MainLayout {...RoutesAccount.userPositions} page={<UserPositionsPage />} /> },
-  { path: RoutesAccount.userGroups.path, element: <MainLayout {...RoutesAccount.userGroups} page={<UserGroupsPage />} /> },
+  { path: RoutesAccount.userGroups.path, element: <MainLayout {...RoutesAccount.userGroups} page={<UserGroupsPage />} /> }
 ];
 
 // Создаем роутер
