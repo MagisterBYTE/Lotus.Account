@@ -15,7 +15,7 @@ class AuthServiceClass
   private static readonly LastLoginTime: string = 'lotus-account-last-login-time' as const;
   // #endregion
 
-  // #region Static fields
+  // #region Instance
   private static _authService: AuthServiceClass;
 
   public static get Instance(): AuthServiceClass
@@ -55,21 +55,6 @@ class AuthServiceClass
   {
     const response = await this.authApiService.loginCookieAsync(loginParameters);
     return response;
-    // if (response)
-    // {
-    //   const data = castToSuccessAuthResponse(response);
-    //   if (data)
-    //   {
-    //     this.tokenService.setData(data);
-
-    //     this.saveLastLoginTime();
-
-    //     if (redirectUrl)
-    //     {
-    //       location.assign(redirectUrl);
-    //     }
-    //   }
-    // }
   }
 
   /**
@@ -81,21 +66,6 @@ class AuthServiceClass
   {
     const response = await this.authApiService.loginGoogleAsync();
     return response;
-    // if (response)
-    // {
-    //   const data = castToSuccessAuthResponse(response);
-    //   if (data)
-    //   {
-    //     this.tokenService.setData(data);
-
-    //     this.saveLastLoginTime();
-
-    //     if (redirectUrl)
-    //     {
-    //       location.assign(redirectUrl);
-    //     }
-    //   }
-    // }
   }
 
   /**
@@ -141,9 +111,6 @@ class AuthServiceClass
   public async logoutAsync()
   {
     await this.authApiService.logoutCookieAsync();
-
-    // // Очищаем
-    // this.tokenService.clearData();
 
     location.assign('/');
   }

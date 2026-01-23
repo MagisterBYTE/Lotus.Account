@@ -23,7 +23,7 @@ export const LocalizationAccountDataRu =
     placeholderPassword: 'Введите пароль',
     infoLastLogin: 'Не аутентифицирован. Последний вход: {formattedDate} ({timeAgo} назад)',
     infoSavedSession: 'Сессия сохранена. Для входа используйте автоматический вход или введите учетные данные',
-    infoNotAuth: 'Не аутентифицирован. Для доступа к защищенным ресурсам выполните вход',
+    infoNotAuth: 'Не аутентифицирован. Для доступа к защищенным ресурсам выполните вход'
   },
   token: {
     // Сообщения о просроченности токена
@@ -34,7 +34,7 @@ export const LocalizationAccountDataRu =
     // Форматированные сообщения при действующем токене
     validShort: 'Действителен до: {date}',
     validMedium: 'Истекает: {date} ({duration})',
-    validFull: 'Токен действителен до {date}. Осталось: {duration}. Истечет {relative}.',
+    validFull: 'Токен действителен до {date}. Осталось: {duration}. Истечет {relative}.'
   },
   group: {
     groups: 'Группы',
@@ -139,12 +139,27 @@ export const LocalizationAccountDataRu =
     phoneNumber: 'Номер телефона',
     roleName: 'Роль',
     profileNames: 'Профили',
-    organizationName: 'Организация',
+    organizationName: 'Организация'
   },
   account:
   {
     profile: 'Личные данные',
+    profileUpdate: 'Обновить данные',
+    profileUpdateSuccess: 'Обновление личных данных прошло успешно',
     settings: 'Настройки',
-    security: 'Безопасность'
+    settingsTheme: 'Цветовая схема',
+    settingsLang: 'Язык',
+    security: 'Безопасность',
+    securityChangePassword: 'Сменить пароль',
+    securityCurrentPassword: 'Текущий пароль',
+    securityNewPassword: 'Новый пароль',
+    securityConfirmPassword: 'Подтвердить пароль',
+    securityValidPassword: 'Пароли не совпадают',
+    securityChangePasswordButton: 'Сменить',
+    name: 'Имя',
+    surname: 'Фамилия',
+    fathersName: 'Отчество',
+    whereabouts: 'Местоположения',
+    interests: 'Интересы'
   }
 };

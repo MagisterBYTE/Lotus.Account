@@ -1,10 +1,11 @@
 import { Box } from 'lotus-ui-react/components/Layout';
+import { UserPermissionList } from '#modules/userPermission';
 
 export function UserPermissionsPage() 
 {
   return (
     <Box centerContent={'center'}>
-      <h5>Страница UserPermissions</h5>
+      <UserPermissionList />
     </Box>
   );
 }

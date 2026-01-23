@@ -1,5 +1,6 @@
 import { DateTimeConverter } from 'lotus-core/converters';
-import type { IPersonInfo } from 'lotus-core/modules/humanizer';
+import { HumanizerPerson, type IPersonInfo } from 'lotus-core/modules/humanizer';
+import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
 import { Assert } from 'lotus-core/utils';
 import type { IUserGroup } from '#modules/userGroup';
 import type { IUserPermission } from '#modules/userPermission';
@@ -10,8 +11,32 @@ import type { IUserAuthorizeInfo } from './type';
 /**
  * Класс, реализующий интерфейс IUserAuthorizeInfo
  */
-export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
+export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInfo, IPersonInfo
 {
+  // #region Static methods
+  /**
+   * Создает экземпляр класса из JSON строки
+   */
+  static fromJSON(jsonString: string): UserAuthorizeInfo
+  {
+    try
+    {
+      const data = JSON.parse(jsonString);
+      return new UserAuthorizeInfo({
+        ...data,
+        authExpires: data.authExpires ? new Date(data.authExpires) : undefined,
+        lockoutBeginDate: data.lockoutBeginDate ? new Date(data.lockoutBeginDate) : undefined,
+        lockoutEndDate: data.lockoutEndDate ? new Date(data.lockoutEndDate) : undefined
+      });
+    }
+    catch (error)
+    {
+      console.error('Ошибка при парсинге JSON:', error);
+      return new UserAuthorizeInfo();
+    }
+  }
+  // #endregion
+
   // #region Fields
   //
   // АУТЕНТИФИКАЦИЯ
@@ -23,11 +48,13 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   // ИДЕНТИФИКАЦИЯ
   //
   login: string;
+  nickname: string;
   email: string;
   emailConfirmed: boolean;
   isLockout: boolean;
   lockoutBeginDate?: Date;
   lockoutEndDate?: Date;
+  hashId: string;
 
   //
   // НАСТРОЙКИ ПОЛЬЗОВАТЕЛЯ
@@ -68,27 +95,21 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
 
   // #region Constructors
   /**
-   * Конструктор по умолчанию
-   */
-  constructor();
-
-  /**
-   * Конструктор, принимающий IUserAuthorizeInfo
-   */
-  constructor(info: Partial<IUserAuthorizeInfo>);
-
-  /**
    * Основная реализация конструктора
    */
   constructor(info?: Partial<IUserAuthorizeInfo>)
   {
+    super();
+
     // Инициализация с значениями по умолчанию
     this.authScheme = '';
     this.authExpires = new Date();
     this.login = '';
+    this.nickname = '';
     this.email = '';
     this.emailConfirmed = false;
     this.isLockout = false;
+    this.hashId = '';
     this.settings = '';
     this.role = this.getDefaultRole();
     this.permissions = [];
@@ -107,6 +128,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   /**
    * Копирует свойства из объекта IUserAuthorizeInfo
    */
+  // eslint-disable-next-line complexity
   public copyFrom(info: Partial<IUserAuthorizeInfo>): void
   {
     // Аутентификация
@@ -114,24 +136,29 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
     {
       this.authScheme = info.authScheme;
     }
-    if (Assert.existValue<string|Date>(info.authExpires))
+    if (Assert.existValue<string | Date>(info.authExpires))
     {
       this.authExpires = DateTimeConverter.toDateTime(info.authExpires, undefined);
     }
 
     // Идентификация
     if (Assert.existValue<string>(info.login)) this.login = info.login;
+    if (Assert.existValue<string>(info.nickname)) this.nickname = info.nickname;
     if (Assert.existValue<string>(info.email)) this.email = info.email;
     if (Assert.existValue<string>(info.emailConfirmed)) this.emailConfirmed = info.emailConfirmed;
     if (Assert.existValue<string>(info.isLockout)) this.isLockout = info.isLockout;
-    if (Assert.existValue<string|Date>(info.lockoutBeginDate))
+    if (Assert.existValue<string | Date>(info.lockoutBeginDate))
     {
       this.lockoutBeginDate = DateTimeConverter.toDateTime(info.lockoutBeginDate, undefined);
     }
 
-    if (Assert.existValue<string|Date>(info.lockoutEndDate))
+    if (Assert.existValue<string | Date>(info.lockoutEndDate))
     {
       this.lockoutEndDate = DateTimeConverter.toDateTime(info.lockoutEndDate, undefined);
+    }
+    if (Assert.existValue<string>(info.hashId))
+    {
+      this.hashId = info.hashId;
     }
 
     // Настройки
@@ -185,25 +212,7 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   }
   // #endregion
 
-  // #region IPersonInfo methods
-  /**
-   * Возвращает полное имя пользователя
-   */
-  public getFullName(): string
-  {
-    const parts = [this.surname, this.name, this.patronymic].filter((part) => part && part.trim() !== '');
-
-    return parts.join(' ') || this.login;
-  }
-
-  public getInitials(): string
-  {
-    const n = this.name?.[0];
-    const f = this.surname?.[0];
-    return `${n}${f}`;
-  }
-  // #endregion
-
+  // #region Common methods
   /**
    * Создает роль по умолчанию
    */
@@ -286,17 +295,25 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
   /**
    * Сериализует объект в JSON строку
    */
-  toJSON(): string
+  public toJSON(): string
   {
-    return JSON.stringify({
+    const userInfo = this.toUserAuthorizeInfo();
+    return JSON.stringify(userInfo);
+  }
+
+  public toUserAuthorizeInfo():IUserAuthorizeInfo
+  {
+    return {
       authScheme: this.authScheme,
       authExpires: this.authExpires.toISOString(),
       login: this.login,
+      nickname: this.nickname,
       email: this.email,
       emailConfirmed: this.emailConfirmed,
       isLockout: this.isLockout,
       lockoutBeginDate: this.lockoutBeginDate?.toISOString(),
       lockoutEndDate: this.lockoutEndDate?.toISOString(),
+      hashId: this.hashId,
       settings: this.settings,
       name: this.name,
       surname: this.surname,
@@ -308,28 +325,83 @@ export class UserAuthorizeInfo implements IUserAuthorizeInfo, IPersonInfo
       permissions: this.permissions,
       position: this.position,
       groups: this.groups
-    });
+    };
+  }
+  // #endregion
+
+  // #region Update methods
+  public setNickname(nickname: string, isRefreshProxy: boolean = true): void
+  {
+    this.nickname = nickname;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setEmail(email: string, isRefreshProxy: boolean = true): void
+  {
+    this.email = email;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setName(name: string, isRefreshProxy: boolean = true): void
+  {
+    this.name = name;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setSurname(surname: string, isRefreshProxy: boolean = true): void
+  {
+    this.surname = surname;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setPatronymic(patronymic: string, isRefreshProxy: boolean = true): void
+  {
+    this.patronymic = patronymic;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setBirthday(birthday: string, isRefreshProxy: boolean = true): void
+  {
+    this.birthday = birthday;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setWhereabouts(whereabouts: string, isRefreshProxy: boolean = true): void
+  {
+    this.whereabouts = whereabouts;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+
+  public setInterests(interests: string, isRefreshProxy: boolean = true): void
+  {
+    this.interests = interests;
+    if (isRefreshProxy) this.onRefreshProxy();
+  }
+  // #endregion
+
+  // #region IPersonInfo methods
+  /**
+   * Возвращает отображаемое имя в неформальном стиле
+   */
+  public getDisplayName(): string
+  {
+    return HumanizerPerson.getDisplayName(this);
   }
 
   /**
-   * Создает экземпляр класса из JSON строки
+   * Возвращает полное имя пользователя
    */
-  static fromJSON(jsonString: string): UserAuthorizeInfo
+  public getFullName(): string
   {
-    try
-    {
-      const data = JSON.parse(jsonString);
-      return new UserAuthorizeInfo({
-        ...data,
-        authExpires: data.authExpires ? new Date(data.authExpires) : undefined,
-        lockoutBeginDate: data.lockoutBeginDate ? new Date(data.lockoutBeginDate) : undefined,
-        lockoutEndDate: data.lockoutEndDate ? new Date(data.lockoutEndDate) : undefined
-      });
-    }
-    catch (error)
-    {
-      console.error('Ошибка при парсинге JSON:', error);
-      return new UserAuthorizeInfo();
-    }
+    return HumanizerPerson.getFullName(this);
   }
+
+  /**
+   * Возвращает инициалы пользователя
+   */
+  public getInitials(): string
+  {
+    return HumanizerPerson.getInitials(this);
+  }
+  // #endregion
 }

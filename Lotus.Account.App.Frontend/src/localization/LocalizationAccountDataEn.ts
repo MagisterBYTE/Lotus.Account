@@ -23,7 +23,7 @@ export const LocalizationAccountDataEn =
     placeholderPassword: 'Enter password',
     infoLastLogin: 'Not authenticated. Last login: {formattedDate} ({timeAgo} ago)',
     infoSavedSession: 'Session saved. Use automatic sign-in or enter credentials to log in',
-    infoNotAuth: 'Not authenticated. Sign in to access protected resources',
+    infoNotAuth: 'Not authenticated. Sign in to access protected resources'
   },
   token: {
     // Token expiry messages
@@ -34,7 +34,7 @@ export const LocalizationAccountDataEn =
     // Formatted messages for valid tokens
     validShort: 'Valid until: {date}',
     validMedium: 'Expires: {date} ({duration})',
-    validFull: 'Token valid until {date}. Time left: {duration}. Will expire {relative}.',
+    validFull: 'Token valid until {date}. Time left: {duration}. Will expire {relative}.'
   },
   group: {
     groups: 'Groups',
@@ -139,12 +139,27 @@ export const LocalizationAccountDataEn =
     phoneNumber: 'Phone Number',
     roleName: 'Role',
     profileNames: 'Profiles',
-    organizationName: 'Organization',
+    organizationName: 'Organization'
   },
   account:
   {
-    profile: 'Personal Data',
+    profile: 'Personal data',
+    profileUpdate: 'Update data',
+    profileUpdateSuccess: 'Personal data updated successfully',
     settings: 'Settings',
-    security: 'Security'
+    settingsTheme: 'Color scheme',
+    settingsLang: 'Language',
+    security: 'Security',
+    securityChangePassword: 'Сменить пароль',
+    securityCurrentPassword: 'Текущий пароль',
+    securityNewPassword: 'Новый пароль',
+    securityConfirmPassword: 'Подтвердить пароль',
+    securityValidPassword: 'Пароли не совпадают',
+    securityChangePasswordButton: 'Сменить',
+    name: 'First name',
+    surname: 'Last name',
+    fathersName: 'Patronymic/Middle name',
+    whereabouts: 'Locations',
+    interests: 'Interests'
   }
 };

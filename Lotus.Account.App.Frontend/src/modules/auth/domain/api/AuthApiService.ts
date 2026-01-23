@@ -1,6 +1,5 @@
-import { type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { Environment } from 'lotus-core/environment';
-import { FunctionHelper } from 'lotus-core/helpers';
+import { ApiRequestConfig, ContentTypeConstants, HeaderNamesConstants } from 'lotus-core/modules/api';
 import { AppApiService } from '#app';
 import type { TokenService } from '../TokenService';
 import { castToSuccessAuthResponse, type ILoginParameters, type IRegisterParameters, type ISuccessAuthResponse, type IUserAuthorizeInfo } from '../type';
@@ -55,11 +54,10 @@ export class AuthApiService extends AppApiService
     super();
     this.tokenService = tokenService;
     this.isAuthCookie = Environment.isCookieAuth;
-    FunctionHelper.bindAllMethods(this, ['api']);
   }
 
   // #region Private methods
-  protected override async handleRequest(config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> 
+  protected override async handleRequest(fullUri: string, config: ApiRequestConfig): Promise<ApiRequestConfig>
   {
     // Если это авторизация через куки то не добавляем токен доступа
     if (this.isAuthCookie) 
@@ -68,7 +66,7 @@ export class AuthApiService extends AppApiService
     }
 
     // Проверяем, требуется ли авторизация для этого маршрута
-    const requiresAuth = !this.isRouteExcluded(config.url);
+    const requiresAuth = !this.isRouteExcluded(fullUri);
 
     if (!requiresAuth) 
     {
@@ -96,20 +94,20 @@ export class AuthApiService extends AppApiService
   /**
    * Настройка конфигурации запроса
    */
-  private setRequestConfig(config: InternalAxiosRequestConfig, includeAuth: boolean, accessToken?: string): InternalAxiosRequestConfig 
+  private setRequestConfig(config: ApiRequestConfig, includeAuth: boolean, accessToken?: string): ApiRequestConfig 
   {
-    const newConfig: InternalAxiosRequestConfig = { ...config };
+    const newConfig: ApiRequestConfig = new ApiRequestConfig(config);
 
     if (includeAuth && accessToken) 
     {
-      newConfig.headers.setAuthorization(`Bearer ${accessToken}`, true);
+      newConfig.setAuthorization(accessToken);
     }
 
     // Настраиваем таймаут и другие параметры
     newConfig.timeout = 10 * 60 * 1000; // 10 минут
 
     // Для того чтобы передавать защищенные куки
-    newConfig.withCredentials = true;
+    newConfig.setCredentials('include');
 
     return newConfig;
   }
@@ -133,21 +131,15 @@ export class AuthApiService extends AppApiService
   {
     const url = AuthApiService.PathLoginCookie;
 
-    const config = this.getConfigAcceptJson();
-
-    const response = await this.api.post<IUserAuthorizeInfo>(url, loginParameters, config);
-    return response.data;
+    const response = await this.post<IUserAuthorizeInfo>(url, loginParameters);
+    return response;
   }
 
   public async getUserInfoCookieAsync(): Promise<IUserAuthorizeInfo> 
   {
     const url = AuthApiService.PathUserInfoCookie;
-
-    const config = this.getConfigAcceptJson();
-    config.withCredentials = true;
-
-    const response = await this.api.get<IUserAuthorizeInfo>(url, config);
-    return response.data;
+    const response = await this.get<IUserAuthorizeInfo>(url);
+    return response;
   }
 
   /**
@@ -156,10 +148,7 @@ export class AuthApiService extends AppApiService
   public async logoutCookieAsync() 
   {
     const url = AuthApiService.PathLogoutCookie;
-
-    const config = this.getConfigAcceptJson();
-
-    await this.api.post(url, null, config);
+    await this.post(url, null);
   }
   // #endregion
 
@@ -179,18 +168,15 @@ export class AuthApiService extends AppApiService
       scope: 'offline_access'
     });
 
-    const config = this.getConfigAcceptJson();
+    const config = new ApiRequestConfig();
 
     if (loginParameters.rememberMe) 
     {
-      config.headers = {
-        ...config.headers,
-        'X-RememberMe': 'true'
-      };
+      config.addHeader('X-RememberMe', 'true');
     }
 
-    const response = await this.api.post<ISuccessAuthResponse>(url, data, config);
-    return response.data;
+    const response = await this.post<ISuccessAuthResponse>(url, data, config);
+    return response;
   }
 
   /**
@@ -208,30 +194,23 @@ export class AuthApiService extends AppApiService
       scope: 'offline_access'
     });
 
-    const currentConfig = this.getConfigAcceptJson();
+    const config = new ApiRequestConfig();
+    config.setCredentials();
+    config.addHeader(HeaderNamesConstants.ContentType, ContentTypeConstants.ApplicationXWwwFormUrlencoded);
 
-    const config = {
-      withCredentials: true, // Важно для отправки кук
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        ...currentConfig.headers
-      }
-    };
-
-    const response = await this.api.post<ISuccessAuthResponse>(url, data, config);
-
-    return response.data;
+    const response = await this.post<ISuccessAuthResponse>(url, data, config);
+    return response;
   }
 
   public async getUserInfoTokenAsync(): Promise<IUserAuthorizeInfo> 
   {
     const url = AuthApiService.PathUserInfoToken;
 
-    const config = this.getConfigAcceptJson();
-    config.withCredentials = true;
+    const config = new ApiRequestConfig();
+    config.setCredentials();
 
-    const response = await this.api.get<IUserAuthorizeInfo>(url, config);
-    return response.data;
+    const response = await this.get<IUserAuthorizeInfo>(url, config);
+    return response;
   }
 
   /**
@@ -240,10 +219,7 @@ export class AuthApiService extends AppApiService
   public async logoutTokenAsync() 
   {
     const url = AuthApiService.PathLogoutToken;
-
-    const config = this.getConfigAcceptJson();
-
-    await this.api.post(url, null, config);
+    await this.post(url, undefined);
   }
   // #endregion
 
@@ -261,11 +237,11 @@ export class AuthApiService extends AppApiService
   {
     const url = AuthApiService.PathUserInfoGoogle;
 
-    const config = this.getConfigAcceptJson();
-    config.withCredentials = true;
+    const config = new ApiRequestConfig();
+    config.setCredentials();
 
-    const response = await this.api.get<IUserAuthorizeInfo>(url, config);
-    return response.data;
+    const response = await this.get<IUserAuthorizeInfo>(url, config);
+    return response;
   }
   // #endregion
 
@@ -286,7 +262,7 @@ export class AuthApiService extends AppApiService
    * Обновление токена
    */
   // eslint-disable-next-line require-await
-  public async refreshTokenAsync(): Promise<AxiosResponse<ISuccessAuthResponse>> 
+  public async refreshTokenAsync(): Promise<ISuccessAuthResponse> 
   {
     const refreshToken = this.tokenService.getRefreshToken();
     if (!refreshToken) 
@@ -301,8 +277,7 @@ export class AuthApiService extends AppApiService
       scope: 'offline_access'
     });
 
-    const config = this.getConfigAcceptJson();
-    return this.api.post<ISuccessAuthResponse>(url, data, config);
+    return this.post<ISuccessAuthResponse>(url, data);
   }
 
   /**
@@ -364,7 +339,7 @@ export class AuthApiService extends AppApiService
     try 
     {
       const response = await this.refreshTokenAsync();
-      const data = castToSuccessAuthResponse(response.data);
+      const data = castToSuccessAuthResponse(response);
 
       if (data) 
       {

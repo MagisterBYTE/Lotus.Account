@@ -1,17 +1,11 @@
-import { TextField } from 'lotus-ui-react/components/Controls';
-import { Label } from 'lotus-ui-react/components/Display';
-import { Box, VerticalStack } from 'lotus-ui-react/components/Layout';
-import React from 'react';
+import { Box } from 'lotus-ui-react/components/Layout';
+import { SecurityForm } from '#modules/account';
 
-export const AccountSecurityPage: React.FC = () =>
+export function AccountSecurityPage()
 {
   return (
     <Box centerContent='center'>
-      <VerticalStack bdRadius m={'lg'} p={'lg'} spacing={'md'} w={'min(600px, 80vw)'}>
-        <Label fontBold fontSize={'lg'}>Сменить пароль</Label>
-        <TextField inlinePlace label={'Новый пароль'} labelProps={{ w: '160px' }}  textInputProps={{ value: 'dddd' }} />
-        <TextField inlinePlace label={'Повторите пароль'} labelProps={{ w: '160px' }}  />
-      </VerticalStack>
+      <SecurityForm />
     </Box>
   );
-};
+}

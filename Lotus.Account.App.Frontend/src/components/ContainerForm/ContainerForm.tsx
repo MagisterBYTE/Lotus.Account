@@ -17,12 +17,12 @@ export function ContainerForm(props: IContainerFormProps)
   const m = verticalStackProps.m ?? 'md';
 
   return (
-    <VerticalStack bdRadius={verticalStackProps.bdRadius ?? 'md'}
+    <VerticalStack bdRadius={verticalStackProps.bdRadius ?? 'md'} bgShadow={10}
       hAlign={verticalStackProps.hAlign ?? 'stretch'}
       m={m}
       p={p}
       spacing={verticalStackProps.spacing ?? 'md'}
-      w={verticalStackProps.w ?? 'min(400px, 80vw)'}
+      w={verticalStackProps.w ?? 'min(500px, 80vw)'}
       {...verticalStackProps}>
 
       {isValidElement(header) && <Box centerContent={'center'}>{header}</Box>}

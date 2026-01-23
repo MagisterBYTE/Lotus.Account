@@ -1,5 +1,5 @@
 import { FunctionHelper } from 'lotus-core/helpers';
-import { type ILocalizationDispatcher, type TLanguageType } from 'lotus-core/localization';
+import { LanguageChangeEventType, type ILocalizationDispatcher, type LanguageChangeEvent, type TLanguageType } from 'lotus-core/localization';
 import { LocalizationAccount } from './LocalizationAccount';
 import { LocalizationAccountDataEn } from './LocalizationAccountDataEn';
 import { LocalizationAccountDataRu } from './LocalizationAccountDataRu';
@@ -42,6 +42,7 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
   constructor()
   {
     FunctionHelper.bindAllMethods(this);
+    window.addEventListener(LanguageChangeEventType, (e) => this.onLanguageChangeEvent(e));
   }
   // #endregion
 
@@ -58,6 +59,12 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
       if (language == 'en-US') LocalizationAccount.data = LocalizationAccountDataEn;
       if (language == 'ru-RU') LocalizationAccount.data = LocalizationAccountDataRu;
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public onLanguageChangeEvent(event: LanguageChangeEvent|any)
+  {
+    this.setLanguage(event.detail.lang);
   }
   // #endregion
 }

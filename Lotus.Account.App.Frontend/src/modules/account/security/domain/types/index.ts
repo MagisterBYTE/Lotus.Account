@@ -1,0 +1,1 @@
+export { type IAccountChangePassword } from './AccountChangePassword';

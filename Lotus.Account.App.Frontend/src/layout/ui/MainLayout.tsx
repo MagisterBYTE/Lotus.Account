@@ -1,6 +1,6 @@
-import { AppShell, Avatar, Burger, Group, Menu, NavLink } from '@mantine/core';
+import { AppShell, Avatar, Burger, Divider, Drawer, Group, Menu, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconBrandBitbucket, IconDrone, IconHome, IconInfoSquareRounded, IconLicense, IconUsers, IconUsersGroup } from '@tabler/icons-react';
+import { IconAssembly, IconBrandBitbucket, IconDrone, IconHome, IconInfoSquareRounded, IconLicense, IconUsers, IconUsersGroup } from '@tabler/icons-react';
 import { ActionCommand, DelimiterCommand } from 'lotus-core/modules/actionCommand';
 import { CommandElement } from 'lotus-ui-react/modules/commands';
 import * as React from 'react';
@@ -9,7 +9,9 @@ import { useLocation, useNavigate } from 'react-router';
 import { PermissionsAccountConstants, RoutesAccount, theme } from '#app';
 import { LocalizationAccount } from '#localization';
 import { AuthCommands } from '#modules/auth';
+import { Environment } from '../../../../../Lotus.Frontend/Lotus.Core/dist/esm/environment/Environment';
 import { AccountCommands } from '../../modules/account';
+import { DevelopmentPage } from '../../pages/Development';
 import { useAuthContext } from '../../provider/auth';
 
 export interface IMainLayoutProps
@@ -17,13 +19,14 @@ export interface IMainLayoutProps
   page: ReactElement;
 }
 
-
 export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) =>
 {
   const { page } = props;
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+  const [developPageOpened, { open, close }] = useDisclosure(false);
+
   // const layoutState = LayoutService.layoutState;
   const { userAuthInfo } = useAuthContext();
 
@@ -37,7 +40,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
         active={location.pathname === RoutesAccount.home.path}
         label={'Home'}
         leftSection={<IconHome />}
-        variant="light"
+        variant="filled"
         onClick={() =>
         {
           void navigate(RoutesAccount.home.path);
@@ -47,12 +50,25 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
         active={location.pathname === RoutesAccount.about.path}
         label={'About'}
         leftSection={<IconInfoSquareRounded />}
-        variant="light"
         onClick={() =>
         {
           void navigate(RoutesAccount.about.path);
         }}
       />
+      {
+        Environment.isDevelopment && <>
+          <Divider />
+          <NavLink
+            label={'Develop'}
+            leftSection={<IconAssembly />}
+            variant="subtle"
+            onClick={() =>
+            {
+              open();
+            }}
+          />
+        </>
+      }
     </>);
   };
 
@@ -65,7 +81,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <NavLink
             active={location.pathname === RoutesAccount.users.path}
             label={LocalizationAccount.data.user.users}
-            leftSection={<IconUsers color={theme.colors!.green![2]} />}
+            leftSection={<IconUsers color={theme.colors!.green?.[5]} />}
             variant="light"
             onClick={() =>
             {
@@ -77,7 +93,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <NavLink
             active={location.pathname === RoutesAccount.userPermissions.path}
             label={LocalizationAccount.data.permission.permissions}
-            leftSection={<IconLicense color={theme.colors!.info![2]} />}
+            leftSection={<IconLicense color={theme.colors!.info![5]} />}
             variant="light"
             onClick={() =>
             {
@@ -89,7 +105,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <NavLink
             active={location.pathname === RoutesAccount.userRoles.path}
             label={LocalizationAccount.data.role.roles}
-            leftSection={<IconDrone />}
+            leftSection={<IconDrone color={theme.colors!.red![5]} />}
             variant="light"
             onClick={() =>
             {
@@ -175,12 +191,13 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           <Group h="100%" justify="space-between" px="md">
             <Burger hiddenFrom="sm" opened={mobileOpened} size="sm" onClick={toggleMobile} />
             <Burger opened={desktopOpened} size="sm" visibleFrom="sm" onClick={toggleDesktop} />
-            {userAuthInfo && userAuthInfo.name}
             {renderAccount()}
           </Group>
         </AppShell.Header>
       }
-
+      <Drawer opened={developPageOpened} position='bottom' title="DevelopPage" onClose={close}>
+        <DevelopmentPage />
+      </Drawer>
       <AppShell.Navbar p="md">{renderLeftNavbar()}</AppShell.Navbar>
       <AppShell.Main>{page}</AppShell.Main>
       <AppShell.Footer />

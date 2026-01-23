@@ -15,20 +15,22 @@
     "#layout": "./src/layout/index.ts",
     "#localization": "./src/localization/index.ts",
     "#modules/auth": "./src/modules/auth/index.ts",
+    "#modules/account": "./src/modules/account/index.ts",
     "#modules/userGroup": "./src/modules/userGroup/index.ts",
     "#modules/userPermission": "./src/modules/userPermission/index.ts",
     "#modules/userPosition": "./src/modules/userPosition/index.ts",
     "#modules/userRole": "./src/modules/userRole/index.ts",
-    "#pages": "./src/pages/index.ts"
+    "#pages": "./src/pages/index.ts",
+    "#provider": "./src/provider/index.ts"
   },
   "dependencies": {
-    "@mantine/core": "^8.3.11",
-    "@mantine/dates": "^8.3.11",
-    "@mantine/form": "^8.3.11",
-    "@mantine/hooks": "^8.3.11",
-    "@mantine/modals": "^8.3.11",
-    "@mantine/notifications": "^8.3.11",
-    "@mantine/nprogress": "^8.3.11",
+    "@mantine/core": "^8.3.13",
+    "@mantine/dates": "^8.3.13",
+    "@mantine/form": "^8.3.13",
+    "@mantine/hooks": "^8.3.13",
+    "@mantine/modals": "^8.3.13",
+    "@mantine/notifications": "^8.3.13",
+    "@mantine/nprogress": "^8.3.13",
     "@tabler/icons-react": "^3.36.1",
     "axios": "^1.13.2",
     "jwt-decode": "^4.0.0",
@@ -40,10 +42,10 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@rsbuild/core": "^1.7.2",
-    "@rsbuild/plugin-react": "^1.4.2",
+    "@rsbuild/plugin-react": "^1.4.3",
     "@types/eslint-plugin-jsx-a11y": "^6.10.1",
-    "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
+    "@types/node": "^25.0.10",
+    "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -52,10 +54,9 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.26",
-    "eslint-plugin-storybook": "^10.1.11",
-    "globals": "^17.0.0",
+    "globals": "^17.1.0",
     "mkcert": "^3.2.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.52.0"
+    "typescript-eslint": "^8.53.1"
   }
 }

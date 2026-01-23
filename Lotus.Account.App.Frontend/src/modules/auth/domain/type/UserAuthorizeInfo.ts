@@ -30,6 +30,11 @@ export interface IUserAuthorizeInfo
   login: string;
 
   /**
+   * Ник пользователя
+   */
+  nickname: string;
+
+  /**
    * Почта пользователя
    */
   email: string;
@@ -53,6 +58,11 @@ export interface IUserAuthorizeInfo
    *
    */
   lockoutEndDate?: Date | string;
+
+  /**
+   * Хешированное значение идентификатора для прямого доступа
+   */
+  hashId: string;
 
   //
   // НАСТРОЙКИ ПОЛЬЗОВАТЕЛЯ

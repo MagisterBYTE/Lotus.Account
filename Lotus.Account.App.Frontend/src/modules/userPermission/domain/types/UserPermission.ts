@@ -1,9 +1,9 @@
-import type { IEntity } from 'lotus-core/types';
+import type { IEntity, TKey } from 'lotus-core/types';
 
 /**
  * Интерфейс разрешения
  */
-export interface IUserPermission extends IEntity<number>
+export interface IUserPermission extends IEntity<TKey>
 {
   /**
    * Наименование разрешения
@@ -14,13 +14,17 @@ export interface IUserPermission extends IEntity<number>
    * Отображаемое наименование разрешения
    */
   displayName?: string;
+
+  /**
+   * Флаг, указывающий, что разрешение является новым и еще не сохранено в базе данных
+   */
+  isNew: boolean;
 }
 
 /**
  * Интерфейс разрешения для сохранения
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IUserPermissionDatasave extends IUserPermission
+export interface IUserPermissionDatasave extends Omit<IUserPermission, 'id'|'isNew'>
 {
-
+  id: number;
 }

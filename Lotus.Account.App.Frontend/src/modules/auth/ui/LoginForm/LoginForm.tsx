@@ -5,9 +5,9 @@ import type { IResult } from 'lotus-core/types';
 import { TextField } from 'lotus-ui-react/components/Controls';
 import { Text } from 'lotus-ui-react/components/Display';
 import { HorizontalStack } from 'lotus-ui-react/components/Layout';
-import { useProxyObject } from 'lotus-ui-react/hooks';
+import { useInstanceProxy } from 'lotus-ui-react/hooks';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { RoutesAccount } from '#app';
 import { ContainerForm } from '#components';
@@ -35,12 +35,7 @@ export function LoginForm(props: ILoginFormProps)
   const [isLogging, setLogging] = useState(false);
   const { setUserAuthInfo } = useAuthContext();
 
-  // Используем useMemo для создания единственного экземпляра
-  const loginInstance = useMemo(() =>
-  {
-    return new LoginParameters();
-  }, []);
-  const loginParameters = useProxyObject({ object: loginInstance });
+  const loginParameters = useInstanceProxy(() => new LoginParameters());
 
   // #region Handlers
   const handleLogin = async () =>
@@ -184,7 +179,10 @@ export function LoginForm(props: ILoginFormProps)
         />
       )}
 
-      <Button disabled={!loginParameters.validation()} loading={isLogging} radius="sm" onClick={void handleLogin}>
+      <Button disabled={!loginParameters.validate()} loading={isLogging} radius="sm" 
+      
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onClick={handleLogin}>
         {LocalizationAccount.data.auth.comeIn}
       </Button>
 

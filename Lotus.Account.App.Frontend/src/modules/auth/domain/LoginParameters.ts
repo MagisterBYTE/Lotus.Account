@@ -47,7 +47,7 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public validation(): boolean 
+  public validate(): boolean 
   {
     this.validationStatus.clear();
     if (this.hasInputLogin) this.validationStatus.addErrorRequired('login', this.login);

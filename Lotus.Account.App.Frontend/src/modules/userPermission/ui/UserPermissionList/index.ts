@@ -1,0 +1,1 @@
+export { UserPermissionList } from './UserPermissionList';

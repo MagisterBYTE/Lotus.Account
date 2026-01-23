@@ -406,11 +406,11 @@ export default defineConfig([
     'node_modules/*',
     'coverage/*',
     '.storybook/*', 
-    'src/.storydata/*',
     'src/external/*',
     '**/*.stories.tsx',
     'eslint.config.ts', 
-    'jest.config.ts'
+    'jest.config.ts',
+    'rsbuild.config.ts'
   ]),
 
   tseslint.configs.recommended,

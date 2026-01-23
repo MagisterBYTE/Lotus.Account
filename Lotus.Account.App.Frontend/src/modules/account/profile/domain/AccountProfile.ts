@@ -1,28 +1,32 @@
-import { FunctionHelper } from 'lotus-core/helpers';
-import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
+import { ValidationResult, type IValidateObject } from 'lotus-core/modules/validation';
+import { UserAuthorizeInfo, type IUserAuthorizeInfo } from '#modules/auth';
 
-export class AccountProfile extends RefreshProxy
+export class AccountProfile extends UserAuthorizeInfo implements IValidateObject
 {
-  public nickName: string;
-  public email: string;
+  // #region Fields
+  public validationStatus: ValidationResult;
+  // #endregion
 
-  constructor()
+  constructor(info?: Partial<IUserAuthorizeInfo>)
   {
-    super();
-    this.nickName = '';
-    this.email = '';
-    FunctionHelper.bindAllMethods(this);
+    super(info);
+    this.validationStatus = new ValidationResult();
   }
 
-  public setNickName(nickName: string, isRefreshProxy: boolean = false)
+  // #region IValidateObject
+  public validate(): boolean 
   {
-    this.nickName = nickName;
-    if (isRefreshProxy) this.onRefreshProxy();
+    this.validationStatus.clear();
+    this.validationStatus.addErrorMaxString('nikName', this.nickname, 20);
+    this.validationStatus.addErrorRequired('email', this.email);
+    this.validationStatus.addErrorMaxString('email', this.email, 50);
+    this.validationStatus.addErrorEmail('email', this.email);
+    this.validationStatus.addErrorMaxString('name', this.name, 30);
+    this.validationStatus.addErrorMaxString('surname', this.surname, 30);
+    this.validationStatus.addErrorMaxString('patronymic', this.patronymic, 30);
+    this.validationStatus.addErrorMaxString('whereabouts', this.whereabouts, 30);
+    this.validationStatus.addErrorMaxString('interests', this.interests, 250);
+    return this.validationStatus.isValid();
   }
-
-  public setEmail(email: string, isRefreshProxy: boolean = false)
-  {
-    this.email = email;
-    if (isRefreshProxy) this.onRefreshProxy();
-  }
+  // #endregion
 }
