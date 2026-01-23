@@ -29,6 +29,12 @@ namespace Lotus.Account
                 .Map(x => x.Permissions, x => x.Role.Permissions)
                 .Map(x => x.Position, x => x.Post)
                 .Map(x => x.Groups, x => x.Groups);
+
+            TypeAdapterConfig<UserAuthorizeInfo, UserDto>
+                .NewConfig()
+                .Map(x => x.RoleId, x => x.Role.Id)
+                .Map(x => x.PostId, x => x.Position.Id)
+                .Map(x => x.GroupsIds, x => x.Groups.Select(x => x.Id).ToList());
         }
     }
     /**@}*/

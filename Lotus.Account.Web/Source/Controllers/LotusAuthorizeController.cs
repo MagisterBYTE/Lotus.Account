@@ -4,6 +4,8 @@ using System.Security.Claims;
 using Lotus.Repository;
 using Lotus.Web;
 
+using Mapster;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -32,14 +34,7 @@ namespace Lotus.Account
     [Route($"{XConstants.PrefixApi}/[controller]")]
     public class AuthorizeController : ControllerBase
     {
-        #region Const
-        private const string AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme},{OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme}";
-        #endregion
-
         #region Fields
-        private readonly IOpenIddictApplicationManager _applicationManager;
-        private readonly IOpenIddictAuthorizationManager _authorizationManager;
-        private readonly IOpenIddictScopeManager _scopeManager;
         private readonly ILotusAuthorizeService _authorizeService;
         private readonly ILogger<AuthorizeController> _logger;
         #endregion
@@ -48,19 +43,10 @@ namespace Lotus.Account
         /// <summary>
         /// Конструктор инициализирует объект класса указанными параметрами.
         /// </summary>
-        /// <param name="applicationManager">Менеджер приложений.</param>
-        /// <param name="authorizationManager">Менеджер авторизации.</param>
-        /// <param name="scopeManager">Менеджер прав.</param>
         /// <param name="authorizeService">Сервис для авторизации пользователя.</param>
         /// <param name="logger">Сервис для логгирования.</param>
-        public AuthorizeController(IOpenIddictApplicationManager applicationManager,
-            IOpenIddictAuthorizationManager authorizationManager,
-            IOpenIddictScopeManager scopeManager, ILotusAuthorizeService authorizeService,
-            ILogger<AuthorizeController> logger)
+        public AuthorizeController(ILotusAuthorizeService authorizeService, ILogger<AuthorizeController> logger)
         {
-            _applicationManager = applicationManager;
-            _authorizationManager = authorizationManager;
-            _scopeManager = scopeManager;
             _authorizeService = authorizeService;
             _logger = logger;
         }
@@ -156,6 +142,7 @@ namespace Lotus.Account
                     var response = await _authorizeService.GetUserInfoAsync(hashId);
 
                     var userInfo = response.Payload;
+                    userInfo.HashId = hashId;
 
                     // 1. Неавторизован. Конкретная причина в сообщении 
                     if (response.Result != null && response.Result.Succeeded == false)
@@ -491,6 +478,34 @@ namespace Lotus.Account
             CancellationToken token)
         {
             var result = await _authorizeService.RegisterAsync(registerParameters, token);
+            return SendResponse(result);
+        }
+
+        /// <summary>
+        /// Обновление информации о пользователе.
+        /// </summary>
+        /// <param name="userInfo">Информация о пользователе.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Общий результат операции.</returns>
+        [HttpPost(nameof(UpdateUserInfo))]
+        public async Task<IActionResult> UpdateUserInfo([FromBody] UserAuthorizeInfo userInfo,
+            CancellationToken token)
+        {
+            var result = await _authorizeService.UpdateUserInfo(userInfo, token);
+            return SendResponse(result);
+        }
+
+        /// <summary>
+        /// Изменить пароль пользователя.
+        /// </summary>
+        /// <param name="changePassword">Данные для смены пароля.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Общий результат операции.</returns>
+        [HttpPost(nameof(ChangePassword))]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePassword,
+            CancellationToken token)
+        {
+            var result = await _authorizeService.ChangePassword(changePassword, token);
             return SendResponse(result);
         }
 

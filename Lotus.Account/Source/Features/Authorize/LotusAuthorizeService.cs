@@ -68,9 +68,9 @@ namespace Lotus.Account
             }
 
             // 3. Проверяем пароль
-            var singInResult = XHashHelper.VerifyHash(loginParameters.Password, user.PasswordHash);
+            var checkHashPassword = XHashHelper.VerifyHash(loginParameters.Password, user.PasswordHash);
 
-            if (singInResult == false)
+            if (checkHashPassword == false)
             {
                 return Response<UserAuthorizeInfo>.Failed(XUserErrors.WrongPassword);
             }
@@ -168,6 +168,60 @@ namespace Lotus.Account
             await _dataStorage.SaveChangesAsync(token);
 
             return Response.Succeed();
+        }
+
+        /// <inheritdoc/>
+        public async Task<Response> UpdateUserInfo(UserAuthorizeInfo userInfo, CancellationToken token)
+        {
+            var users = _dataStorage.Query<User>();
+
+            // Пробуем найти пользователя с таким именем
+            var user = await users.FirstOrDefaultAsync((x) => x.HashId == userInfo.HashId);
+
+            if (user == null)
+            {
+                return Response<UserDto>.Failed(XUserErrors.UserNotFound);
+            }
+
+            userInfo.Adapt(user);
+
+            _dataStorage.Update(user);
+            await _dataStorage.SaveChangesAsync(token);
+
+            // Если обновление прошло успешно то возвращаем исходный объект
+            return Response<UserAuthorizeInfo>.Succeed(userInfo);
+        }
+
+        public async Task<Response> ChangePassword(ChangePasswordDto changePassword, CancellationToken token)
+        {
+            var users = _dataStorage.Query<User>();
+
+            // Пробуем найти пользователя с таким именем
+            var user = await users.FirstOrDefaultAsync((x) => x.HashId == changePassword.HashId);
+
+            if (user == null)
+            {
+                return Response.Failed(XUserErrors.UserNotFound);
+            }
+
+            if (user.IsLockout)
+            {
+                return Response.Failed(XUserErrors.UserLocked);
+            }
+
+            var checkHashPassword = XHashHelper.VerifyHash(changePassword.CurrentPassword, user.PasswordHash);
+            if (checkHashPassword == false)
+            {
+                return Response.Failed(XUserErrors.WrongPassword);
+            }
+
+            // Обновляем хеш пароля
+            user.PasswordHash = XHashHelper.GetHash(changePassword.NewPassword);
+
+            _dataStorage.Update(user);
+            await _dataStorage.SaveChangesAsync(token);
+
+            return Response.Succeed("Пароль успешно изменен");
         }
         #endregion
     }

@@ -50,6 +50,22 @@ namespace Lotus.Account
         /// <param name="token">Токен отмены.</param>
         /// <returns>Пользователь.</returns>
         Task<Response> RegisterAsync(RegisterParametersDto registerParameters, CancellationToken token);
+
+        /// <summary>
+        /// Обновление информации о пользователе.
+        /// </summary>
+        /// <param name="userInfo">Информация о пользователе.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Общий результат операции.</returns>
+        Task<Response> UpdateUserInfo(UserAuthorizeInfo userInfo, CancellationToken token);
+
+        /// <summary>
+        /// Изменить пароль пользователя.
+        /// </summary>
+        /// <param name="changePassword">Данные для смены пароля.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Общий результат операции.</returns>
+        Task<Response> ChangePassword(ChangePasswordDto changePassword, CancellationToken token);
     }
     /**@}*/
 }

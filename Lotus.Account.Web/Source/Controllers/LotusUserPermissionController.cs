@@ -4,8 +4,6 @@ using Lotus.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using OpenIddict.Validation.AspNetCore;
-
 namespace Lotus.Account
 {
     /** \addtogroup AccountWebApiController
@@ -24,12 +22,12 @@ namespace Lotus.Account
         /// <summary>
         /// Конструктор инициализирует объект класса указанными параметрами.
         /// </summary>
-        /// <param name="positionService">Интерфейс сервиса для работы с разрешениями.</param>
+        /// <param name="permissionService">Интерфейс сервиса для работы с разрешениями.</param>
         /// <param name="logger">Интерфейс сервиса логгера.</param>
-        public UserPermissionController(ILotusUserPermissionService positionService,
+        public UserPermissionController(ILotusUserPermissionService permissionService,
         ILogger<UserPermissionController> logger)
         {
-            _permissionService = positionService;
+            _permissionService = permissionService;
             _logger = logger;
         }
         #endregion
@@ -38,45 +36,45 @@ namespace Lotus.Account
         /// <summary>
         /// Создание разрешения по указанным данным.
         /// </summary>
-        /// <param name="positionCreate">Параметры для создания разрешения.</param>
+        /// <param name="permissionCreate">Параметры для создания разрешения.</param>
         /// <param name="token">Токен отмены.</param>
         /// <returns>Разрешение.</returns>
         [HttpPost("create")]
         [ProducesResponseType(typeof(Response<UserPermissionDto>), StatusCodes.Status201Created)]
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Create([FromBody] UserPermissionCreateRequest positionCreate, CancellationToken token)
+        [Authorize(AuthenticationSchemes = XAuthSchemeConstants.CookieAndOpenIddict)]
+        public async Task<IActionResult> Create([FromBody] UserPermissionCreateRequest permissionCreate, CancellationToken token)
         {
-            var result = await _permissionService.CreateAsync(positionCreate, token);
+            var result = await _permissionService.CreateAsync(permissionCreate, token);
             return SendResponse(result);
         }
 
         /// <summary>
         /// Обновление данных указанного разрешения.
         /// </summary>
-        /// <param name="positionUpdate">Параметры обновляемого разрешения.</param>
+        /// <param name="permissionUpdate">Параметры обновляемого разрешения.</param>
         /// <param name="token">Токен отмены.</param>
         /// <returns>Разрешение.</returns>
         [HttpPut("update")]
         [ProducesResponseType(typeof(Response<UserPermissionDto>), StatusCodes.Status200OK)]
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Update([FromBody] UserPermissionDto positionUpdate, CancellationToken token)
+        [Authorize(AuthenticationSchemes = XAuthSchemeConstants.CookieAndOpenIddict)]
+        public async Task<IActionResult> Update([FromBody] UserPermissionDto permissionUpdate, CancellationToken token)
         {
-            var result = await _permissionService.UpdateAsync(positionUpdate, token);
+            var result = await _permissionService.UpdateAsync(permissionUpdate, token);
             return SendResponse(result);
         }
 
         /// <summary>
         /// Получение списка разрешений.
         /// </summary>
-        /// <param name="positionRequest">Параметры получения списка.</param>
+        /// <param name="permissionRequest">Параметры получения списка.</param>
         /// <param name="token">Токен отмены.</param>
         /// <returns>Список разрешений.</returns>
         [HttpGet("getAll")]
         [ProducesResponseType(typeof(ResponsePage<UserPermissionDto>), StatusCodes.Status200OK)]
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetAll([FromQuery] UserPermissionsRequest positionRequest, CancellationToken token)
+        [Authorize(AuthenticationSchemes = XAuthSchemeConstants.CookieAndOpenIddict)]
+        public async Task<IActionResult> GetAll([FromQuery] UserPermissionsRequest permissionRequest, CancellationToken token)
         {
-            var result = await _permissionService.GetAllAsync(positionRequest, token);
+            var result = await _permissionService.GetAllAsync(permissionRequest, token);
             return SendResponse(result);
         }
 
@@ -87,7 +85,7 @@ namespace Lotus.Account
         /// <param name="token">Токен отмены.</param>
         /// <returns>Статус успешности.</returns>
         [HttpDelete("delete")]
-        [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = XAuthSchemeConstants.CookieAndOpenIddict)]
         public async Task<IActionResult> Delete([FromQuery] int id, CancellationToken token)
         {
             var result = await _permissionService.DeleteAsync(id, token);

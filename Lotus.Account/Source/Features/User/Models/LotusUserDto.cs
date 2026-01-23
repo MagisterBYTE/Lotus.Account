@@ -21,6 +21,11 @@ namespace Lotus.Account
         public string Login { get; set; } = null!;
 
         /// <summary>
+        /// Никнейм пользователя.
+        /// </summary>
+        public string Nickname { get; set; } = string.Empty;
+
+        /// <summary>
         /// Почта пользователя.
         /// </summary>
         public string? Email { get; set; }
@@ -29,6 +34,11 @@ namespace Lotus.Account
         /// Статус потверждение почты.
         /// </summary>
         public bool EmailConfirmed { get; set; }
+
+        /// <summary>
+        /// Хешированное значение идентификатора для прямого доступа.
+        /// </summary>
+        public string? HashId { get; set; }
 
         //
         // ПЕРСОНАЛЬНЫЕ ДАННЫЕ
@@ -93,7 +103,7 @@ namespace Lotus.Account
         /// <summary>
         /// Идентификатор аватарв.
         /// </summary>
-        public Guid? AvatarId { get; set; }
+        public string? AvatarId { get; set; }
         #endregion
     }
     /**@}*/

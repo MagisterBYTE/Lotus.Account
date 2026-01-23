@@ -66,7 +66,15 @@ namespace Lotus.Account
         /// <inheritdoc/>
         public async Task<Response<UserDto>> UpdateAsync(UserDto userUpdate, CancellationToken token)
         {
+            var entity = await _dataStorage.GetByIdAsync<User, Guid>(userUpdate.Id, token);
+
+            if (entity == null)
+            {
+                return Response<UserDto>.Failed(XUserErrors.UserNotFound);
+            }
+
             var user = userUpdate.Adapt<User>();
+            user.PasswordHash = entity.PasswordHash;
 
             _dataStorage.Update(user);
             await _dataStorage.SaveChangesAsync(token);

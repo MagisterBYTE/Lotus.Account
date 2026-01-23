@@ -3,6 +3,7 @@ using System;
 using Lotus.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lotus.Account.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    partial class AccountDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260118151819_AddNikname")]
+    partial class AddNikname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +78,7 @@ namespace Lotus.Account.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<string>("Nickname")
+                    b.Property<string>("Nikname")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
@@ -127,7 +130,7 @@ namespace Lotus.Account.Migrations
                             Login = "DanielDem",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Даниил",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "012f28fd2973783520fa3115f886102a09c8a15e",
                             Patronymic = "Сергеевич",
                             RoleId = 1,
@@ -145,7 +148,7 @@ namespace Lotus.Account.Migrations
                             Login = "SeniorEditor",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Мария",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "32c404655d2e85a15edca3d2e3fbc5a46548b366",
                             Patronymic = "Петровна",
                             PostId = 2,
@@ -164,7 +167,7 @@ namespace Lotus.Account.Migrations
                             Login = "ContentManager",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Алексей",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "45e6b7fc636bea009563b827cc5bbe3dcf736866",
                             Patronymic = "Александрович",
                             PostId = 2,
@@ -183,7 +186,7 @@ namespace Lotus.Account.Migrations
                             Login = "Moderator",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Ольга",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "e7b96f3e8611f382aacf582b5e1f3093e16e5396",
                             Patronymic = "Сергеевна",
                             PostId = 3,
@@ -202,7 +205,7 @@ namespace Lotus.Account.Migrations
                             Login = "AssistantEditor",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Сергей",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "e97e7fab6e759c9b07f244c9992f326ed8d54b21",
                             Patronymic = "Игоревич",
                             PostId = 1,
@@ -221,7 +224,7 @@ namespace Lotus.Account.Migrations
                             Login = "NewsEditor",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Елена",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "fa0ec050421ef5ba51fe018a5353bd4a8955836f",
                             Patronymic = "Андреевна",
                             PostId = 1,
@@ -240,7 +243,7 @@ namespace Lotus.Account.Migrations
                             Login = "HrSpecialist",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Анна",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "ba7a813321daaa2e5e876e868c980ba01cb17c5e",
                             Patronymic = "Владимировна",
                             PostId = 1,
@@ -259,7 +262,7 @@ namespace Lotus.Account.Migrations
                             Login = "DepartmentManager",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Дмитрий",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "5a85bbe33e342ac9b1a2ad2abb6125c3a100b197",
                             Patronymic = "Николаевич",
                             PostId = 4,
@@ -278,7 +281,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserIvanSidorov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Иван",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "0fc688ae3631ec2dde193be859af930dcfe99e32",
                             Patronymic = "Михайлович",
                             RoleId = 100,
@@ -296,7 +299,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserEkaterinaKuzmina",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Екатерина",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "6edcb8a7c16928ad141fa67d307fe55d6bc1df03",
                             Patronymic = "Александровна",
                             RoleId = 100,
@@ -314,7 +317,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserPetrVolkov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Петр",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "0c43b441690a3e8864b80f1ffa2df97785a4a3c7",
                             Patronymic = "Сергеевич",
                             RoleId = 100,
@@ -332,7 +335,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserNataliaFedorova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Наталия",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "daee69ffeb9f6caf8f909ad6deaaa0c9b7d05533",
                             Patronymic = "Ивановна",
                             RoleId = 100,
@@ -350,7 +353,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserAndreyMorozov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Андрей",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "7db05ccba601bebeba0a44cdfa822c2cf90c8b91",
                             Patronymic = "Петрович",
                             RoleId = 100,
@@ -368,7 +371,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserTatianaOrlova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Татьяна",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "98325980136d016b62bc5901b58d21bef2873a32",
                             Patronymic = "Владимировна",
                             RoleId = 100,
@@ -386,7 +389,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserMikhailBelov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Михаил",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "64ef46a98948a6b3004344a92439268f2821439c",
                             Patronymic = "Андреевич",
                             RoleId = 100,
@@ -404,7 +407,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserSvetlanaKomarova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Светлана",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "75846a576cd353c9c40189d1e0e0fd196c474cc8",
                             Patronymic = "Николаевна",
                             RoleId = 100,
@@ -422,7 +425,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserVladimirEgorov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Владимир",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "6befe3e5862aaf5ad4d01a92506fb2ab3fc17500",
                             Patronymic = "Викторович",
                             RoleId = 100,
@@ -440,7 +443,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserJuliaZhukova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Юлия",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "f898451c1aa7f8588c50cefd2bacb210b3e03d38",
                             Patronymic = "Алексеевна",
                             RoleId = 100,
@@ -458,7 +461,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserRomanKirillov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Роман",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "e59cdd89c7d2db6c6a15f811d329f8c0428f7995",
                             Patronymic = "Олегович",
                             RoleId = 100,
@@ -476,7 +479,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserAlenaSemenova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Алена",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "487cc7ba340b0239e9bdbbdd0ba3c34573c8d6cc",
                             Patronymic = "Дмитриевна",
                             RoleId = 100,
@@ -494,7 +497,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserArtemGusev",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Артем",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "5c2368889e676fed0a01f9ccef9765b79e9488ab",
                             Patronymic = "Васильевич",
                             RoleId = 100,
@@ -512,7 +515,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserLarisaTitova",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Лариса",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "0c432e7051a5390da240440859dc78f5fb6cb909",
                             Patronymic = "Юрьевна",
                             RoleId = 100,
@@ -530,7 +533,7 @@ namespace Lotus.Account.Migrations
                             Login = "UserPavelRybakov",
                             Modified = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Павел",
-                            Nickname = "",
+                            Nikname = "",
                             PasswordHash = "858455381aafb12a1a9f3b5bea077296afcc2877",
                             Patronymic = "Геннадьевич",
                             RoleId = 100,

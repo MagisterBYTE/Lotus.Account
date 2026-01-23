@@ -9,6 +9,7 @@ namespace Lotus.Account
     /// </summary>
     public class UserPermissionsRequest : Request
     {
+        
     }
     /**@}*/
 }

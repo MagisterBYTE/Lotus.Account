@@ -87,6 +87,12 @@ namespace Lotus.Account
         public string Login { get; set; } = null!;
 
         /// <summary>
+        /// Никнейм пользователя.
+        /// </summary>
+        [MaxLength(20)]
+        public string Nickname { get; set; } = string.Empty;
+
+        /// <summary>
         /// Почта пользователя.
         /// </summary>
         [MaxLength(50)]
