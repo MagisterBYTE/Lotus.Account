@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLotusAccountCors(builder.Configuration);
 builder.Services.AddOptions();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHealthChecks();
 
 //
 // Сервисы контролеров и сессии
@@ -63,6 +64,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 

@@ -1,5 +1,4 @@
 import { RequestHelper, type IResponse } from 'lotus-core/modules/requestAndResponse';
-import { AppApiService } from '#app';
 import { AuthService } from '#modules/auth';
 import type { IUserPermissionCreate, IUserPermissionsRequest, IUserPermissionsResponse } from './domain/types';
 import type { IUserPermissionDatasave } from './domain/types/UserPermission';
@@ -36,20 +35,19 @@ export class UserPermissionServiceClass
   public async getAll(permissionRequest: IUserPermissionsRequest, signal?: AbortSignal):Promise<IUserPermissionsResponse>
   {
     const url = 'api/UserPermission/getAll';
-    const search: URLSearchParams = RequestHelper.createURLSearchParams(permissionRequest);
+    const searchQuery: URLSearchParams = RequestHelper.createURLSearchParams(permissionRequest);
 
-    const response = await AuthService.authApiService.get<IUserPermissionsResponse>(url, search, { signal: signal });
+    const response = await AuthService.authApiService.get<IUserPermissionsResponse>(url, searchQuery, { signal: signal });
     return response;
   }
 
   public async remove(id: number): Promise<IResponse> 
   {
-    const baseUrl = 'api/UserPermission/delete';
+    const url = 'api/UserPermission/delete';
     const deleteQuery: URLSearchParams = new URLSearchParams();
     deleteQuery.append('id', id.toString());
-    const url = AppApiService.buildFullUrl(baseUrl, deleteQuery);
 
-    const response = await AuthService.authApiService.delete<IResponse>(url);
+    const response = await AuthService.authApiService.delete<IResponse>(url, deleteQuery);
     return response;
   }
   // #endregion

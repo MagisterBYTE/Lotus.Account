@@ -1,5 +1,5 @@
 import { Button, Divider } from '@mantine/core';
-import { TextField } from 'lotus-ui-react/components/Controls';
+import { TextInput } from 'lotus-ui-react/components/Inputs';
 import { useInstanceProxy } from 'lotus-ui-react/hooks';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
 import { useState } from 'react';
@@ -41,7 +41,7 @@ export function ProfileForm()
 
   return (
     <ContainerForm hasDivider header={LocalizationAccount.data.account.profile} spacing={'lg'}>
-      <TextField
+      <TextInput
         inlinePlace
         error={accountProfile.validationStatus.getErrorByKey('nick')}
         label="Nickname"
@@ -49,13 +49,11 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.nickname,
-          onChange: (e) => { accountProfile.setNickname(e.target.value); }
-        }}
+        value={accountProfile?.nickname}
+        onChangeValue={(value) => { accountProfile.setNickname(value); }}
       />
 
-      <TextField
+      <TextInput
         inlinePlace
         required
         error={accountProfile.validationStatus.getErrorByKey('email')}
@@ -64,15 +62,13 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.email,
-          onChange: (e) => { accountProfile.setEmail(e.target.value); }
-        }}
+        value={accountProfile?.email}
+        onChangeValue={(value) => { accountProfile.setEmail(value); }}
       />
 
       <Divider variant="dotted" />
 
-      <TextField
+      <TextInput
         inlinePlace
         error={accountProfile.validationStatus.getErrorByKey('name')}
         label={LocalizationAccount.data.account.name}
@@ -80,13 +76,11 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.name,
-          onChange: (e) => { accountProfile.setName(e.target.value); }
-        }}
+        value={accountProfile?.name}
+        onChangeValue={(value) => { accountProfile.setName(value); }}
       />
 
-      <TextField
+      <TextInput
         inlinePlace
         error={accountProfile.validationStatus.getErrorByKey('surname')}
         label={LocalizationAccount.data.account.surname}
@@ -94,15 +88,13 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.surname,
-          onChange: (e) => { accountProfile.setSurname(e.target.value); }
-        }}
+        value={accountProfile?.surname}
+        onChangeValue={(value) => { accountProfile.setSurname(value); }}
       />
 
       <Divider />
 
-      <TextField
+      <TextInput
         inlinePlace
         error={accountProfile.validationStatus.getErrorByKey('whereabouts')}
         label={LocalizationAccount.data.account.whereabouts}
@@ -110,13 +102,11 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.whereabouts,
-          onChange: (e) => { accountProfile.setWhereabouts(e.target.value); }
-        }}
+        value={accountProfile?.whereabouts}
+        onChangeValue={(value) => { accountProfile.setWhereabouts(value); }}
       />
 
-      <TextField
+      <TextInput
         inlinePlace
         error={accountProfile.validationStatus.getErrorByKey('interests')}
         label={LocalizationAccount.data.account.interests}
@@ -124,10 +114,8 @@ export function ProfileForm()
           w: labelWidth
         }}
         m={'xxs'}
-        textInputProps={{
-          value: accountProfile?.interests,
-          onChange: (e) => { accountProfile.setInterests(e.target.value); }
-        }}
+        value={accountProfile?.interests}
+        onChangeValue={(value) => { accountProfile.setInterests(value); }}
       />
 
       <Button disabled={!accountProfile.validate()} loading={isUpdate} radius="sm"

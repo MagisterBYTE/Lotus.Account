@@ -209,7 +209,7 @@ export class AuthApiService extends AppApiService
     const config = new ApiRequestConfig();
     config.setCredentials();
 
-    const response = await this.get<IUserAuthorizeInfo>(url, config);
+    const response = await this.get<IUserAuthorizeInfo>(url, undefined, config);
     return response;
   }
 
@@ -240,7 +240,7 @@ export class AuthApiService extends AppApiService
     const config = new ApiRequestConfig();
     config.setCredentials();
 
-    const response = await this.get<IUserAuthorizeInfo>(url, config);
+    const response = await this.get<IUserAuthorizeInfo>(url, undefined, config);
     return response;
   }
   // #endregion

@@ -12,7 +12,7 @@ export default defineConfig({
       key: fs.readFileSync(path.resolve(__dirname, "./certificates/localhost-key.pem")),
     },
     port: 3000,
-    host: "localhost",
+    host: '0.0.0.0', // Разрешает подключения извне
   },
   source: {
     entry: {

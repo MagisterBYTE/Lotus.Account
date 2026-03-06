@@ -1,5 +1,5 @@
 import { Box } from 'lotus-ui-react/components/Layout';
-import { RegistrationForm } from '../../modules/auth/ui/RegistrationForm';
+import { RegistrationForm } from '#modules/auth';
 
 export interface IRegistrationPageProps
 {

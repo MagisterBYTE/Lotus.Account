@@ -49,6 +49,13 @@ namespace Lotus.Account
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Restrict))
                 .HasKey(nameof(UserRolePermissionRelation.Id));
+
+            model
+                .Property(e => e.Id)
+                // Используем стандартную Identity-колонку
+                .UseIdentityByDefaultColumn()
+                // Настраиваем стартовое значение для системной последовательности
+                .HasIdentityOptions(startValue: 1001);
         }
         #endregion
 

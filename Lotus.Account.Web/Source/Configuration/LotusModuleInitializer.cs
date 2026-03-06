@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 
+using static System.Net.WebRequestMethods;
+
 namespace Lotus.Account
 {
     /**
@@ -41,13 +43,13 @@ namespace Lotus.Account
             IConfiguration configuration)
         {
             var frontSettings = configuration.GetSection(FrontSettings.Section).Get<FrontSettings>()!;
-
+            const string devTunnels = "https://v0x6bfwb-5000.euw.devtunnels.ms";
             services.AddCors(options =>
             {
-                options.AddPolicy(AllowLocalWithCredentials,
+                options.AddPolicy(AllowLocalWithCredentials, 
                     policy =>
                     {
-                        policy.WithOrigins(frontSettings.MainUri)
+                        policy.WithOrigins(frontSettings.MainUri, devTunnels, "https://192.168.0.103:3000", "http://192.168.0.103:3000")
                               .AllowAnyHeader()
                               .AllowAnyMethod()
                               .AllowCredentials();

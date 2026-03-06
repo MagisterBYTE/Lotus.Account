@@ -78,7 +78,7 @@ namespace Lotus.Account
                 return Response.Failed(XUserPermissionErrors.NotFound);
             }
 
-            if (entity.Id < 4)
+            if (entity.Id < 1000)
             {
                 return Response.Failed(XUserPermissionErrors.NotDeleteConst);
             }

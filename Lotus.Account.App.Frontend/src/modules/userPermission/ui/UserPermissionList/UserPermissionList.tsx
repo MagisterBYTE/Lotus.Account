@@ -1,14 +1,16 @@
 import { LocalizationCore } from 'lotus-core/localization';
 import { ResponseHelper, type IRequest, type IResponse, type IResponsePage } from 'lotus-core/modules/requestAndResponse';
-import { TableView } from 'lotus-ui-react/components/DataView';
+import type { TKey } from 'lotus-core/types';
+import { TableView, TableViewPropsPreset } from 'lotus-ui-react/components/DataView';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
 import { UserPermissionService } from '../../UserPermissionService';
-import { UserPermissionHelper } from '../../domain/UserPermissionHelper';
-import { UserPermissionObjectInfo } from '../../domain/UserPermissionObjectInfo';
+import { UserPermissionHelper, UserPermissionObjectInfo, UserPermissionValidator } from '../../domain';
 import type { IUserPermission } from '../../domain/types';
 
 export function UserPermissionList()
 {
+  const validator = new UserPermissionValidator();
+
   // #region Table methods
   const onGetItems = async (filter: IRequest): Promise<IResponsePage<IUserPermission>> =>
   {
@@ -43,45 +45,32 @@ export function UserPermissionList()
       return Promise.resolve(response);
     }
   };
+
+  const onDeleteItem = async (id: TKey): Promise<IResponse> =>
+  {
+    try
+    {
+      const response = await UserPermissionService.remove(Number(id));
+      Notifications.showSuccess(LocalizationCore.data.actions.deletingSucceed);
+      return response;
+    }
+    catch (error)
+    {
+      const response = ResponseHelper.responseFromErrorResult(error);
+      Notifications.showError(error, { title: LocalizationCore.data.actions.deletingFailed });
+      return Promise.resolve(response);
+    }
+  };
   // #endregion
 
   return (
     <TableView<IUserPermission> 
-      defaultColumn={{
-        minSize: 100,
-        maxSize: 300,
-        size: 260
-      }}
-      displayColumnDefOptions={{
-        'mrt-row-actions': 
-        {
-          size: 240,
-          grow: true
-        },
-        'mrt-row-select': {
-          size: 10, // adjust the size of the row select column
-          grow: false // new in v2.8 (default is false for this column)
-        },
-        'mrt-row-numbers': {
-          size: 10, // adjust the size of the row select column
-          grow: false // new in v2.8 (default is false for this column)
-        }
-      }}
-      enableColumnFilterModes={true}
-      enableColumnResizing={true}
-      enableEditing={true}
-      enableRowActions={true}
-      enableRowNumbers={true}
-      enableRowSelection={true}
-      enableSelectAll={true}
-      initialState={{
-        columnPinning: { right: ['mrt-row-actions'], left: ['mrt-row-expand', 'mrt-row-select'] }
-      }}
-      mantinePaperProps={{ style: { width: '100%' } }} 
       objectInfo={UserPermissionObjectInfo}
-      positionActionsColumn='last' 
+      validator={validator}
+      onDeleteItem={onDeleteItem}
       onGetItems={onGetItems}
       onUpdateItem={onUpdateItem}
+      {...TableViewPropsPreset.getCrud()}
     />
   );
 }

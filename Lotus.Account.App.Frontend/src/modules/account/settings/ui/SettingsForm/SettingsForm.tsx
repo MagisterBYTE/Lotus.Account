@@ -1,8 +1,8 @@
 import { useMantineColorScheme, type MantineColorScheme } from '@mantine/core';
 import { TLanguageTypes, type TLanguageType } from 'lotus-core/localization';
 import type { IOption } from 'lotus-core/modules/option';
-import { SegmentedField, SelectField } from 'lotus-ui-react/components/Controls';
-import { ColorSchemeOptions, type TColorScheme } from 'lotus-ui-react/designSystem/types';
+import { Segmented, Select } from 'lotus-ui-react/components/Selects';
+import { type TColorScheme, TColorSchemes } from 'lotus-ui-react/designSystem/types';
 import { useDesignSystemContext, useLocalizationContext } from 'lotus-ui-react/provider';
 import { ContainerForm } from '#components';
 import { LocalizationAccount } from '#localization';
@@ -38,12 +38,12 @@ export function SettingsForm()
 
   return (
     <ContainerForm hasDivider header={LocalizationAccount.data.account.settings} spacing={'lg'}>
-      <SegmentedField<TOptionColorScheme> inlinePlace items={ColorSchemeOptions} label={LocalizationAccount.data.account.settingsTheme}
+      <Segmented<TOptionColorScheme> inlinePlace items={TColorSchemes.getAsOptions()} label={LocalizationAccount.data.account.settingsTheme}
         labelProps={{ w: labelWidth }}
         selectedItem={selectColorScheme}
         onChangedItem={handleColorSchemeChange}
       />
-      <SelectField<TOptionLanguageType> inlinePlace items={TLanguageTypes.getOptions()} label={LocalizationAccount.data.account.settingsLang}
+      <Select<TOptionLanguageType> inlinePlace items={TLanguageTypes.getOptions()} label={LocalizationAccount.data.account.settingsLang}
         labelProps={{ w: labelWidth }}
         selectedItem={selectLanguageType} onChangedItem={handleLanguageTypeChange} />
     </ContainerForm>

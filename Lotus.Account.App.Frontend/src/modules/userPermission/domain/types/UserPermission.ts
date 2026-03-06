@@ -1,9 +1,9 @@
-import type { IEntity, TKey } from 'lotus-core/types';
+import type { IEntity } from 'lotus-core/types';
 
 /**
  * Интерфейс разрешения
  */
-export interface IUserPermission extends IEntity<TKey>
+export interface IUserPermission extends IEntity<number>
 {
   /**
    * Наименование разрешения
@@ -24,7 +24,8 @@ export interface IUserPermission extends IEntity<TKey>
 /**
  * Интерфейс разрешения для сохранения
  */
-export interface IUserPermissionDatasave extends Omit<IUserPermission, 'id'|'isNew'>
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface IUserPermissionDatasave extends Omit<IUserPermission, 'isNew'>
 {
-  id: number;
+  
 }

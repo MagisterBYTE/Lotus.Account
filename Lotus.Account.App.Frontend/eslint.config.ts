@@ -193,7 +193,7 @@ export default defineConfig([
       'no-duplicate-case': 'error',
 
       // Запрещает пустые блоки {} без комментариев
-      'no-empty': 'error',
+      'no-empty': 'off',
 
       // Запрещает лишние точки с запятой
       'no-extra-semi': 'error',

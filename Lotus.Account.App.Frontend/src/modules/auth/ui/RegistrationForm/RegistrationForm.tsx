@@ -1,13 +1,14 @@
-import { Button, Checkbox, TextInput } from '@mantine/core';
+import { Button, Checkbox } from '@mantine/core';
 import type { IResult } from 'lotus-core/types';
 import { Divider } from 'lotus-ui-react/components/Display';
+import { TextInput } from 'lotus-ui-react/components/Inputs';
 import { Box, VerticalStack } from 'lotus-ui-react/components/Layout';
 import { useProxyObject } from 'lotus-ui-react/hooks';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { LocalizationAccount } from '#localization';
-import { RegisterParameters } from '../domain/RegisterParameters';
+import { RegisterParameters } from '../../domain';
 
 export interface IRegistrationFormProps
 {
@@ -17,13 +18,12 @@ export interface IRegistrationFormProps
   pathSuccess: string;
 }
 
-export const RegistrationForm: React.FC<IRegistrationFormProps> = (props: IRegistrationFormProps) =>
+export function RegistrationForm(props: IRegistrationFormProps)
 {
   const { pathSuccess } = props;
 
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isRegistering, setRegistering] = useState(false);
 
   const registerParameters = useProxyObject({ object: new RegisterParameters() });
@@ -65,41 +65,50 @@ export const RegistrationForm: React.FC<IRegistrationFormProps> = (props: IRegis
 
       <TextInput
         required
-        error={registerParameters.invalidLogin()}
-        label="Login"
-        placeholder={LocalizationAccount.data.auth.placeholderLogin}
-        radius="sm"
+        error={registerParameters.validationStatus.getErrorByKey('login')}
+        label="login"
+        textInputProps={
+          {
+            placeholder: LocalizationAccount.data.auth.placeholderLogin,
+            radius: 'sm'
+          }
+        }
         value={registerParameters.login}
-        onChange={(event) => registerParameters.setLogin(event.target.value, true)}
+        onChange={(event) => registerParameters.setLogin(event.target.value)}
       />
 
       <TextInput
         required
-        error={registerParameters.invalidEmail()}
-        label="Email"
-        placeholder={LocalizationAccount.data.auth.placeholderLogin}
-        radius="sm"
+        error={registerParameters.validationStatus.getErrorByKey('email')}
+        label="email"
+        textInputProps={
+          {
+            placeholder: LocalizationAccount.data.auth.placeholderLogin,
+            radius: 'sm'
+          }
+        }
         value={registerParameters.email}
-        onChange={(event) => { registerParameters.setEmail(event.target.value, true); }}
+        onChange={(event) => { registerParameters.setEmail(event.target.value); }}
       />
 
       <Checkbox
         checked={registerParameters.term}
         label={LocalizationAccount.data.auth.term}
-        onChange={(event) => registerParameters.setTerm(event.currentTarget.checked, true)}
+        onChange={(event) => registerParameters.setTerm(event.currentTarget.checked)}
       />
 
       <Checkbox
         checked={registerParameters.rememberMe}
         label={LocalizationAccount.data.auth.remember}
-        onChange={(event) => registerParameters.setRememberMe(event.currentTarget.checked, true)}
+        onChange={(event) => registerParameters.setRememberMe(event.currentTarget.checked)}
       />
 
       <Button 
-      //  loading={isRegistering} 
+        disabled={!registerParameters.validate()}
+        loading={isRegistering} 
         radius="sm" onClick={() => { void handleButtonRegister(); }}>
         {LocalizationAccount.data.auth.register}
       </Button>
     </VerticalStack>
   );
-};
+}

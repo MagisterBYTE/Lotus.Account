@@ -1,7 +1,7 @@
 import type { IResponse } from 'lotus-core/modules/requestAndResponse';
 import type { IResult } from 'lotus-core/types';
 import { AuthService, type IUserAuthorizeInfo } from '#modules/auth';
-import type { IChangePassword } from './security/domain';
+import type { IAccountChangePassword } from './security';
 
 
 export class AccountServiceClass
@@ -36,11 +36,11 @@ export class AccountServiceClass
     return response;
   }
 
-  public async changePassword(changePassword: IChangePassword):Promise<IResult>
+  public async changePassword(changePassword: IAccountChangePassword):Promise<IResult>
   {
     const url = 'api/Authorize/changePassword';
   
-    const response = await AuthService.authApiService.post<IResponse, IChangePassword>(url, changePassword);
+    const response = await AuthService.authApiService.post<IResponse, IAccountChangePassword>(url, changePassword);
     return response.result!;
   }
   // #endregion

@@ -2,8 +2,8 @@ import { Button, Checkbox, Divider, useMantineTheme } from '@mantine/core';
 import { IconBrandGoogle, IconBrandVk } from '@tabler/icons-react';
 import { Environment } from 'lotus-core/environment';
 import type { IResult } from 'lotus-core/types';
-import { TextField } from 'lotus-ui-react/components/Controls';
 import { Text } from 'lotus-ui-react/components/Display';
+import { TextInput } from 'lotus-ui-react/components/Inputs';
 import { HorizontalStack } from 'lotus-ui-react/components/Layout';
 import { useInstanceProxy } from 'lotus-ui-react/hooks';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router';
 import { RoutesAccount } from '#app';
 import { ContainerForm } from '#components';
 import { LocalizationAccount } from '#localization';
-import { useAuthContext } from '../../../../provider/auth';
+import { useAuthContext } from '#provider';
 import { AuthService } from '../../AuthService';
 import { LoginParameters, UserAuthorizeInfo } from '../../domain';
 
@@ -122,38 +122,38 @@ export function LoginForm(props: ILoginFormProps)
 
       <Divider label={LocalizationAccount.data.auth.continueWith} labelPosition="center" my="md" />
 
-      <TextField
+      <TextInput
         inlinePlace
         required
+        disabled={isLogging}
         error={loginParameters.validationStatus.getErrorByKey('login')}
         label={LocalizationAccount.data.auth.login}
         labelProps={{
           w: '120px'
         }}
         textInputProps={{
-          disabled: isLogging,
-          value: loginParameters.login,
           placeholder: LocalizationAccount.data.auth.placeholderLogin,
-          onChange: (event) => loginParameters.setLogin(event.target.value, true),
           radius: 'sm'
         }}
+        value={loginParameters.login}
+        onChangeValue={(value) => loginParameters.setLogin(value, true)}
       />
 
-      <TextField
+      <TextInput
         inlinePlace
         required
+        disabled={isLogging}
         error={loginParameters.validationStatus.getErrorByKey('password')}
         label={LocalizationAccount.data.auth.password}
         labelProps={{
           w: '120px'
         }}
         textInputProps={{
-          disabled: isLogging,
-          value: loginParameters.password,
           placeholder: LocalizationAccount.data.auth.placeholderPassword,
-          onChange: (event) => loginParameters.setPassword(event.target.value, true),
           radius: 'sm'
         }}
+        value={loginParameters.password}
+        onChangeValue={(value) => loginParameters.setPassword(value)}
       />
 
       {isDebug && (
@@ -162,7 +162,7 @@ export function LoginForm(props: ILoginFormProps)
             checked={loginParameters.rememberMe}
             disabled={isLogging}
             label={LocalizationAccount.data.auth.remember}
-            onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
+            onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked)}
           />
           <Button radius="sm" onClick={handleDebug}>
             Debug Input
@@ -175,18 +175,23 @@ export function LoginForm(props: ILoginFormProps)
           checked={loginParameters.rememberMe}
           disabled={isLogging}
           label={LocalizationAccount.data.auth.remember}
-          onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked, true)}
+          onChange={(event) => loginParameters.setRememberMe(event.currentTarget.checked)}
         />
       )}
 
-      <Button disabled={!loginParameters.validate()} loading={isLogging} radius="sm" 
-      
+      <Button
+        disabled={!loginParameters.validate()}
+        loading={isLogging}
+        radius="sm"
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onClick={handleLogin}>
+        onClick={handleLogin}
+      >
         {LocalizationAccount.data.auth.comeIn}
       </Button>
 
-      <Text fontSize={'sm'}>Нет аккаунта,<Link to={RoutesAccount.register.path}> зарегистрироваться</Link></Text>
+      <Text fontSize={'sm'}>
+        Нет аккаунта,<Link to={RoutesAccount.register.path}> зарегистрироваться</Link>
+      </Text>
     </ContainerForm>
   );
 }

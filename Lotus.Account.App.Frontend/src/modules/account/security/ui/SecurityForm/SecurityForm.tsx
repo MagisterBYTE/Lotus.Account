@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
-import { TextField } from 'lotus-ui-react/components/Controls';
 import { Label } from 'lotus-ui-react/components/Display';
+import { TextInput } from 'lotus-ui-react/components/Inputs';
 import { useInstanceProxy } from 'lotus-ui-react/hooks';
 import { Notifications } from 'lotus-ui-react/modules/feedback';
 import { useState } from 'react';
@@ -21,16 +21,16 @@ export function SecurityForm()
   const changePassword = useInstanceProxy(() => new AccountChangePassword(userAuthInfo?.hashId ?? ''));
 
   // #region  Handlers
-  const handleUpdatePassword = async () =>
+  const handleUpdatePassword = async () => 
   {
     setUpdatePassword(true);
-    try
+    try 
     {
       const result = await AccountService.changePassword(changePassword);
       Notifications.showResult(result);
       setUpdatePassword(false);
     }
-    catch (error)
+    catch (error) 
     {
       setUpdatePassword(false);
       Notifications.showError(error);
@@ -44,24 +44,42 @@ export function SecurityForm()
         {LocalizationAccount.data.account.securityChangePassword}
       </Label>
 
-      <TextField inlinePlace error={changePassword.validationStatus.getErrorByKey('currentPassword')}
-        label={LocalizationAccount.data.account.securityCurrentPassword} labelProps={{ w: labelWidth }}
-        textInputProps={{ value: changePassword.currentPassword, onChange: (e) => { changePassword.setCurrentPassword(e.target.value); } }} />
+      <TextInput
+        inlinePlace
+        error={changePassword.validationStatus.getErrorByKey('currentPassword')}
+        label={LocalizationAccount.data.account.securityCurrentPassword}
+        labelProps={{ w: labelWidth }}
+        value={changePassword.currentPassword}
+        onChange={(e) => { changePassword.setCurrentPassword(e.target.value); }}
+      />
 
-      <TextField inlinePlace error={changePassword.validationStatus.getErrorByKey('newPassword')} 
-        label={LocalizationAccount.data.account.securityNewPassword} labelProps={{ w: labelWidth }}
-        textInputProps={{ value: changePassword.newPassword, onChange: (e) => { changePassword.setNewPassword(e.target.value); } }} />
+      <TextInput
+        inlinePlace
+        error={changePassword.validationStatus.getErrorByKey('newPassword')}
+        label={LocalizationAccount.data.account.securityNewPassword}
+        labelProps={{ w: labelWidth }}
+        value={changePassword.newPassword}
+        onChange={(e) => { changePassword.setNewPassword(e.target.value); }}
+      />
 
-      <TextField inlinePlace error={changePassword.validationStatus.getErrorByKey('confirmPassword')} 
-      
-        label={LocalizationAccount.data.account.securityConfirmPassword} labelProps={{ w: labelWidth }}
-        textInputProps={{ value: changePassword.confirmPassword, onChange: (e) => { changePassword.setConfirmPassword(e.target.value); } }} />
+      <TextInput
+        inlinePlace
+        error={changePassword.validationStatus.getErrorByKey('confirmPassword')}
+        label={LocalizationAccount.data.account.securityConfirmPassword}
+        labelProps={{ w: labelWidth }}
+        value={changePassword.confirmPassword}
+        onChange={(e) => { changePassword.setConfirmPassword(e.target.value); }}
+      />
 
-      <Button disabled={!changePassword.validate()} loading={isUpdatePassword} radius="sm"
+      <Button
+        disabled={!changePassword.validate()}
+        loading={isUpdatePassword}
+        radius="sm"
         style={{ alignSelf: 'flex-end' }}
         w={'max-content'}
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onClick={handleUpdatePassword}>
+        onClick={handleUpdatePassword}
+      >
         {LocalizationAccount.data.account.securityChangePasswordButton}
       </Button>
     </ContainerForm>

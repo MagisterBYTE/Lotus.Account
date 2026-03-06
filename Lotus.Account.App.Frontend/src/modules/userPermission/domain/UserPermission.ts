@@ -1,7 +1,7 @@
 import { GuidHelper, ObjectHelper } from 'lotus-core/helpers';
 import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
 import { ValidationResult } from 'lotus-core/modules/validation';
-import { type IConstantable, type IEditable, type IDatasavable, type TKey } from 'lotus-core/types';
+import { type IConstantable, type IEditable, type IDatasavable } from 'lotus-core/types';
 import { Assert } from 'lotus-core/utils';
 import type { IUserPermission, IUserPermissionDatasave } from './types/UserPermission';
 
@@ -11,34 +11,35 @@ import type { IUserPermission, IUserPermissionDatasave } from './types/UserPermi
 export class UserPermission extends RefreshProxy implements IUserPermission, IConstantable, IEditable, IDatasavable<IUserPermissionDatasave>
 {
   // #region Fields
-  public readonly id: TKey;
+  public readonly id: number;
   public name: string;
   public displayName?: string;
   public isConst?: boolean;
   public isNew: boolean;
   public datasave?: IUserPermissionDatasave;
   public validationStatus: ValidationResult = new ValidationResult();
+  public key: string;
   // endregion
 
-  constructor(props?: IUserPermissionDatasave)
+  constructor(datasave?: IUserPermissionDatasave)
   {
     super();
-    if (props)
+    if (datasave)
     {
-      this.id = props.id;
-      this.name = props.name;
-      this.displayName = props.displayName;
-
+      this.id = datasave.id;
+      this.name = datasave.name;
+      this.displayName = datasave.displayName;
       this.isNew = false;
-      this.datasave = props;
+      this.datasave = datasave;
     }
     else
     {
-      this.id = GuidHelper.createGuid();
+      this.id = 0;
       this.name = '';
       this.displayName = '';
       this.isNew = true;
     }
+    this.key = GuidHelper.generateShortUUID();
   }
 
   // #region Update methods
@@ -157,7 +158,7 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
   {
     const datasave: IUserPermissionDatasave =
     {
-      id: this.isNew ? -1 : Number(this.id),
+      id: this.isNew ? -1 : this.id,
       name: this.name,
       displayName: this.displayName
     };

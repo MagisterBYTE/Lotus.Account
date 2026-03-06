@@ -1,9 +1,8 @@
-import { FunctionHelper } from 'lotus-core/helpers';
 import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
-import { ValidationResult } from 'lotus-core/modules/validation';
+import { ValidationResult, type IValidateObject } from 'lotus-core/modules/validation';
 import type { ILoginParameters } from './type';
 
-export class LoginParameters extends RefreshProxy implements ILoginParameters 
+export class LoginParameters extends RefreshProxy implements ILoginParameters, IValidateObject 
 {
   // #region Fields
   public login: string;
@@ -24,29 +23,31 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters
     this.hasInputLogin = false;
     this.hasInputPassword = false;
     this.validationStatus = new ValidationResult();
-    FunctionHelper.bindAllMethods(this);
   }
 
-  public setLogin(login: string, isRefreshProxy: boolean = false) 
+  // #region Update state
+  public setLogin(login: string, isRefreshProxy: boolean = true) 
   {
     this.login = login;
     this.hasInputLogin = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setPassword(password: string, isRefreshProxy: boolean = false) 
+  public setPassword(password: string, isRefreshProxy: boolean = true) 
   {
     this.password = password;
     this.hasInputPassword = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = false) 
+  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = true) 
   {
     this.rememberMe = rememberMe;
     if (isRefreshProxy) this.onRefreshProxy();
   }
+  // #endregion
 
+  // #region IValidateObject
   public validate(): boolean 
   {
     this.validationStatus.clear();
@@ -54,4 +55,5 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters
     if (this.hasInputPassword) this.validationStatus.addErrorRequired('password', this.password);
     return this.validationStatus.isValid() && this.hasInputLogin && this.hasInputPassword;
   }
+  // #endregion
 }
