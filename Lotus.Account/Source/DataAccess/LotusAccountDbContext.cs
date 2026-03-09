@@ -18,6 +18,11 @@ namespace Lotus.Account
     {
         #region Properties
         /// <summary>
+        /// Список авторизации пользователей.
+        /// </summary>
+        public DbSet<UserAuthorize> Authorizations { get; set; } = null!;
+
+        /// <summary>
         /// Список пользователей.
         /// </summary>
         public DbSet<User> Users { get; set; } = null!;

@@ -26,7 +26,6 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [developPageOpened, { open, close }] = useDisclosure(false);
 
-  // const layoutState = LayoutService.layoutState;
   const { userAuthInfo } = useAuthContext();
 
   const location = useLocation();
@@ -151,8 +150,6 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
     if (!userAuthInfo) return <></>;
     return (
       <>
-        <img alt="" src={userAuthInfo.avatarId} />
-
         <Menu shadow="md" width={200}>
           <Menu.Target>
             <Avatar alt="no image here" color="initials" name={userAuthInfo.getInitials()} size={'md'} src={userAuthInfo.avatarId} />

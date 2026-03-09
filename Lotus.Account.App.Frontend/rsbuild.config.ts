@@ -64,8 +64,6 @@ export default defineConfig({
     chunkSplit: {
       strategy: "split-by-experience",
       forceSplitting: {
-        // Выделить библиотеку axios в отдельный чанк "axios.js"
-        axios: /node_modules[\\/]axios/,
         'lotus-core': /node_modules[\\/]lotus-core/,
       },
     },

@@ -36,9 +36,12 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Publish'">
-    <ProjectReference Include="..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
     <ProjectReference Include="..\Lotus.Account.Web\Lotus.Account.Web.csproj" />
     <ProjectReference Include="..\Lotus.Account\Lotus.Account.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

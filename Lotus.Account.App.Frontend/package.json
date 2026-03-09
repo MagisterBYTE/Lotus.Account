@@ -6,6 +6,8 @@
   "scripts": {
     "build": "rsbuild build",
     "dev": "rsbuild dev --open",
+    "dev:net": "rsbuild dev --env-mode net",
+    "dev:local": "rsbuild dev --env-mode local",
     "preview": "rsbuild preview",
     "lint": "eslint ."
   },

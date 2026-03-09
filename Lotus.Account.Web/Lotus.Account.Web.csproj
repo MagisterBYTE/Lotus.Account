@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Resources\IconTemplate.png">
+    <Content Include="..\..\..\Resources\IconTemplate.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </Content>
@@ -45,9 +45,6 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Publish'">
-    <ProjectReference Include="..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
-    <ProjectReference Include="..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
-    <ProjectReference Include="..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
     <ProjectReference Include="..\Lotus.Account\Lotus.Account.csproj" />
   </ItemGroup>
 
@@ -62,6 +59,12 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="7.2.0" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="7.2.0" />
     <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
+    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
   </ItemGroup>
 
   <Target Name="PublishToNuget" Condition="'$(Configuration)'=='Publish'" AfterTargets="Build">

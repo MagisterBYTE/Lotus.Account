@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\Resources\IconTemplate.png">
+    <Content Include="..\..\..\Resources\IconTemplate.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </Content>
@@ -42,11 +42,6 @@
     <PackageReference Include="Lotus.Repository" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' != 'Publish'">
-    <ProjectReference Include="..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
-    <ProjectReference Include="..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
@@ -54,6 +49,11 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
   </ItemGroup>
 
 </Project>

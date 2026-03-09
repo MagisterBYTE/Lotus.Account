@@ -181,6 +181,9 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
 
     // Группы
     if (Assert.existValue<IUserGroup[]>(info.groups)) this.groups = [...info.groups];
+
+    // Аватар
+    if (Assert.existValue<string>(info.avatarId)) this.avatarId = info.avatarId; 
   }
 
   /**

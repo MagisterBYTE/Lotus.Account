@@ -1,5 +1,6 @@
 using System.Net;
 using System.Security.Claims;
+using System.Xml.Linq;
 
 using Lotus.Repository;
 using Lotus.Web;
@@ -36,6 +37,7 @@ namespace Lotus.Account
     {
         #region Fields
         private readonly ILotusAuthorizeService _authorizeService;
+        private readonly ILotusDeviceService _deviceService;
         private readonly ILogger<AuthorizeController> _logger;
         #endregion
 
@@ -44,9 +46,13 @@ namespace Lotus.Account
         /// Конструктор инициализирует объект класса указанными параметрами.
         /// </summary>
         /// <param name="authorizeService">Сервис для авторизации пользователя.</param>
+        /// <param name="deviceService">Сервис для работы с устройством входа пользователя.</param>
         /// <param name="logger">Сервис для логгирования.</param>
-        public AuthorizeController(ILotusAuthorizeService authorizeService, ILogger<AuthorizeController> logger)
+        public AuthorizeController(ILotusAuthorizeService authorizeService,
+            ILotusDeviceService deviceService,
+            ILogger<AuthorizeController> logger)
         {
+            _deviceService = deviceService;
             _authorizeService = authorizeService;
             _logger = logger;
         }
@@ -61,7 +67,11 @@ namespace Lotus.Account
         [HttpPost(nameof(LoginCookie))]
         public async Task<IActionResult> LoginCookie([FromBody] LoginParametersDto loginParameters)
         {
-            var response = await _authorizeService.LoginAsync(loginParameters);
+            // Устройство входа
+            var device = HttpContext.GetDeviceFromRequest();
+            var deviceId = (await _deviceService.GetOrAddAsync(device, CancellationToken.None)).Id;
+
+            var response = await _authorizeService.LoginAsync(loginParameters, deviceId);
 
             const string cookieAuth = CookieAuthenticationDefaults.AuthenticationScheme;
 
@@ -122,6 +132,7 @@ namespace Lotus.Account
         public async Task<IActionResult> GetUserInfoCookie()
         {
             const string cookieAuth = CookieAuthenticationDefaults.AuthenticationScheme;
+            const string googleAuth = GoogleDefaults.AuthenticationScheme;
 
             var result = await HttpContext.AuthenticateAsync(cookieAuth)!;
 
@@ -158,10 +169,59 @@ namespace Lotus.Account
 
                     return new JsonResult(userInfo);
                 }
-                if (claimsPrincipal.Identity?.AuthenticationType == GoogleDefaults.AuthenticationScheme)
+                if (claimsPrincipal.Identity?.AuthenticationType == googleAuth)
                 {
-                    // Есть минимальная информация в claims
+                    const string google = "Google";
+
+                    // Извлекаем минимальную информация в claims
                     var userInfo = new UserAuthorizeInfo(claimsPrincipal.Claims);
+
+                    // Сравниваем по email
+                    var email = userInfo.Email;
+
+                    // Проверяем, есть ли пользователь с таким email в вашей БД
+                    var responseUser = await _authorizeService.GetUserInfoByEmailAsync(email);
+                    var user = responseUser.Payload;
+                    if (user == null)
+                    {
+                        // Если нет — создаём нового пользователя
+                        var registerParameters = new LotusRegisterExternalParametersDto
+                        {
+                            Login = userInfo.Login ?? $"{google}_{userInfo.Name}",
+                            Email = userInfo.Email,
+                            Name = userInfo.Name,
+                            Password = userInfo.Login ?? $"{google}_{userInfo.Name}",
+                            AuthProvider = google,
+                            ExternalAuthId = userInfo.ExternalAuthId!
+                        };
+                        var registerResult = await _authorizeService.RegisterExternalUserAsync(registerParameters, CancellationToken.None);
+                        if (!registerResult.Result!.Succeeded)
+                        {
+                            return BadRequest(registerResult.Result);
+                        }
+                    }
+                    else
+                    {
+                        // Если пользователь есть, но не связан с Google — связываем
+                        if (string.IsNullOrEmpty(user.ExternalAuthId))
+                        {
+                            var updateResult = await _authorizeService.LinkExternalAuthAsync(user.HashId, "Google",
+                                userInfo.ExternalAuthId!, CancellationToken.None);
+
+                            if (updateResult.Result!.Succeeded)
+                            {
+                                return BadRequest(updateResult.Result);
+                            }
+
+                            // Надо обновить userInfo
+                            updateResult.Result.Adapt(userInfo);
+                        }
+                        else
+                        {
+                            // Надо обновить userInfo
+                            user.Adapt(userInfo);
+                        }
+                    }
 
                     userInfo.AuthScheme = GoogleDefaults.AuthenticationScheme;
                     if (result.Properties is not null)
@@ -201,6 +261,12 @@ namespace Lotus.Account
             // 3. Очищаем куку
             Response.Cookies.Delete(XRememberMeConstants.CookieName);
 
+            // Устройство выхода
+            var device = HttpContext.GetDeviceFromRequest();
+            var deviceId = (await _deviceService.GetOrAddAsync(device, CancellationToken.None)).Id;
+
+            await _authorizeService.LogoutAsync(deviceId);
+
             _logger.LogInformation("Выход пользователя: {User}", userName);
 
             return Ok();
@@ -237,10 +303,10 @@ namespace Lotus.Account
                     RememberMe = rememberMe
                 };
 
-                //var device = HttpContext.GetDeviceFromRequest();
-                //var browser = HttpContext.GetBrowserFromRequest();
+                var device = HttpContext.GetDeviceFromRequest();
+                var deviceId = (await _deviceService.GetOrAddAsync(device, CancellationToken.None)).Id;
 
-                var response = await _authorizeService.LoginAsync(parameters);
+                var response = await _authorizeService.LoginAsync(parameters, deviceId);
 
                 // 1. Неавторизован. Конкретная причина в сообщении 
                 if (response.Result != null && response.Result.Succeeded == false)
@@ -371,7 +437,11 @@ namespace Lotus.Account
             // Удаляем сессионные куки
             Response.Cookies.Delete(XRememberMeConstants.CookieName);
 
-            await _authorizeService.LogoutAsync();
+            // Устройство выхода
+            var device = HttpContext.GetDeviceFromRequest();
+            var deviceId = (await _deviceService.GetOrAddAsync(device, CancellationToken.None)).Id;
+
+            await _authorizeService.LogoutAsync(deviceId);
 
             return SignOut(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
         }
@@ -449,6 +519,8 @@ namespace Lotus.Account
                     { "prompt", "select_account" } // Всегда показывать выбор аккаунта
                 }
             };
+
+            // Как здесь зафиксировать вход через Google (если конечно будет успешно)
 
             // Это инициирует OAuth-поток и перенаправит на Google
             return Challenge(authProperties, GoogleDefaults.AuthenticationScheme);

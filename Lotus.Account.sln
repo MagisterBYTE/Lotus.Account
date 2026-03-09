@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Account", "Lotus.Acco
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{7E3AE7C2-5052-4B6D-B570-6B41AFCE343D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Core", "..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj", "{8DBBB7B8-2DD2-48CF-BB4C-A988107B170F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Core", "..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj", "{8DBBB7B8-2DD2-48CF-BB4C-A988107B170F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Repository", "..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj", "{8C009E8B-882B-4B9D-8F7C-B4D12D0F3F7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Repository", "..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj", "{8C009E8B-882B-4B9D-8F7C-B4D12D0F3F7F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{DAE8AE66-D118-4D05-967D-29A0F2F552C1}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Web.Common", "..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj", "{B8A4ED3F-28D0-4696-B773-A86AF2CEF5A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Web.Common", "..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj", "{B8A4ED3F-28D0-4696-B773-A86AF2CEF5A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lotus.Account.Web", "Lotus.Account.Web\Lotus.Account.Web.csproj", "{8233CD83-EA06-4D36-B569-8109E13F3F48}"
 EndProject

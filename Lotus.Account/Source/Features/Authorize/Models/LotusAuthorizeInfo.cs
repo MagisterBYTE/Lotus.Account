@@ -23,7 +23,12 @@ namespace Lotus.Account
         /// <summary>
         /// Дата истечения строка авторизации. 
         /// </summary>
-        public DateTime AuthExpires { get; set; } 
+        public DateTime AuthExpires { get; set; }
+
+        /// <summary>
+        /// Идентификатор пользователя внешнего провайдера
+        /// </summary>
+        public string? ExternalAuthId { get; set; }
 
         //
         // ИДЕНТИФИКАЦИЯ
@@ -166,10 +171,11 @@ namespace Lotus.Account
             
             if(first.Issuer == "Google")
             {
+                ExternalAuthId = claims.FindFirstValue(ClaimTypes.NameIdentifier);
                 Email = claims.FindFirstValue(ClaimTypes.Email)?.DecodeUnicode() ?? string.Empty;
                 Name = claims.FindFirstValue(ClaimTypes.GivenName)?.DecodeUnicode();
                 Surname = claims.FindFirstValue(ClaimTypes.Surname)?.DecodeUnicode();
-                AvatarId = claims.FindFirstValue("picture");
+                //AvatarId = claims.FindFirstValue("picture");
                 EmailConfirmed = XBooleanConverter.Parse(claims.FindFirstValue("email_verified") ?? string.Empty);
             }
             else
@@ -178,7 +184,7 @@ namespace Lotus.Account
                 Email = claims.FindFirstValue(ClaimTypes.Email)?.DecodeUnicode() ?? string.Empty;
                 Name = claims.FindFirstValue(XClaimsConstants.UserName)?.DecodeUnicode();
                 Surname = claims.FindFirstValue(ClaimTypes.Surname)?.DecodeUnicode();
-                AvatarId = claims.FindFirstValue("picture");
+                //AvatarId = claims.FindFirstValue("picture");
             }
         }
         #endregion

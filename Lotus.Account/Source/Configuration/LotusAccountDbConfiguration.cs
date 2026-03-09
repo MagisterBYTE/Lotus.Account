@@ -23,6 +23,7 @@ namespace Lotus.Account
         public static void ConfigurationAccountDatabase(ModelBuilder modelBuilder)
         {
             User.ModelCreating(modelBuilder);
+            UserAuthorize.ModelCreating(modelBuilder);
             UserPosition.ModelCreating(modelBuilder);
             UserRole.ModelCreating(modelBuilder);
             UserMessage.ModelCreating(modelBuilder);

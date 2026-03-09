@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLotusAccountCors(builder.Configuration);
 builder.Services.AddOptions();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 builder.Services.AddHealthChecks();
 
 //

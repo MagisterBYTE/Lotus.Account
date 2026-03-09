@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Lotus.Account.Migrations
 {
-    [DbContext(typeof(AccountDbContext))]
-    [Migration("20251221132040_Initial")]
+    [DbContext(typeof(AccountExtendedDbContext))]
+    [Migration("20260309143401_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Lotus.Account.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("ProductVersion", "10.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -30,6 +30,9 @@ namespace Lotus.Account.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("AuthProvider")
+                        .HasColumnType("text");
 
                     b.Property<string>("AvatarId")
                         .HasColumnType("text");
@@ -47,6 +50,9 @@ namespace Lotus.Account.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ExternalAuthId")
+                        .HasColumnType("text");
 
                     b.Property<string>("HashId")
                         .IsRequired()
@@ -77,6 +83,11 @@ namespace Lotus.Account.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
+
+                    b.Property<string>("Nickname")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -117,14 +128,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("e3182c8f-87bc-4e27-a27f-b32e3e2b8018"),
                             Birthday = new DateOnly(1984, 9, 19),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "dementevds@gmail.com",
                             EmailConfirmed = false,
                             HashId = "de37c95205934914eed14aaab97c1b4c53d31566",
                             IsLockout = false,
                             Login = "DanielDem",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Даниил",
+                            Nickname = "",
                             PasswordHash = "012f28fd2973783520fa3115f886102a09c8a15e",
                             Patronymic = "Сергеевич",
                             RoleId = 1,
@@ -134,14 +146,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("a2183c9f-98ac-5b38-b28f-c43e3e3c9029"),
                             Birthday = new DateOnly(1990, 5, 15),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "maria.ivanova@example.com",
                             EmailConfirmed = false,
                             HashId = "c6fb5e2653f796e04a2ed6f7d768f56f321c6113",
                             IsLockout = false,
                             Login = "SeniorEditor",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Мария",
+                            Nickname = "",
                             PasswordHash = "32c404655d2e85a15edca3d2e3fbc5a46548b366",
                             Patronymic = "Петровна",
                             PostId = 2,
@@ -152,14 +165,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("b3194d0a-09bd-6c49-c39a-d54f4f4da13a"),
                             Birthday = new DateOnly(1988, 7, 22),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "alex.smirnov@example.com",
                             EmailConfirmed = false,
                             HashId = "a30ba3133f994b8e1ca4abf2932619990af3eebf",
                             IsLockout = false,
                             Login = "ContentManager",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Алексей",
+                            Nickname = "",
                             PasswordHash = "45e6b7fc636bea009563b827cc5bbe3dcf736866",
                             Patronymic = "Александрович",
                             PostId = 2,
@@ -170,14 +184,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("c41a5e1b-1ace-7d5a-d4ab-e6505f5eb24b"),
                             Birthday = new DateOnly(1992, 3, 10),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "olga.petrova@example.com",
                             EmailConfirmed = false,
                             HashId = "80ce6f5080b2d8495cca23a0f08fd72b4245525a",
                             IsLockout = false,
                             Login = "Moderator",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Ольга",
+                            Nickname = "",
                             PasswordHash = "e7b96f3e8611f382aacf582b5e1f3093e16e5396",
                             Patronymic = "Сергеевна",
                             PostId = 3,
@@ -188,14 +203,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("d52b6f2c-2bdf-8e6b-e5bc-f7616f6fc35c"),
                             Birthday = new DateOnly(1995, 11, 30),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "sergey.kuznetsov@example.com",
                             EmailConfirmed = false,
                             HashId = "b91bd41bdd32e3697f8b038011b228c1676540ed",
                             IsLockout = false,
                             Login = "AssistantEditor",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Сергей",
+                            Nickname = "",
                             PasswordHash = "e97e7fab6e759c9b07f244c9992f326ed8d54b21",
                             Patronymic = "Игоревич",
                             PostId = 1,
@@ -206,14 +222,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("e63c702d-3cf0-9f7c-f6cd-08727070d46d"),
                             Birthday = new DateOnly(1991, 8, 5),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "elena.vorobeva@example.com",
                             EmailConfirmed = false,
                             HashId = "5ca09651599ee9faaca9deff228b00a34fd7e75a",
                             IsLockout = false,
                             Login = "NewsEditor",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Елена",
+                            Nickname = "",
                             PasswordHash = "fa0ec050421ef5ba51fe018a5353bd4a8955836f",
                             Patronymic = "Андреевна",
                             PostId = 1,
@@ -224,14 +241,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("f74d813e-4d01-a08d-07de-19838181e57e"),
                             Birthday = new DateOnly(1987, 4, 18),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "hr.specialist@example.com",
                             EmailConfirmed = false,
                             HashId = "896d92b3f39d0935ba3c34bef404e075a4ff4e29",
                             IsLockout = false,
                             Login = "HrSpecialist",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Анна",
+                            Nickname = "",
                             PasswordHash = "ba7a813321daaa2e5e876e868c980ba01cb17c5e",
                             Patronymic = "Владимировна",
                             PostId = 1,
@@ -242,14 +260,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("085e924f-5e12-b19e-18ef-2a949292f68f"),
                             Birthday = new DateOnly(1983, 12, 25),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "group.manager@example.com",
                             EmailConfirmed = false,
                             HashId = "6aae61b6e03db134b1247b7671d7673350836a32",
                             IsLockout = false,
                             Login = "DepartmentManager",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Дмитрий",
+                            Nickname = "",
                             PasswordHash = "5a85bbe33e342ac9b1a2ad2abb6125c3a100b197",
                             Patronymic = "Николаевич",
                             PostId = 4,
@@ -260,14 +279,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("196f7248-1a23-4c45-b567-890123456789"),
                             Birthday = new DateOnly(1993, 2, 14),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "ivan.sidorov@example.com",
                             EmailConfirmed = false,
                             HashId = "f782668d2499e6a4352906a23934082f2931ddcb",
                             IsLockout = false,
                             Login = "UserIvanSidorov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Иван",
+                            Nickname = "",
                             PasswordHash = "0fc688ae3631ec2dde193be859af930dcfe99e32",
                             Patronymic = "Михайлович",
                             RoleId = 100,
@@ -277,14 +297,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("287a8359-2b34-5d56-c678-901234567890"),
                             Birthday = new DateOnly(1994, 6, 8),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "ekaterina.kuzmina@example.com",
                             EmailConfirmed = false,
                             HashId = "cf93873eaf0fc9406ae5c5eace239003e91260c4",
                             IsLockout = false,
                             Login = "UserEkaterinaKuzmina",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Екатерина",
+                            Nickname = "",
                             PasswordHash = "6edcb8a7c16928ad141fa67d307fe55d6bc1df03",
                             Patronymic = "Александровна",
                             RoleId = 100,
@@ -294,14 +315,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("398b946a-3c45-6e67-d789-012345678901"),
                             Birthday = new DateOnly(1996, 9, 21),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "petr.volkov@example.com",
                             EmailConfirmed = false,
                             HashId = "e243cb7da6970df8c7e435a77178b20473e13c0e",
                             IsLockout = false,
                             Login = "UserPetrVolkov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Петр",
+                            Nickname = "",
                             PasswordHash = "0c43b441690a3e8864b80f1ffa2df97785a4a3c7",
                             Patronymic = "Сергеевич",
                             RoleId = 100,
@@ -311,14 +333,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("4a9c057b-4d56-7f78-e89a-123456789012"),
                             Birthday = new DateOnly(1990, 11, 3),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "natalia.fedorova@example.com",
                             EmailConfirmed = false,
                             HashId = "f005398f4c86b4f0a102733be85a700dca8cbbcd",
                             IsLockout = false,
                             Login = "UserNataliaFedorova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Наталия",
+                            Nickname = "",
                             PasswordHash = "daee69ffeb9f6caf8f909ad6deaaa0c9b7d05533",
                             Patronymic = "Ивановна",
                             RoleId = 100,
@@ -328,14 +351,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("5bad168c-5e67-8089-f9ab-234567890123"),
                             Birthday = new DateOnly(1989, 1, 17),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "andrey.morozov@example.com",
                             EmailConfirmed = false,
                             HashId = "6c78aeb8bfc4526b1fc7a8b19b1aecfdadb22072",
                             IsLockout = false,
                             Login = "UserAndreyMorozov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Андрей",
+                            Nickname = "",
                             PasswordHash = "7db05ccba601bebeba0a44cdfa822c2cf90c8b91",
                             Patronymic = "Петрович",
                             RoleId = 100,
@@ -345,14 +369,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("6cbe279d-6f78-919a-0abc-345678901234"),
                             Birthday = new DateOnly(1992, 4, 29),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "tatiana.orlova@example.com",
                             EmailConfirmed = false,
                             HashId = "c7440857ba3e5d406e53720d0701dbc4a66e4afd",
                             IsLockout = false,
                             Login = "UserTatianaOrlova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Татьяна",
+                            Nickname = "",
                             PasswordHash = "98325980136d016b62bc5901b58d21bef2873a32",
                             Patronymic = "Владимировна",
                             RoleId = 100,
@@ -362,14 +387,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("7dcf38ae-7089-a2ab-1bcd-456789012345"),
                             Birthday = new DateOnly(1995, 7, 12),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "mikhail.belov@example.com",
                             EmailConfirmed = false,
                             HashId = "000aa1ddf3ebb90bee3ff03be62392ced406d862",
                             IsLockout = false,
                             Login = "UserMikhailBelov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Михаил",
+                            Nickname = "",
                             PasswordHash = "64ef46a98948a6b3004344a92439268f2821439c",
                             Patronymic = "Андреевич",
                             RoleId = 100,
@@ -379,14 +405,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("8ed049bf-819a-b3bc-2cde-567890123456"),
                             Birthday = new DateOnly(1991, 10, 5),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "svetlana.komarova@example.com",
                             EmailConfirmed = false,
                             HashId = "2afe5cf28a7dbd28a804df2c97a95f78916d24fa",
                             IsLockout = false,
                             Login = "UserSvetlanaKomarova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Светлана",
+                            Nickname = "",
                             PasswordHash = "75846a576cd353c9c40189d1e0e0fd196c474cc8",
                             Patronymic = "Николаевна",
                             RoleId = 100,
@@ -396,14 +423,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("9fe15ac0-92ab-c4cd-3def-678901234567"),
                             Birthday = new DateOnly(1988, 3, 8),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "vladimir.egorov@example.com",
                             EmailConfirmed = false,
                             HashId = "d907219b136d64dbde99cd146ab3640c20609e17",
                             IsLockout = false,
                             Login = "UserVladimirEgorov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Владимир",
+                            Nickname = "",
                             PasswordHash = "6befe3e5862aaf5ad4d01a92506fb2ab3fc17500",
                             Patronymic = "Викторович",
                             RoleId = 100,
@@ -413,14 +441,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("0af26bd1-a3bc-d5de-4ef0-789012345678"),
                             Birthday = new DateOnly(1997, 12, 15),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "julia.zhukova@example.com",
                             EmailConfirmed = false,
                             HashId = "702a94f8f611881336b4029594dab9183ed6f7e5",
                             IsLockout = false,
                             Login = "UserJuliaZhukova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Юлия",
+                            Nickname = "",
                             PasswordHash = "f898451c1aa7f8588c50cefd2bacb210b3e03d38",
                             Patronymic = "Алексеевна",
                             RoleId = 100,
@@ -430,14 +459,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("1b037ce2-b4cd-e6ef-5f01-890123456789"),
                             Birthday = new DateOnly(1994, 5, 22),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "roman.kirillov@example.com",
                             EmailConfirmed = false,
                             HashId = "e00751932586751e36d9bc7c94e1c1c4a1f287ce",
                             IsLockout = false,
                             Login = "UserRomanKirillov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Роман",
+                            Nickname = "",
                             PasswordHash = "e59cdd89c7d2db6c6a15f811d329f8c0428f7995",
                             Patronymic = "Олегович",
                             RoleId = 100,
@@ -447,14 +477,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("2c148df3-c5de-f7f0-6012-901234567890"),
                             Birthday = new DateOnly(1993, 8, 14),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "alena.semenova@example.com",
                             EmailConfirmed = false,
                             HashId = "15c0ecc67e8435db7c684f7ed4e18f796fab41c1",
                             IsLockout = false,
                             Login = "UserAlenaSemenova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Алена",
+                            Nickname = "",
                             PasswordHash = "487cc7ba340b0239e9bdbbdd0ba3c34573c8d6cc",
                             Patronymic = "Дмитриевна",
                             RoleId = 100,
@@ -464,14 +495,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("3d259ef4-d6ef-08f1-7123-012345678901"),
                             Birthday = new DateOnly(1990, 1, 27),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "artem.gusev@example.com",
                             EmailConfirmed = false,
                             HashId = "d557060eb2e72c6ed0c9861535203af315ac81fe",
                             IsLockout = false,
                             Login = "UserArtemGusev",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Артем",
+                            Nickname = "",
                             PasswordHash = "5c2368889e676fed0a01f9ccef9765b79e9488ab",
                             Patronymic = "Васильевич",
                             RoleId = 100,
@@ -481,14 +513,15 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("4e36af05-e7f0-19f2-8234-123456789012"),
                             Birthday = new DateOnly(1987, 11, 9),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "larisa.titova@example.com",
                             EmailConfirmed = false,
                             HashId = "a8400621ea9941bbf323f4742892b0f899da4d82",
                             IsLockout = false,
                             Login = "UserLarisaTitova",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Лариса",
+                            Nickname = "",
                             PasswordHash = "0c432e7051a5390da240440859dc78f5fb6cb909",
                             Patronymic = "Юрьевна",
                             RoleId = 100,
@@ -498,19 +531,55 @@ namespace Lotus.Account.Migrations
                         {
                             Id = new Guid("5f47b006-f8f1-2af3-9345-234567890123"),
                             Birthday = new DateOnly(1996, 6, 3),
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "pavel.rybakov@example.com",
                             EmailConfirmed = false,
                             HashId = "149fd9f9da683e19e4ace04a7bd18af5c182d2c1",
                             IsLockout = false,
                             Login = "UserPavelRybakov",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Павел",
+                            Nickname = "",
                             PasswordHash = "858455381aafb12a1a9f3b5bea077296afcc2877",
                             Patronymic = "Геннадьевич",
                             RoleId = 100,
                             Surname = "Рыбаков"
                         });
+                });
+
+            modelBuilder.Entity("Lotus.Account.UserAuthorize", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AuthProvider")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("BeginAuth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeviceId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndAuth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalAuthId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAuthorize", "adm");
                 });
 
             modelBuilder.Entity("Lotus.Account.UserFieldActivity", b =>
@@ -595,41 +664,41 @@ namespace Lotus.Account.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Хранители",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Хранители"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Север",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Север"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Юг",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Юг"
                         },
                         new
                         {
                             Id = 4,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Восток",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Восток"
                         },
                         new
                         {
                             Id = 5,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Запад",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Запад"
                         });
                 });
@@ -877,6 +946,7 @@ namespace Lotus.Account.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.HasIdentityOptions(b.Property<int>("Id"), 1001L, null, null, null, null, null);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -901,217 +971,217 @@ namespace Lotus.Account.Migrations
                         new
                         {
                             Id = 101,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр пользователей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "UserView"
                         },
                         new
                         {
                             Id = 102,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление пользователей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "UserAdd"
                         },
                         new
                         {
                             Id = 103,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование пользователей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "UserEdit"
                         },
                         new
                         {
                             Id = 104,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление пользователей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "UserRemove"
                         },
                         new
                         {
                             Id = 201,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр ролей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "RoleView"
                         },
                         new
                         {
                             Id = 202,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление ролей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "RoleAdd"
                         },
                         new
                         {
                             Id = 203,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование ролей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "RoleEdit"
                         },
                         new
                         {
                             Id = 204,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление ролей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "RoleRemove"
                         },
                         new
                         {
                             Id = 301,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр разрешений",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PermissionView"
                         },
                         new
                         {
                             Id = 302,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление разрешений",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PermissionAdd"
                         },
                         new
                         {
                             Id = 303,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование разрешений",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PermissionEdit"
                         },
                         new
                         {
                             Id = 304,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление разрешений",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PermissionRemove"
                         },
                         new
                         {
                             Id = 401,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PositionView"
                         },
                         new
                         {
                             Id = 402,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PositionAdd"
                         },
                         new
                         {
                             Id = 403,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PositionEdit"
                         },
                         new
                         {
                             Id = 404,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PositionRemove"
                         },
                         new
                         {
                             Id = 405,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Выбор должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "PositionChoose"
                         },
                         new
                         {
                             Id = 501,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "GroupView"
                         },
                         new
                         {
                             Id = 502,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "GroupAdd"
                         },
                         new
                         {
                             Id = 503,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "GroupEdit"
                         },
                         new
                         {
                             Id = 504,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "GroupRemove"
                         },
                         new
                         {
                             Id = 505,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Выбор групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "GroupChoose"
                         },
                         new
                         {
                             Id = 601,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Просмотр направлений деятельности",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "FieldActivityView"
                         },
                         new
                         {
                             Id = 602,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Добавление направлений деятельности",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "FieldActivityAdd"
                         },
                         new
                         {
                             Id = 603,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактирование направлений деятельности",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "FieldActivityEdit"
                         },
                         new
                         {
                             Id = 604,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Удаление направлений деятельности",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "FieldActivityRemove"
                         },
                         new
                         {
                             Id = 605,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Выбор направлений деятельности",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "FieldActivityChoose"
                         });
                 });
@@ -1147,33 +1217,33 @@ namespace Lotus.Account.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Инспектор",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Инспектор"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Старший инспектор",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Старший инспектор"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Ведущий специалист",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Ведущий специалист"
                         },
                         new
                         {
                             Id = 4,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Начальник отдела",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "Начальник отдела"
                         });
                 });
@@ -1209,41 +1279,41 @@ namespace Lotus.Account.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Администратор",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактор",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "editor"
                         },
                         new
                         {
                             Id = 3,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактор должностей",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "editorPost"
                         },
                         new
                         {
                             Id = 4,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Редактор групп",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "editorGroup"
                         },
                         new
                         {
                             Id = 100,
-                            Created = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Created = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             DisplayName = "Пользователь",
-                            Modified = new DateTime(2025, 12, 21, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Modified = new DateTime(2026, 3, 9, 0, 0, 0, 0, DateTimeKind.Utc),
                             Name = "user"
                         });
                 });
@@ -1669,6 +1739,48 @@ namespace Lotus.Account.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Lotus.Web.Device", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("CodeId")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Family")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<bool>("IsMobileDevice")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Model")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Platform")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Device", "adm");
+                });
+
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>
                 {
                     b.Property<string>("Id")
@@ -1731,7 +1843,7 @@ namespace Lotus.Account.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("OpenIddictApplications", "security");
+                    b.ToTable("OpenIddictApplications", "adm");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
@@ -1773,7 +1885,7 @@ namespace Lotus.Account.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("OpenIddictAuthorizations", "security");
+                    b.ToTable("OpenIddictAuthorizations", "adm");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", b =>
@@ -1814,7 +1926,7 @@ namespace Lotus.Account.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("OpenIddictScopes", "security");
+                    b.ToTable("OpenIddictScopes", "adm");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken", b =>
@@ -1874,7 +1986,7 @@ namespace Lotus.Account.Migrations
 
                     b.HasIndex("ApplicationId", "Status", "Subject", "Type");
 
-                    b.ToTable("OpenIddictTokens", "security");
+                    b.ToTable("OpenIddictTokens", "adm");
                 });
 
             modelBuilder.Entity("Lotus.Account.User", b =>

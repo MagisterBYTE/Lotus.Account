@@ -131,6 +131,19 @@ namespace Lotus.Account
         public DateTime? LockoutEndDate { get; set; }
 
         //
+        // ВНЕШНЯЯ АВТОРИЗАЦИЯ
+        //
+        /// <summary>
+        /// Идентификатор внешнего провайдера
+        /// </summary>
+        public string? AuthProvider { get; set; }
+
+        /// <summary>
+        /// Идентификатор пользователя внешнего провайдера
+        /// </summary>
+        public string? ExternalAuthId { get; set; }
+
+        //
         // НАСТРОЙКИ ПОЛЬЗОВАТЕЛЯ
         //
         /// <summary>

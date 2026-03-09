@@ -1,4 +1,7 @@
+using System.Security.Claims;
+
 using Lotus.Repository;
+using Lotus.Web;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -20,7 +23,7 @@ namespace Lotus.Account
     /// </summary>
     public static class XModuleInitializer
     {
-        #region Methods
+        #region Const
         /// <summary>
         /// Имя политики CORS для режима разработки.
         /// </summary>
@@ -43,13 +46,17 @@ namespace Lotus.Account
             IConfiguration configuration)
         {
             var frontSettings = configuration.GetSection(FrontSettings.Section).Get<FrontSettings>()!;
+            
             const string devTunnels = "https://v0x6bfwb-5000.euw.devtunnels.ms";
+            const string localFrontHttp = "http://192.168.0.103:3000";
+            const string localFrontHttps = "https://192.168.0.103:3000";
+
             services.AddCors(options =>
             {
                 options.AddPolicy(AllowLocalWithCredentials, 
                     policy =>
                     {
-                        policy.WithOrigins(frontSettings.MainUri, devTunnels, "https://192.168.0.103:3000", "http://192.168.0.103:3000")
+                        policy.WithOrigins(frontSettings.MainUri, devTunnels, localFrontHttp, localFrontHttps)
                               .AllowAnyHeader()
                               .AllowAnyMethod()
                               .AllowCredentials();
@@ -76,39 +83,12 @@ namespace Lotus.Account
             services.AddOpenIddict()
                 .AddClient(options =>
                 {
-                    //// Allow grant_type=client_credentials to be negotiated.
-                    //options.AllowClientCredentialsFlow();
-
-                    //// Disable token storage, which is not necessary for non-interactive flows like
-                    //// grant_type=password, grant_type=client_credentials or grant_type=refresh_token.
-                    //options.DisableTokenStorage();
-
-                    //// Register the System.Net.Http integration.
-                    //options.UseSystemNetHttp();
-
-                    //// Add a client registration with the client identifier and secrets issued by the server.
-                    //options.AddRegistration(new OpenIddictClientRegistration
-                    //{
-                    //    Issuer = new Uri("https://localhost:3000/", UriKind.Absolute),
-
-                    //    ClientId = authSettings.Google.ClientId,
-                    //    ClientSecret = authSettings.Google.ClientSecret
-                    //});
-
-                    //// Register the Web providers integrations.
-                    //options.UseWebProviders()
-                    //        .AddGoogle(options =>
-                    //        {
-                    //            options.SetClientId(authSettings.Google.ClientId)
-                    //                   .SetClientSecret(authSettings.Google.ClientSecret)
-                    //                   .SetRedirectUri("callback/login/twitter");
-                    //        });
                 })
                 .AddCore(options =>
                 {
                     // Configure OpenIddict to use the EF Core stores/models.
                     options.UseEntityFrameworkCore()
-                    .UseDbContext<AccountDbContext>();
+                    .UseDbContext<AccountExtendedDbContext>();
                 })
 
                 // Register the OpenIddict server components.
@@ -224,6 +204,58 @@ namespace Lotus.Account
                 // Области доступа
                 googleOptions.Scope.Add("email");
                 googleOptions.Scope.Add("profile");
+
+                // Это событие срабатывает сразу после успешной проверки токена от Google
+                googleOptions.Events.OnTicketReceived = async context =>
+                {
+                    try
+                    {
+                        if (context.Principal is null) return;
+
+                        // Сервисы
+                        var deviceService = context.HttpContext.RequestServices.GetRequiredService<ILotusDeviceService>();
+                        var authorizeService = context.HttpContext.RequestServices.GetRequiredService<ILotusAuthorizeService>();
+
+                        // Устройство входа
+                        var device = context.HttpContext.GetDeviceFromRequest();
+                        var deviceId = (await deviceService.GetOrAddAsync(device, CancellationToken.None)).Id;
+
+                        // Извлекаем минимальную информация в claims
+                        var userInfo = new UserAuthorizeInfo(context.Principal.Claims);
+
+                        // Получаем email
+                        var email = userInfo.Email;
+
+                        // 1. Достаем URL аватара (который мы замапили через MapJsonKey)
+                        var pictureUrl = context.Principal?.FindFirstValue("picture");
+
+                        if (string.IsNullOrEmpty(pictureUrl))
+                        {
+                            // Логгируем вход
+                            await authorizeService.LogExternalAsync("Google", email, deviceId, null);
+                            return;
+                        }
+
+                        // 2. Получаем HttpClient из DI (лучше использовать IHttpClientFactory)
+                        var clientFactory = context.HttpContext.RequestServices.GetRequiredService<IHttpClientFactory>();
+                        var httpClient = clientFactory.CreateClient();
+
+                        // 3. Скачиваем байты картинки
+                        var imageBytes = await httpClient.GetByteArrayAsync(pictureUrl);
+
+                        // 4. Превращаем в Base64
+                        var base64Avatar = Convert.ToBase64String(imageBytes);
+                        var avatar64 = $"data:image/jpeg;base64,{base64Avatar}";
+
+                        // Логгируем вход и аватар
+                        await authorizeService.LogExternalAsync("Google", email, deviceId, avatar64);
+
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                };
             });
 
             return services;
@@ -244,6 +276,7 @@ namespace Lotus.Account
             services.AddScoped<ILotusUserPositionService, UserPositionService>();
             services.AddScoped<ILotusUserPermissionService, UserPermissionService>();
             services.AddScoped<ILotusUserRoleService, UserRoleService>();
+            services.AddScoped<ILotusDeviceService, DeviceService>();
 
             XMapping.Init();
 
@@ -262,21 +295,30 @@ namespace Lotus.Account
             IConfiguration configuration, string connectString = XDbConstants.ConnectingUserDb,
             bool replaceMigrationHistoryTableName = true)
         {
-            // Добавление AccountDbContext для взаимодействия с базой данных учетных записей
+            // Добавление AccountExtendedDbContext для взаимодействия с базой данных учетных записей
             // Используем для корректной работы OpenIddict
-            services.AddDbContext<AccountDbContext>(options =>
-        {
-            options.UseOpenIddict();
-            options.UseNpgsql(configuration.GetConnectionString(connectString),
-                optionsBuilder =>
-                {
-                    if (replaceMigrationHistoryTableName)
+            services.AddDbContext<AccountExtendedDbContext>(options =>
+            {
+                // Нужно как то добавить модель Device
+
+                // Добавляем сервисы OpenIddict
+                options.UseOpenIddict();
+                options.UseNpgsql(configuration.GetConnectionString(connectString),
+                    optionsBuilder =>
                     {
-                        optionsBuilder.MigrationsHistoryTable(XDbConstants.MigrationHistoryTableName,
-                            XDbConstants.SchemeName);
-                    }
-                });
-        });
+                        if (replaceMigrationHistoryTableName)
+                        {
+                            optionsBuilder.MigrationsHistoryTable(XDbConstants.MigrationHistoryTableName,
+                                XDbConstants.SchemeName);
+                        }
+                    });
+            });
+
+            // 2. ВАЖНО: Связываем базовый тип контекста с новым.
+            // Теперь все сервисы (UserService и др.), которые хотят AccountDbContext, 
+            // получат ваш AccountExtendedDbContext из контейнера.
+            services.AddScoped<AccountDbContext>(provider =>
+                provider.GetRequiredService<AccountExtendedDbContext>());
 
             return services;
         }
@@ -291,7 +333,7 @@ namespace Lotus.Account
             ArgumentNullException.ThrowIfNull(application);
 
             using var serviceScope = application!.ApplicationServices!.GetService<IServiceScopeFactory>()!.CreateScope();
-            using var context = serviceScope.ServiceProvider.GetRequiredService<AccountDbContext>();
+            using var context = serviceScope.ServiceProvider.GetRequiredService<AccountExtendedDbContext>();
 
             try
             {
