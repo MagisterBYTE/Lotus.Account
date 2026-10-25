@@ -3,8 +3,7 @@ import type { IEntity } from 'lotus-core/types';
 /**
  * Интерфейс разрешения
  */
-export interface IUserPermission extends IEntity<number>
-{
+export interface IUserPermission extends IEntity<number> {
   /**
    * Наименование разрешения
    */
@@ -24,8 +23,5 @@ export interface IUserPermission extends IEntity<number>
 /**
  * Интерфейс разрешения для сохранения
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IUserPermissionDatasave extends Omit<IUserPermission, 'isNew'>
-{
-  
-}
+// oxlint-disable-next-line typescript/no-empty-object-type
+export interface IUserPermissionDatasave extends Omit<IUserPermission, 'isNew'> {}

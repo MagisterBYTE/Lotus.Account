@@ -1,4 +1,4 @@
-import { useMantineColorScheme, type MantineColorScheme } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 import { TLanguageTypes, type TLanguageType } from 'lotus-core/localization';
 import type { IOption } from 'lotus-core/modules/option';
 import { Segmented, Select } from 'lotus-ui-react/components/Selects';
@@ -7,30 +7,27 @@ import { useDesignSystemContext, useLocalizationContext } from 'lotus-ui-react/p
 import { ContainerForm } from '#components';
 import { LocalizationAccount } from '#localization';
 
-export function SettingsForm() 
-{
+export function SettingsForm() {
   type TOptionColorScheme = IOption<TColorScheme>;
   type TOptionLanguageType = IOption<TLanguageType>;
-  
+
   const { colorScheme, setColorScheme: setColorSchemeMantine } = useMantineColorScheme();
   const { setColorScheme: setColorSchemeDesign } = useDesignSystemContext();
   const { languageType, setLanguageType } = useLocalizationContext();
 
   const labelWidth = '140px';
 
-  const selectColorScheme:TOptionColorScheme = { label: colorScheme, value: colorScheme as TColorScheme };
-  const selectLanguageType:TOptionLanguageType = { label: languageType, value: languageType };
+  const selectColorScheme: TOptionColorScheme = { label: colorScheme, value: colorScheme as TColorScheme };
+  const selectLanguageType: TOptionLanguageType = { label: languageType, value: languageType };
 
   // #region  Handlers
-  const handleColorSchemeChange = (option: TOptionColorScheme | undefined) =>
-  {
+  const handleColorSchemeChange = (option: TOptionColorScheme | undefined) => {
     if (!option) return;
-    setColorSchemeMantine(option.value as MantineColorScheme);
+    setColorSchemeMantine(option.value);
     setColorSchemeDesign(option.value);
   };
-  
-  const handleLanguageTypeChange = (option: TOptionLanguageType | undefined) =>
-  {
+
+  const handleLanguageTypeChange = (option: TOptionLanguageType | undefined) => {
     if (!option) return;
     setLanguageType(option.value);
   };
@@ -38,14 +35,22 @@ export function SettingsForm()
 
   return (
     <ContainerForm hasDivider header={LocalizationAccount.data.account.settings} spacing={'lg'}>
-      <Segmented<TOptionColorScheme> inlinePlace items={TColorSchemes.getAsOptions()} label={LocalizationAccount.data.account.settingsTheme}
+      <Segmented<TOptionColorScheme>
+        inlinePlace
+        items={TColorSchemes.getAsOptions()}
+        label={LocalizationAccount.data.account.settingsTheme}
         labelProps={{ w: labelWidth }}
         selectedItem={selectColorScheme}
         onChangedItem={handleColorSchemeChange}
       />
-      <Select<TOptionLanguageType> inlinePlace items={TLanguageTypes.getOptions()} label={LocalizationAccount.data.account.settingsLang}
+      <Select<TOptionLanguageType>
+        inlinePlace
+        items={TLanguageTypes.getOptions()}
+        label={LocalizationAccount.data.account.settingsLang}
         labelProps={{ w: labelWidth }}
-        selectedItem={selectLanguageType} onChangedItem={handleLanguageTypeChange} />
+        selectedItem={selectLanguageType}
+        onChangedItem={handleLanguageTypeChange}
+      />
     </ContainerForm>
   );
 }

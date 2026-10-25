@@ -1,2 +1,2 @@
-export * from './types'
-export { type IRoutesAccount, RoutesAccount } from './RoutesAccount'
+export * from './types';
+export { type IRoutesAccount, RoutesAccount } from './RoutesAccount';

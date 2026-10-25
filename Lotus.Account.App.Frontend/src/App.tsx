@@ -2,8 +2,7 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router';
 import { RoutesAccount } from '#app';
 import { MainLayout } from '#layout';
-import
-{
+import {
   AboutPage,
   AccountNotificationsPage,
   AccountProfilePage,
@@ -56,8 +55,7 @@ export const routes: RouteObject[] = [
 export const router = createBrowserRouter(routes);
 
 // Компонент App с RouterProvider
-export const App: React.FC = () =>
-{
+export const App: React.FC = () => {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <RouterProvider router={router} />

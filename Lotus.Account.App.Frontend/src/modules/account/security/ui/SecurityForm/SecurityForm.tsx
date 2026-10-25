@@ -10,8 +10,7 @@ import { useAuthContext } from '#provider';
 import { AccountService } from '../../../AccountService';
 import { AccountChangePassword } from '../../domain';
 
-export function SecurityForm() 
-{
+export function SecurityForm() {
   const [isUpdatePassword, setUpdatePassword] = useState(false);
 
   const labelWidth = '140px';
@@ -21,17 +20,13 @@ export function SecurityForm()
   const changePassword = useInstanceProxy(() => new AccountChangePassword(userAuthInfo?.hashId ?? ''));
 
   // #region  Handlers
-  const handleUpdatePassword = async () => 
-  {
+  const handleUpdatePassword = async () => {
     setUpdatePassword(true);
-    try 
-    {
+    try {
       const result = await AccountService.changePassword(changePassword);
       Notifications.showResult(result);
       setUpdatePassword(false);
-    }
-    catch (error) 
-    {
+    } catch (error) {
       setUpdatePassword(false);
       Notifications.showError(error);
     }
@@ -50,7 +45,9 @@ export function SecurityForm()
         label={LocalizationAccount.data.account.securityCurrentPassword}
         labelProps={{ w: labelWidth }}
         value={changePassword.currentPassword}
-        onChange={(e) => { changePassword.setCurrentPassword(e.target.value); }}
+        onChange={(e) => {
+          changePassword.setCurrentPassword(e.target.value);
+        }}
       />
 
       <TextInput
@@ -59,7 +56,9 @@ export function SecurityForm()
         label={LocalizationAccount.data.account.securityNewPassword}
         labelProps={{ w: labelWidth }}
         value={changePassword.newPassword}
-        onChange={(e) => { changePassword.setNewPassword(e.target.value); }}
+        onChange={(e) => {
+          changePassword.setNewPassword(e.target.value);
+        }}
       />
 
       <TextInput
@@ -68,7 +67,9 @@ export function SecurityForm()
         label={LocalizationAccount.data.account.securityConfirmPassword}
         labelProps={{ w: labelWidth }}
         value={changePassword.confirmPassword}
-        onChange={(e) => { changePassword.setConfirmPassword(e.target.value); }}
+        onChange={(e) => {
+          changePassword.setConfirmPassword(e.target.value);
+        }}
       />
 
       <Button
@@ -77,7 +78,7 @@ export function SecurityForm()
         radius="sm"
         style={{ alignSelf: 'flex-end' }}
         w={'max-content'}
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        // oxlint-disable-next-line typescript/no-misused-promises
         onClick={handleUpdatePassword}
       >
         {LocalizationAccount.data.account.securityChangePasswordButton}

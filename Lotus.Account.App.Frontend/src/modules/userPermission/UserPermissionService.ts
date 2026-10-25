@@ -3,37 +3,32 @@ import { AuthService } from '#modules/auth';
 import type { IUserPermissionCreate, IUserPermissionsRequest, IUserPermissionsResponse } from './domain/types';
 import type { IUserPermissionDatasave } from './domain/types/UserPermission';
 
-type TPermissionResponse = IResponse<IUserPermissionDatasave>
+type TPermissionResponse = IResponse<IUserPermissionDatasave>;
 
-export class UserPermissionServiceClass
-{
+export class UserPermissionServiceClass {
   // #region Instance
   private static _userPermissionService: UserPermissionServiceClass;
 
-  public static get Instance(): UserPermissionServiceClass
-  {
+  public static get Instance(): UserPermissionServiceClass {
     return this._userPermissionService || (this._userPermissionService = new this());
   }
   // #endregion
 
   // #region Main methods
-  public async create(permissionCreate: IUserPermissionCreate):Promise<TPermissionResponse>
-  {
+  public async create(permissionCreate: IUserPermissionCreate): Promise<TPermissionResponse> {
     const url = 'api/UserPermission/create';
     const response = await AuthService.authApiService.post<TPermissionResponse, IUserPermissionCreate>(url, permissionCreate);
     return response;
   }
 
-  public async update(permissionUpdate: IUserPermissionDatasave):Promise<TPermissionResponse>
-  {
+  public async update(permissionUpdate: IUserPermissionDatasave): Promise<TPermissionResponse> {
     const url = 'api/UserPermission/update';
-  
+
     const response = await AuthService.authApiService.put<TPermissionResponse, IUserPermissionDatasave>(url, permissionUpdate);
     return response;
   }
 
-  public async getAll(permissionRequest: IUserPermissionsRequest, signal?: AbortSignal):Promise<IUserPermissionsResponse>
-  {
+  public async getAll(permissionRequest: IUserPermissionsRequest, signal?: AbortSignal): Promise<IUserPermissionsResponse> {
     const url = 'api/UserPermission/getAll';
     const searchQuery: URLSearchParams = RequestHelper.createURLSearchParams(permissionRequest);
 
@@ -41,8 +36,7 @@ export class UserPermissionServiceClass
     return response;
   }
 
-  public async remove(id: number): Promise<IResponse> 
-  {
+  public async remove(id: number): Promise<IResponse> {
     const url = 'api/UserPermission/delete';
     const deleteQuery: URLSearchParams = new URLSearchParams();
     deleteQuery.append('id', id.toString());

@@ -16,16 +16,14 @@ import { useAuthContext } from '#provider';
 import { AuthService } from '../../AuthService';
 import { LoginParameters, UserAuthorizeInfo } from '../../domain';
 
-export interface ILoginFormProps
-{
+export interface ILoginFormProps {
   /**
    * Путь в случае успешного входа
    */
   pathSuccess: string;
 }
 
-export function LoginForm(props: ILoginFormProps)
-{
+export function LoginForm(props: ILoginFormProps) {
   const { pathSuccess } = props;
 
   const navigate = useNavigate();
@@ -38,22 +36,17 @@ export function LoginForm(props: ILoginFormProps)
   const loginParameters = useInstanceProxy(() => new LoginParameters());
 
   // #region Handlers
-  const handleLogin = async () =>
-  {
+  const handleLogin = async () => {
     setLogging(true);
-    try
-    {
+    try {
       const userInfo = await AuthService.loginAsync(loginParameters);
       setUserAuthInfo(new UserAuthorizeInfo(userInfo));
       setLogging(false);
 
-      if (pathSuccess)
-      {
+      if (pathSuccess) {
         void navigate(pathSuccess);
       }
-    }
-    catch (error)
-    {
+    } catch (error) {
       setLogging(false);
       const response = error as IResult;
       Notifications.showResult(response);
@@ -61,22 +54,17 @@ export function LoginForm(props: ILoginFormProps)
     }
   };
 
-  const handleGoogle = async () =>
-  {
+  const handleGoogle = async () => {
     setLogging(true);
-    try
-    {
+    try {
       const userInfo = await AuthService.loginGoogleAsync();
       setUserAuthInfo(new UserAuthorizeInfo(userInfo));
       setLogging(false);
 
-      if (pathSuccess)
-      {
+      if (pathSuccess) {
         void navigate(pathSuccess);
       }
-    }
-    catch (error)
-    {
+    } catch (error) {
       setLogging(false);
       const response = error as IResult;
       Notifications.showResult(response);
@@ -84,26 +72,23 @@ export function LoginForm(props: ILoginFormProps)
     }
   };
 
-  const handleDebug = () =>
-  {
+  const handleDebug = () => {
     loginParameters.setLogin('DanielDem', false);
     loginParameters.setPassword('!198418dsfA!', true);
   };
   // #endregion
 
   // #region Render
-  const renderGoogleButton = () =>
-  {
+  const renderGoogleButton = () => {
     const icon = <IconBrandGoogle color={theme.colors.red[3]} />;
     return (
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      // oxlint-disable-next-line typescript/no-misused-promises
       <Button disabled={isLogging} leftSection={icon} radius="sm" variant="default" w={'160px'} onClick={handleGoogle}>
         Google
       </Button>
     );
   };
-  const renderVkButton = () =>
-  {
+  const renderVkButton = () => {
     const icon = <IconBrandVk color={theme.colors.blue[3]} />;
     return (
       <Button disabled={isLogging} leftSection={icon} radius="sm" variant="default" w={'160px'}>
@@ -183,7 +168,7 @@ export function LoginForm(props: ILoginFormProps)
         disabled={!loginParameters.validate()}
         loading={isLogging}
         radius="sm"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        // oxlint-disable-next-line typescript/no-misused-promises
         onClick={handleLogin}
       >
         {LocalizationAccount.data.auth.comeIn}

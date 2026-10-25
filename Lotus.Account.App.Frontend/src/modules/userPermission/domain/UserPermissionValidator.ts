@@ -4,11 +4,9 @@ import type { IUserPermission } from './types/UserPermission';
 /**
  * Валидатор разрешений
  */
-export class UserPermissionValidator extends BaseValidator
-{
+export class UserPermissionValidator extends BaseValidator {
   // #region IValidator
-  public override validate(obj: IUserPermission): boolean
-  {
+  public override validate(obj: IUserPermission): boolean {
     this.validationStatus.clear();
     this.validationStatus.addErrorRequired('name', obj.name);
     this.validationStatus.addErrorMaxString('name', obj.name, 20);

@@ -3,8 +3,7 @@ import type { IEntity } from 'lotus-core/types';
 /**
  * Интерфейс должности
  */
-export interface IUserPosition extends IEntity<number>
-{
+export interface IUserPosition extends IEntity<number> {
   /**
    * Наименование должности
    */
@@ -19,7 +18,5 @@ export interface IUserPosition extends IEntity<number>
 /**
  * Интерфейс должности для сохранения
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IUserPositionDatasave extends IUserPosition
-{
-}
+// oxlint-disable-next-line typescript/no-empty-object-type
+export interface IUserPositionDatasave extends IUserPosition {}

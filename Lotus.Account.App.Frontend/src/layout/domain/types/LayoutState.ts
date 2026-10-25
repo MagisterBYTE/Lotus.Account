@@ -6,8 +6,7 @@ import type { TScreenType } from './ScreenType';
 /**
  * Состояние макета сайта
  */
-export interface ILayoutState
-{
+export interface ILayoutState {
   /**
    * Параметры типа/ориентация экрана
    */
@@ -19,23 +18,23 @@ export interface ILayoutState
   header: ILayoutHeader;
 
   /**
-  * Параметры левой панели
-  */
+   * Параметры левой панели
+   */
   leftPanel: ILayoutSidePanel;
 
   /**
-  * Имена команд левой панели
-  */
+   * Имена команд левой панели
+   */
   leftPanelCommands?: string[];
 
   /**
-  * Параметры правой панели
-  */
+   * Параметры правой панели
+   */
   rightPanel: ILayoutSidePanel;
 
   /**
-  * Имена команд правой панели
-  */
+   * Имена команд правой панели
+   */
   rightPanelCommands?: string[];
 
   /**

@@ -3,34 +3,38 @@ import { Divider } from 'lotus-ui-react/components/Display';
 import { Box, VerticalStack, type IVerticalStackProps } from 'lotus-ui-react/components/Layout';
 import { isValidElement, type ReactNode } from 'react';
 
-export interface IContainerFormProps extends IVerticalStackProps
-{
+export interface IContainerFormProps extends IVerticalStackProps {
   header: ReactNode;
   hasDivider?: boolean;
 }
 
-export function ContainerForm(props: IContainerFormProps)
-{
+export function ContainerForm(props: IContainerFormProps) {
   const { header, hasDivider, children, ...verticalStackProps } = props;
 
   const p = verticalStackProps.p ?? 'md';
   const m = verticalStackProps.m ?? 'md';
 
   return (
-    <VerticalStack bdRadius={verticalStackProps.bdRadius ?? 'md'} bgShadow={10}
+    <VerticalStack
+      bdRadius={verticalStackProps.bdRadius ?? 'md'}
+      bgShadow={10}
       hAlign={verticalStackProps.hAlign ?? 'stretch'}
       m={m}
       p={p}
       spacing={verticalStackProps.spacing ?? 'md'}
       w={verticalStackProps.w ?? 'min(500px, 80vw)'}
-      {...verticalStackProps}>
-
+      {...verticalStackProps}
+    >
       {isValidElement(header) && <Box centerContent={'center'}>{header}</Box>}
-      { Assert.isString(header) && <Box centerContent={'center'} style={{ fontSize: '1.5rem' }}>{header}</Box>}
+      {Assert.isString(header) && (
+        <Box centerContent={'center'} style={{ fontSize: '1.5rem' }}>
+          {header}
+        </Box>
+      )}
 
       {hasDivider && <Divider nml nmr ml={m} mr={m} />}
 
-      { children }
+      {children}
     </VerticalStack>
   );
 }

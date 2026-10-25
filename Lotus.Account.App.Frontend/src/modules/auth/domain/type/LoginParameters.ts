@@ -1,8 +1,7 @@
 /**
  *  Вход по логину и паролю
  */
-export interface ILoginParameters
-{
+export interface ILoginParameters {
   /**
    * Логин
    */

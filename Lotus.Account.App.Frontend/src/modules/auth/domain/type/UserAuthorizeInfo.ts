@@ -6,8 +6,7 @@ import type { IUserRole } from '#modules/userRole';
 /**
  * Интерфейс определяющий минимальную информацию об авторизации пользователя.
  */
-export interface IUserAuthorizeInfo
-{
+export interface IUserAuthorizeInfo {
   //
   // АУТЕНТИФИКАЦИЯ
   //
@@ -146,5 +145,5 @@ export interface IUserAuthorizeInfo
   /**
    * Идентификатор аватара
    */
-  avatarId?: string
+  avatarId?: string;
 }

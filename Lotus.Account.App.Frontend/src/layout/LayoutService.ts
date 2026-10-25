@@ -5,37 +5,31 @@ import type { ILayoutState, TScreenType } from './domain/types';
 /**
  * Сервис для работы с токенами
  */
-class LayoutServiceClass
-{
+class LayoutServiceClass {
   // #region Static fields
   /**
-  * Ключ под которым сохраняется макет сайта
-  */
+   * Ключ под которым сохраняется макет сайта
+   */
   public static readonly LayoutStateKey: string = 'lotus-layout-state' as const;
 
   private static _layoutService: LayoutServiceClass;
 
-  public static get Instance(): LayoutServiceClass 
-  {
-    return (this._layoutService || (this._layoutService = new this()));
+  public static get Instance(): LayoutServiceClass {
+    return this._layoutService || (this._layoutService = new this());
   }
   // #endregion
 
   // #region Static methods
   /**
-   * Загрузка макета сайта из локального хранилища 
+   * Загрузка макета сайта из локального хранилища
    * @returns Макет сайта или макет сайта по умолчанию
    */
-  public static loadFromStorage(): ILayoutState
-  {
+  public static loadFromStorage(): ILayoutState {
     const value = localStorage.getItem(LayoutServiceClass.LayoutStateKey);
-    if (value)
-    {
+    if (value) {
       const layoutState: ILayoutState = JSON.parse(value);
       return layoutState;
-    }
-    else
-    {
+    } else {
       return LayoutStateConstants.Desktop;
     }
   }
@@ -44,8 +38,7 @@ class LayoutServiceClass
    * Сохранение текущего макета сайта в локальное хранилище
    * @param layoutState Макет сайта
    */
-  public static saveToStorage(layoutState: ILayoutState)
-  {
+  public static saveToStorage(layoutState: ILayoutState) {
     const value = JSON.stringify(layoutState);
     localStorage.setItem(LayoutServiceClass.LayoutStateKey, value);
   }
@@ -55,16 +48,13 @@ class LayoutServiceClass
   public layoutState: ILayoutState;
   // #endregion
 
-  constructor()
-  {
+  constructor() {
     this.layoutState = { ...LayoutStateConstants.Desktop };
   }
 
   // #region LayoutState methods
-  public setScreenType(screenType: TScreenType)
-  {
-    switch (screenType)
-    {
+  public setScreenType(screenType: TScreenType) {
+    switch (screenType) {
       case 'desktop':
         {
           this.layoutState.header.isVisible = true;
@@ -79,7 +69,8 @@ class LayoutServiceClass
 
           this.layoutState.footer.height = ViewSettingsConstants.Desktop.footerHeight;
           this.layoutState.footer.isVisible = true;
-        } break;
+        }
+        break;
       case 'landscape':
         {
           this.layoutState.header.isVisible = false;
@@ -92,7 +83,8 @@ class LayoutServiceClass
           this.layoutState.rightPanel.width = ViewSettingsConstants.Landscape.rightPanelWidthMin;
 
           this.layoutState.footer.isVisible = false;
-        } break;
+        }
+        break;
       case 'portrait':
         {
           this.layoutState.header.isVisible = true;
@@ -107,91 +99,74 @@ class LayoutServiceClass
 
           this.layoutState.footer.height = ViewSettingsConstants.Portrait.footerHeight;
           this.layoutState.footer.isVisible = true;
-        } break;
+        }
+        break;
     }
   }
 
-  public showHeader(visible: boolean)
-  {
+  public showHeader(visible: boolean) {
     this.layoutState.header.isVisible = visible;
   }
 
-  public showHeaderUser(visible: boolean)
-  {
+  public showHeaderUser(visible: boolean) {
     this.layoutState.header.isVisibleUser = visible;
   }
 
-  public showLeftPanel(visible: boolean)
-  {
+  public showLeftPanel(visible: boolean) {
     this.layoutState.leftPanel.isVisible = visible;
   }
 
-  public openLeftPanel(open: boolean)
-  {
+  public openLeftPanel(open: boolean) {
     this.layoutState.leftPanel.isOpen = open;
   }
 
-  public setWidthLeftPanel(width: TCssWidth)
-  {
+  public setWidthLeftPanel(width: TCssWidth) {
     this.layoutState.leftPanel.width = width;
   }
 
-  public addCommandLeftPanel(commandName: string)
-  {
-    if (this.layoutState.leftPanelCommands)
-    {
-      if (this.layoutState.leftPanelCommands.includes(commandName) === false)
-      {
+  public addCommandLeftPanel(commandName: string) {
+    if (this.layoutState.leftPanelCommands) {
+      if (this.layoutState.leftPanelCommands.includes(commandName) === false) {
         this.layoutState.leftPanelCommands.push(commandName);
       }
-    }
-    else
-    {
+    } else {
       this.layoutState.leftPanelCommands = [commandName];
     }
   }
 
-  public removeCommandLeftPanel(commandName: string)
-  {
-    if (this.layoutState.leftPanelCommands)
-    {
-      this.layoutState.leftPanelCommands = this.layoutState.leftPanelCommands.filter(x => x !== commandName);
+  public removeCommandLeftPanel(commandName: string) {
+    if (this.layoutState.leftPanelCommands) {
+      this.layoutState.leftPanelCommands = this.layoutState.leftPanelCommands.filter((x) => x !== commandName);
     }
   }
 
-  public setCommandsLeftPanel(commandsName: string[])
-  {
+  public setCommandsLeftPanel(commandsName: string[]) {
     this.layoutState.leftPanelCommands = [...commandsName];
   }
 
-  public showRightPanel(visible: boolean)
-  {
+  public showRightPanel(visible: boolean) {
     this.layoutState.rightPanel.isVisible = visible;
   }
 
-  public openRightPanel(open: boolean)
-  {
+  public openRightPanel(open: boolean) {
     this.layoutState.rightPanel.isOpen = open;
   }
 
-  public showFooter(visible: boolean)
-  {
+  public showFooter(visible: boolean) {
     this.layoutState.footer.isVisible = visible;
   }
 
-  public showFooterUser(visible: boolean)
-  {
+  public showFooterUser(visible: boolean) {
     this.layoutState.footer.isVisibleUser = visible;
   }
 
-  public collapseFooter(collapsed: boolean)
-  {
+  public collapseFooter(collapsed: boolean) {
     this.layoutState.footer.isCollapsed = collapsed;
   }
   // #endregion
 }
 
 /**
- * Глобальный доступ к сервису по формированию макета сайта 
+ * Глобальный доступ к сервису по формированию макета сайта
  */
 export const LayoutService = LayoutServiceClass.Instance;

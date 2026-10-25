@@ -2,8 +2,7 @@ import { RefreshProxy } from 'lotus-core/modules/refreshProxy';
 import { ValidationResult, type IValidateObject } from 'lotus-core/modules/validation';
 import type { ILoginParameters } from './type';
 
-export class LoginParameters extends RefreshProxy implements ILoginParameters, IValidateObject 
-{
+export class LoginParameters extends RefreshProxy implements ILoginParameters, IValidateObject {
   // #region Fields
   public login: string;
   public password: string;
@@ -14,8 +13,7 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters, I
   public validationStatus: ValidationResult;
   // #endregion
 
-  constructor() 
-  {
+  constructor() {
     super();
     this.login = '';
     this.password = '';
@@ -26,30 +24,26 @@ export class LoginParameters extends RefreshProxy implements ILoginParameters, I
   }
 
   // #region Update state
-  public setLogin(login: string, isRefreshProxy: boolean = true) 
-  {
+  public setLogin(login: string, isRefreshProxy: boolean = true) {
     this.login = login;
     this.hasInputLogin = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setPassword(password: string, isRefreshProxy: boolean = true) 
-  {
+  public setPassword(password: string, isRefreshProxy: boolean = true) {
     this.password = password;
     this.hasInputPassword = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = true) 
-  {
+  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = true) {
     this.rememberMe = rememberMe;
     if (isRefreshProxy) this.onRefreshProxy();
   }
   // #endregion
 
   // #region IValidateObject
-  public validate(): boolean 
-  {
+  public validate(): boolean {
     this.validationStatus.clear();
     if (this.hasInputLogin) this.validationStatus.addErrorRequired('login', this.login);
     if (this.hasInputPassword) this.validationStatus.addErrorRequired('password', this.password);

@@ -1,6 +1,5 @@
 import { LocalizationAccountDataRu } from './LocalizationAccountDataRu';
 
-export const LocalizationAccount =
-{
+export const LocalizationAccount = {
   data: LocalizationAccountDataRu
 };

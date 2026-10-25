@@ -1,8 +1,7 @@
 /**
  *  Регистрация нового пользователя
  */
-export interface IRegisterParameters
-{
+export interface IRegisterParameters {
   /**
    * Логин
    */

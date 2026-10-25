@@ -10,8 +10,7 @@ import { useAuthContext } from '#provider';
 import { AccountService } from '../../../AccountService';
 import { AccountProfile } from '../../domain';
 
-export function ProfileForm() 
-{
+export function ProfileForm() {
   const { userAuthInfo, setUserAuthInfo } = useAuthContext();
 
   const [isUpdate, setUpdate] = useState(false);
@@ -21,18 +20,14 @@ export function ProfileForm()
   const labelWidth = '140px';
 
   // #region Handlers
-  const handleUpdateInfo = async () =>
-  {
+  const handleUpdateInfo = async () => {
     setUpdate(true);
-    try
-    {
-      const response =  await AccountService.updateUserInfo(accountProfile.toUserAuthorizeInfo());
+    try {
+      const response = await AccountService.updateUserInfo(accountProfile.toUserAuthorizeInfo());
       setUserAuthInfo(new UserAuthorizeInfo(response.payload));
       setUpdate(false);
       Notifications.showSuccess(LocalizationAccount.data.account.profileUpdateSuccess);
-    }
-    catch (error)
-    {
+    } catch (error) {
       setUpdate(false);
       Notifications.showError(error);
     }
@@ -50,7 +45,9 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.nickname}
-        onChangeValue={(value) => { accountProfile.setNickname(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setNickname(value);
+        }}
       />
 
       <TextInput
@@ -63,7 +60,9 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.email}
-        onChangeValue={(value) => { accountProfile.setEmail(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setEmail(value);
+        }}
       />
 
       <Divider variant="dotted" />
@@ -77,7 +76,9 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.name}
-        onChangeValue={(value) => { accountProfile.setName(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setName(value);
+        }}
       />
 
       <TextInput
@@ -89,7 +90,9 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.surname}
-        onChangeValue={(value) => { accountProfile.setSurname(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setSurname(value);
+        }}
       />
 
       <Divider />
@@ -103,7 +106,9 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.whereabouts}
-        onChangeValue={(value) => { accountProfile.setWhereabouts(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setWhereabouts(value);
+        }}
       />
 
       <TextInput
@@ -115,12 +120,18 @@ export function ProfileForm()
         }}
         m={'xxs'}
         value={accountProfile?.interests}
-        onChangeValue={(value) => { accountProfile.setInterests(value); }}
+        onChangeValue={(value) => {
+          accountProfile.setInterests(value);
+        }}
       />
 
-      <Button disabled={!accountProfile.validate()} loading={isUpdate} radius="sm"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onClick={handleUpdateInfo}>
+      <Button
+        disabled={!accountProfile.validate()}
+        loading={isUpdate}
+        radius="sm"
+        // oxlint-disable-next-line typescript/no-misused-promises
+        onClick={handleUpdateInfo}
+      >
         {LocalizationAccount.data.account.profileUpdate}
       </Button>
     </ContainerForm>

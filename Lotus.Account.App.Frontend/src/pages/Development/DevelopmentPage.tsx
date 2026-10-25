@@ -5,9 +5,8 @@ import { BlockValues, type IBlockValueProps } from 'lotus-ui-react/components/Di
 import { HorizontalStack, Panel } from 'lotus-ui-react/components/Layout';
 import { useAuthContext } from '#provider';
 
-export function DevelopmentPage() 
-{
-  const userContext= useAuthContext();
+export function DevelopmentPage() {
+  const userContext = useAuthContext();
 
   const blockValuesEnvironment: Partial<IBlockValueProps>[] = [];
   blockValuesEnvironment.push({ label: 'FrontApi', value: Environment.frontApi });
@@ -24,10 +23,9 @@ export function DevelopmentPage()
   blockValuesScreen.push({ label: 'PixelDepth', value: screen.pixelDepth });
   blockValuesScreen.push({ label: 'Orientation.Type', value: screen.orientation.type });
   blockValuesScreen.push({ label: 'Orientation.Angle', value: screen.orientation.angle });
-  
+
   const blockValuesUser: Partial<IBlockValueProps>[] = [];
-  if (userContext.userAuthInfo)
-  {
+  if (userContext.userAuthInfo) {
     const user = userContext.userAuthInfo;
     blockValuesUser.push({ label: 'AuthScheme', value: user.authScheme });
     blockValuesUser.push({ label: 'AuthExpires', value: DateTimeFormatter.formatRelativeOfDate(user.authExpires) });
@@ -37,37 +35,49 @@ export function DevelopmentPage()
   return (
     <HorizontalStack>
       <Panel withBorder bdRadius="lg" header={'Environment'} headerOffsetPercent={20} m={'lg'} w={'max-content'}>
-        <BlockValues 
+        <BlockValues
           blockValueProps={{ asBadge: false, accentBackground: true, withBorder: true, accentColor: 'blue', p: 'xs', bdRadius: 'md' }}
           blockValues={blockValuesEnvironment}
           columnCount={3}
           columnGap={'lg'}
           gridTemplateColumns={'repeat(3, auto)'}
-          p={'md'} placement='vertical'
-          rowCount={2} rowGap={'lg'} size='sm'
-          w={'max-content'} />
+          p={'md'}
+          placement="vertical"
+          rowCount={2}
+          rowGap={'lg'}
+          size="sm"
+          w={'max-content'}
+        />
       </Panel>
       <Panel withBorder bdRadius="lg" header={'Screen'} headerOffsetPercent={20} m={'lg'} w={'max-content'}>
-        <BlockValues 
+        <BlockValues
           blockValueProps={{ asBadge: false, accentBackground: true, withBorder: true, accentColor: 'green', p: 'xs', bdRadius: 'md' }}
           blockValues={blockValuesScreen}
           columnCount={3}
           columnGap={'lg'}
           gridTemplateColumns={'repeat(3, auto)'}
-          p={'md'} placement='vertical'
-          rowCount={2} rowGap={'lg'} size='sm'
-          w={'max-content'} />
+          p={'md'}
+          placement="vertical"
+          rowCount={2}
+          rowGap={'lg'}
+          size="sm"
+          w={'max-content'}
+        />
       </Panel>
       <Panel withBorder bdRadius="lg" header={'User'} headerOffsetPercent={20} m={'lg'} w={'max-content'}>
-        <BlockValues 
+        <BlockValues
           blockValueProps={{ asBadge: false, accentBackground: true, withBorder: true, accentColor: 'gold', p: 'xs', bdRadius: 'md' }}
           blockValues={blockValuesUser}
           columnCount={3}
           columnGap={'lg'}
           gridTemplateColumns={'repeat(3, auto)'}
-          p={'md'} placement='vertical'
-          rowCount={2} rowGap={'lg'} size='sm'
-          w={'max-content'} />
+          p={'md'}
+          placement="vertical"
+          rowCount={2}
+          rowGap={'lg'}
+          size="sm"
+          w={'max-content'}
+        />
       </Panel>
     </HorizontalStack>
   );

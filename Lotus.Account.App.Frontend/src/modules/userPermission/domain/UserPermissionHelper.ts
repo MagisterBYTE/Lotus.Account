@@ -3,13 +3,10 @@ import type { IUserPermission, IUserPermissionDatasave } from './types/UserPermi
 /**
  * Вспомогательный класс для работы с разрешениями
  */
-export abstract class UserPermissionHelper
-{
+export abstract class UserPermissionHelper {
   // #region IDatasavable
-  public static fromDatasave(datasave: IUserPermissionDatasave): IUserPermission
-  {
-    const permission: IUserPermission =
-    {
+  public static fromDatasave(datasave: IUserPermissionDatasave): IUserPermission {
+    const permission: IUserPermission = {
       id: datasave.id,
       name: datasave.name,
       displayName: datasave.displayName,
@@ -19,15 +16,12 @@ export abstract class UserPermissionHelper
     return permission;
   }
 
-  public static fromDatasaveArray(datasaves: IUserPermissionDatasave[]): IUserPermission[]
-  {
+  public static fromDatasaveArray(datasaves: IUserPermissionDatasave[]): IUserPermission[] {
     return datasaves.map(UserPermissionHelper.fromDatasave);
   }
 
-  public static toDatasave(permission: IUserPermission): IUserPermissionDatasave
-  {
-    const datasave: IUserPermissionDatasave =
-    {
+  public static toDatasave(permission: IUserPermission): IUserPermissionDatasave {
+    const datasave: IUserPermissionDatasave = {
       id: permission.isNew ? -1 : Number(permission.id),
       name: permission.name,
       displayName: permission.displayName
@@ -36,8 +30,7 @@ export abstract class UserPermissionHelper
     return datasave;
   }
 
-  public static toDatasaveArray(permissions: IUserPermission[]): IUserPermissionDatasave[]
-  {
+  public static toDatasaveArray(permissions: IUserPermission[]): IUserPermissionDatasave[] {
     return permissions.map(UserPermissionHelper.toDatasave);
   }
   // #endregion

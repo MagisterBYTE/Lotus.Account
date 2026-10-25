@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": true,
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "jsxSingleQuote": false,
+  "printWidth": 160,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "sortPackageJson": false,
+  "ignorePatterns": ["**/.git", "**/node_modules", "**/package.json", "**/package-lock.json", "dist/**", "coverage/**"]
+}

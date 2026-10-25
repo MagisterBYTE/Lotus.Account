@@ -10,14 +10,12 @@ import { TokenItemEnum } from './type/TokenItem';
 /**
  * Сервис для работы с токенами
  */
-export class TokenService
-{
+export class TokenService {
   // #region Fields
   public storage: IStorage;
   // #endregion
 
-  constructor(storage: IStorage)
-  {
+  constructor(storage: IStorage) {
     this.storage = storage;
   }
   // #region Expiry methods
@@ -27,11 +25,9 @@ export class TokenService
    *
    * @returns true если токен существует и не истек
    */
-  public hasValidAccessToken(): boolean
-  {
+  public hasValidAccessToken(): boolean {
     const accessToken = this.getAccessToken();
-    if (!accessToken)
-    {
+    if (!accessToken) {
       return false;
     }
 
@@ -51,19 +47,16 @@ export class TokenService
    *
    * @returns true если можно обновить access токен
    */
-  public canRefreshToken(): boolean
-  {
+  public canRefreshToken(): boolean {
     const refreshToken = this.getRefreshToken();
-    if (!refreshToken)
-    {
+    if (!refreshToken) {
       return false;
     }
 
     // Проверяем, что refresh токен еще действителен
     // Обычно refresh токены живут дольше, но можно добавить проверку
     const refreshTokenExpiry = this.getExpiresIn() * 4; // По умолчанию в 4 раза дольше
-    if (refreshTokenExpiry)
-    {
+    if (refreshTokenExpiry) {
       const currentTime = Math.floor(Date.now() / 1000);
       return currentTime + 300 < refreshTokenExpiry; // 5 минут буфера
     }
@@ -78,10 +71,8 @@ export class TokenService
    * @param thresholdSeconds Пороговое значение в секундах (по умолчанию 300 = 5 минут)
    * @returns true если токен истекает в течение указанного времени
    */
-  public isTokenExpiringSoon(thresholdSeconds: number = 300): boolean
-  {
-    if (!this.hasValidAccessToken())
-    {
+  public isTokenExpiringSoon(thresholdSeconds: number = 300): boolean {
+    if (!this.hasValidAccessToken()) {
       return false;
     }
 
@@ -96,15 +87,13 @@ export class TokenService
    *
    * @returns Объект с разными форматами времени истечения
    */
-  public getTokenExpiryDetails(): ITokenExpiryDetails
-  {
+  public getTokenExpiryDetails(): ITokenExpiryDetails {
     const accessToken = this.getAccessToken();
     const expiresIn = this.getExpiresIn();
     const currentTime = Math.floor(Date.now() / 1000);
     const lang = LocalizationAccountDispatcher.currentLanguage;
 
-    if (!accessToken || expiresIn <= currentTime)
-    {
+    if (!accessToken || expiresIn <= currentTime) {
       return {
         isExpired: true,
         expiryDate: undefined,
@@ -134,8 +123,7 @@ export class TokenService
   /**
    * Форматирует информацию об истечении токена
    */
-  private formatExpiryInfo(expiryDate: Date, remainingSeconds: number): ITokenExpiryFormattedInfo
-  {
+  private formatExpiryInfo(expiryDate: Date, remainingSeconds: number): ITokenExpiryFormattedInfo {
     const lang = LocalizationAccountDispatcher.currentLanguage;
     const formattedDate = DateTimeFormatter.date(expiryDate, lang);
     const remainingTime = DateTimeFormatter.formatDuration(remainingSeconds, lang);
@@ -149,12 +137,11 @@ export class TokenService
   // #endregion
 
   // #region Token methods
-  public setData(data: ISuccessAuthResponse)
-  {
+  public setData(data: ISuccessAuthResponse) {
     this.storage.setItem(TokenItemEnum.AccessToken, data.access_token);
     this.storage.setItem(TokenItemEnum.RefreshToken, data.refresh_token);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     const tokenItems = jwtDecode<JwtPayload>(data.access_token) as any;
 
     const expToken = tokenItems.exp;
@@ -167,7 +154,7 @@ export class TokenService
     this.storage.setItem(TokenItemEnum.Role, userRole);
 
     const userEmail = tokenItems.email;
-    this.storage.setItem(TokenItemEnum.Email, userEmail); 
+    this.storage.setItem(TokenItemEnum.Email, userEmail);
 
     const userName = tokenItems.user_name;
     this.storage.setItem(TokenItemEnum.UserName, userName);
@@ -176,34 +163,28 @@ export class TokenService
     this.storage.setItem(TokenItemEnum.UserPermissions, userPermissions);
   }
 
-  public getAccessToken(): string | null
-  {
+  public getAccessToken(): string | null {
     return this.storage.getItem(TokenItemEnum.AccessToken);
   }
 
-  public getRefreshToken(): string | null
-  {
+  public getRefreshToken(): string | null {
     return this.storage.getItem(TokenItemEnum.RefreshToken);
   }
 
-  public getExpiresIn(): number
-  {
+  public getExpiresIn(): number {
     return Number(this.storage.getItem(TokenItemEnum.ExpiresIn));
   }
 
-  public hasAccessToken(): boolean
-  {
+  public hasAccessToken(): boolean {
     const token = this.storage.getItem(TokenItemEnum.AccessToken);
-    if (token)
-    {
+    if (token) {
       return true;
     }
 
     return false;
   }
 
-  public clearData()
-  {
+  public clearData() {
     this.storage.removeItem(TokenItemEnum.AccessToken);
     this.storage.removeItem(TokenItemEnum.ExpiresIn);
     this.storage.removeItem(TokenItemEnum.RefreshToken);
@@ -216,56 +197,45 @@ export class TokenService
   // #endregion
 
   // #region Get payload methods
-  public getLogin(): string | null
-  {
+  public getLogin(): string | null {
     return this.storage.getItem(TokenItemEnum.Login);
   }
 
-  public getRole(): string | null
-  {
+  public getRole(): string | null {
     return this.storage.getItem(TokenItemEnum.Role);
   }
 
-  public getEmail(): string | null
-  {
+  public getEmail(): string | null {
     return this.storage.getItem(TokenItemEnum.Email);
   }
 
-  public getUserName(): string | null
-  {
+  public getUserName(): string | null {
     return this.storage.getItem(TokenItemEnum.UserName);
   }
 
-  public getUserPermissions(): string | null
-  {
+  public getUserPermissions(): string | null {
     return this.storage.getItem(TokenItemEnum.UserPermissions);
   }
   // #endregion
 
   // #region Permission methods
-  public checkUserPermission(permission: string): boolean
-  {
+  public checkUserPermission(permission: string): boolean {
     const accessUserPermissions = this.storage.getItem(TokenItemEnum.UserPermissions);
-    if (Assert.existValue<string>(accessUserPermissions))
-    {
+    if (Assert.existValue<string>(accessUserPermissions)) {
       return accessUserPermissions.includes(permission);
     }
     return false;
   }
 
-  public checkUserPermissions(permissions: string[] | undefined): boolean
-  {
+  public checkUserPermissions(permissions: string[] | undefined): boolean {
     if (permissions === undefined) return true;
 
     const accessUserPermissions = this.storage.getItem(TokenItemEnum.UserPermissions);
-    if (Assert.existValue<string>(accessUserPermissions))
-    {
-      for (const element of permissions)
-      {
+    if (Assert.existValue<string>(accessUserPermissions)) {
+      for (const element of permissions) {
         const permission = element;
         const exist = accessUserPermissions.includes(permission);
-        if (exist)
-        {
+        if (exist) {
           return true;
         }
       }

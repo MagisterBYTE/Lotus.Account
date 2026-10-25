@@ -4,8 +4,7 @@ import { RoutesAccount } from '#app';
 import { LocalizationAccount } from '#localization';
 import { AuthService } from '../AuthService';
 
-export interface IRouteUserPermissionProps
-{
+export interface IRouteUserPermissionProps {
   /**
    * Компонент для отображения в случае успешного доступа
    */
@@ -27,11 +26,10 @@ export interface IRouteUserPermissionProps
   isShouldBeAuthorized?: boolean;
 }
 
-export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement =>
-{
+export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement => {
   const { component, accessDenied, permissions, isShouldBeAuthorized } = props;
 
-  const tokenService =  AuthService.tokenService;
+  const tokenService = AuthService.tokenService;
   const isAuth = tokenService.hasAccessToken();
   const location = useLocation();
 
@@ -39,48 +37,33 @@ export const RoutePermission = (props: IRouteUserPermissionProps): ReactElement 
   const prevPageUrl = state ? state.from.pathname : '/';
 
   // Пользователь должен быть авторизован
-  if (isShouldBeAuthorized)
-  {
+  if (isShouldBeAuthorized) {
     // Если он авторизован
-    if (isAuth)
-    {
+    if (isAuth) {
       // Если нужен доступ
-      if (permissions)
-      {
+      if (permissions) {
         // Проверяем права
-        if (tokenService.checkUserPermissions(permissions))
-        {
+        if (tokenService.checkUserPermissions(permissions)) {
           // Права нужные есть
           return component;
-        }
-        else
-        {
+        } else {
           // Доступа нет, возвращаем страницу профиля
           return accessDenied ?? <>{LocalizationAccount.data.auth.accessDenied}</>;
         }
-      }
-      else
-      {
+      } else {
         // Доступ к ресурсу не нужен
         return component;
       }
-    }
-    else
-    {
+    } else {
       // Пользователь не авторизован - возвращаем страницу авторизации
       return <Navigate state={{ from: location }} to={RoutesAccount.login.path} />;
     }
-  }
-  else
-  {
+  } else {
     // Он авторизован, но не должен быть
-    if (isAuth)
-    {
+    if (isAuth) {
       // Переходим на предыдущую страницу
       return <Navigate state={{ from: location }} to={prevPageUrl} />;
-    }
-    else
-    {
+    } else {
       return component;
     }
   }

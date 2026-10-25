@@ -1,5 +1,4 @@
-export const LocalizationAccountDataEn =
-{
+export const LocalizationAccountDataEn = {
   auth: {
     account: 'Account',
     entrance: 'Sign In',
@@ -141,8 +140,7 @@ export const LocalizationAccountDataEn =
     profileNames: 'Profiles',
     organizationName: 'Organization'
   },
-  account:
-  {
+  account: {
     profile: 'Personal data',
     profileUpdate: 'Update data',
     profileUpdateSuccess: 'Personal data updated successfully',

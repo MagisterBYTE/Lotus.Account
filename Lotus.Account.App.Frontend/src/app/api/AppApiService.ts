@@ -1,12 +1,10 @@
 import { ApiService, Environment } from 'lotus-core';
 
 /**
- * Класс для сервисов Api приложения 
+ * Класс для сервисов Api приложения
  */
-export class AppApiService extends ApiService 
-{
-  constructor()
-  {
+export class AppApiService extends ApiService {
+  constructor() {
     const baseURL = Environment.backendApi;
     super(baseURL);
   }

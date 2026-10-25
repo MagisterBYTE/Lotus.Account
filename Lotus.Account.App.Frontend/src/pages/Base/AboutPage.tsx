@@ -1,14 +1,16 @@
-import { Text } from 'lotus-ui-react/components/Display';
 import { Box } from 'lotus-ui-react/components/Layout';
+import SmetaTable from './SmetaTable';
 
-export function AboutPage() 
-{
+export function AboutPage() {
+  // oxlint-disable-next-line typescript/no-explicit-any
+  const handleDataChange = (data: any[]) => {
+    // oxlint-disable-next-line no-console
+    console.log('Данные изменены:', data);
+    // Здесь можно сохранять данные в localStorage или отправлять на сервер
+  };
   return (
     <Box>
-      <h3>Lotus.Account</h3>
-      <Text>
-        Модуль учетной записи пользователя обеспечивает весь процесс регистрации, аутентификации и авторизации пользователя, представляет его аккаунт и личный кабинет
-      </Text>
+      <SmetaTable onChange={handleDataChange} />
     </Box>
   );
 }

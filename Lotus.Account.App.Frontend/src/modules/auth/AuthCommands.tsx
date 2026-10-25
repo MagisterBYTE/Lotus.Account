@@ -6,13 +6,11 @@ import { RoutesAccount } from '#app';
 import { LocalizationAccount } from '#localization';
 import { AuthService } from './AuthService';
 
-class AuthCommandsClass extends CommandActionService
-{
+class AuthCommandsClass extends CommandActionService {
   // #region Static fields
   private static _authCommands: AuthCommandsClass;
 
-  public static get Instance(): AuthCommandsClass
-  {
+  public static get Instance(): AuthCommandsClass {
     return this._authCommands || (this._authCommands = new this());
   }
   // #endregion
@@ -39,8 +37,7 @@ class AuthCommandsClass extends CommandActionService
   logout: ActionCommand;
   // #endregion
 
-  constructor()
-  {
+  constructor() {
     super();
 
     this.login = new NavigationCommand('login', RoutesAccount.login);
@@ -62,8 +59,7 @@ class AuthCommandsClass extends CommandActionService
     this.logout.label = LocalizationAccount.data.auth.logout;
     this.logout.icon = <IconLogout />;
     this.logout.group = 'auth';
-    this.logout.execute = () =>
-    {
+    this.logout.execute = () => {
       void AuthService.logoutAsync();
     };
     this.commands.push(this.logout);
@@ -73,9 +69,8 @@ class AuthCommandsClass extends CommandActionService
     window.addEventListener(LanguageChangeEventType, (e) => this.onTranslate(e));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public onTranslate(_event: LanguageChangeEvent | any)
-  {
+  // oxlint-disable-next-line typescript/no-explicit-any
+  public onTranslate(_event: LanguageChangeEvent | any) {
     this.login.label = LocalizationAccount.data.auth.entrance;
     this.register.label = LocalizationAccount.data.auth.register;
     this.restorePassword.label = LocalizationAccount.data.auth.restorePassword;

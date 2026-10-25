@@ -3,8 +3,7 @@ import type { TCssHeight } from 'lotus-ui-react/types';
 /**
  * Параметры подвала сайта
  */
-export interface ILayoutFooter
-{
+export interface ILayoutFooter {
   /**
    * Виден основной футер/подвал сайта по настройкам пользователя
    */

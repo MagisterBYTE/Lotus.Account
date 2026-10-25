@@ -4,13 +4,11 @@ import { LocalizationAccount } from './LocalizationAccount';
 import { LocalizationAccountDataEn } from './LocalizationAccountDataEn';
 import { LocalizationAccountDataRu } from './LocalizationAccountDataRu';
 
-export class LocalizationAccountDispatcherClass implements ILocalizationDispatcher
-{
+export class LocalizationAccountDispatcherClass implements ILocalizationDispatcher {
   // #region Static fields
   private static _localizationAccount: LocalizationAccountDispatcherClass;
 
-  public static get Instance(): LocalizationAccountDispatcherClass
-  {
+  public static get Instance(): LocalizationAccountDispatcherClass {
     return this._localizationAccount || (this._localizationAccount = new this());
   }
   // #endregion
@@ -21,8 +19,7 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
   /**
    * Получить текущую язык
    */
-  public get currentLanguage(): TLanguageType
-  {
+  public get currentLanguage(): TLanguageType {
     if (this._currentLanguage) return this._currentLanguage;
     return 'ru-RU';
   }
@@ -30,8 +27,7 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
   /**
    * Установить текущий язык
    */
-  public set currentLanguage(language: TLanguageType)
-  {
+  public set currentLanguage(language: TLanguageType) {
     this._currentLanguage = language;
     if (language == 'en-US') LocalizationAccount.data = LocalizationAccountDataEn;
     if (language == 'ru-RU') LocalizationAccount.data = LocalizationAccountDataRu;
@@ -39,8 +35,7 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
   // #endregion
 
   // #region Constructor
-  constructor()
-  {
+  constructor() {
     FunctionHelper.bindAllMethods(this);
     window.addEventListener(LanguageChangeEventType, (e) => this.onLanguageChangeEvent(e));
   }
@@ -51,19 +46,16 @@ export class LocalizationAccountDispatcherClass implements ILocalizationDispatch
    * Установить текущий язык
    * @param language Язык
    */
-  public setLanguage(language: TLanguageType | undefined)
-  {
-    if (language)
-    {
+  public setLanguage(language: TLanguageType | undefined) {
+    if (language) {
       this._currentLanguage = language;
       if (language == 'en-US') LocalizationAccount.data = LocalizationAccountDataEn;
       if (language == 'ru-RU') LocalizationAccount.data = LocalizationAccountDataRu;
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public onLanguageChangeEvent(event: LanguageChangeEvent|any)
-  {
+  // oxlint-disable-next-line typescript/no-explicit-any
+  public onLanguageChangeEvent(event: LanguageChangeEvent | any) {
     this.setLanguage(event.detail.lang);
   }
   // #endregion

@@ -1,9 +1,7 @@
-
 /**
  * Данные для смены пароля
  */
-export interface IAccountChangePassword
-{
+export interface IAccountChangePassword {
   /**
    * Текущий пароль
    */

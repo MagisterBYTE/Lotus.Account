@@ -18,8 +18,7 @@ export interface IMainLayoutProps {
   page: ReactElement;
 }
 
-export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) => 
-{
+export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) => {
   const { page } = props;
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
@@ -31,8 +30,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const renderBaseNavigation = () => 
-  {
+  const renderBaseNavigation = () => {
     return (
       <>
         <NavLink
@@ -40,8 +38,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           label={'Home'}
           leftSection={<IconHome />}
           variant="filled"
-          onClick={() => 
-          {
+          onClick={() => {
             void navigate(RoutesAccount.home.path);
           }}
         />
@@ -49,8 +46,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
           active={location.pathname === RoutesAccount.about.path}
           label={'About'}
           leftSection={<IconInfoSquareRounded />}
-          onClick={() => 
-          {
+          onClick={() => {
             void navigate(RoutesAccount.about.path);
           }}
         />
@@ -61,8 +57,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
               label={'Develop'}
               leftSection={<IconAssembly />}
               variant="subtle"
-              onClick={() => 
-              {
+              onClick={() => {
                 open();
               }}
             />
@@ -72,8 +67,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
     );
   };
 
-  const renderLeftNavbar = () => 
-  {
+  const renderLeftNavbar = () => {
     return (
       <>
         {/* // Пользователи */}
@@ -83,8 +77,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             label={LocalizationAccount.data.user.users}
             leftSection={<IconUsers color={theme.colors!.green?.[5]} />}
             variant="light"
-            onClick={() => 
-            {
+            onClick={() => {
               void navigate(RoutesAccount.users.path);
             }}
           />
@@ -95,8 +88,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             label={LocalizationAccount.data.permission.permissions}
             leftSection={<IconLicense color={theme.colors!.info![5]} />}
             variant="light"
-            onClick={() => 
-            {
+            onClick={() => {
               void navigate(RoutesAccount.userPermissions.path);
             }}
           />
@@ -107,8 +99,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             label={LocalizationAccount.data.role.roles}
             leftSection={<IconDrone color={theme.colors!.red![5]} />}
             variant="light"
-            onClick={() => 
-            {
+            onClick={() => {
               void navigate(RoutesAccount.userRoles.path);
             }}
           />
@@ -119,8 +110,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             label={LocalizationAccount.data.position.positions}
             leftSection={<IconBrandBitbucket />}
             variant="light"
-            onClick={() => 
-            {
+            onClick={() => {
               void navigate(RoutesAccount.userPositions.path);
             }}
           />
@@ -131,8 +121,7 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             label={LocalizationAccount.data.group.groups}
             leftSection={<IconUsersGroup />}
             variant="light"
-            onClick={() => 
-            {
+            onClick={() => {
               void navigate(RoutesAccount.userGroups.path);
             }}
           />
@@ -143,10 +132,15 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
     );
   };
 
-  const accountMenu: ActionCommand[] = [AccountCommands.profile, AccountCommands.settings, AccountCommands.security, DelimiterCommand.Instance, AuthCommands.logout];
+  const accountMenu: ActionCommand[] = [
+    AccountCommands.profile,
+    AccountCommands.settings,
+    AccountCommands.security,
+    DelimiterCommand.Instance,
+    AuthCommands.logout
+  ];
 
-  const renderAccount = () => 
-  {
+  const renderAccount = () => {
     if (!userAuthInfo) return <></>;
     return (
       <>
@@ -155,9 +149,8 @@ export const MainLayout: React.FC<IMainLayoutProps> = (props: IMainLayoutProps) 
             <Avatar alt="no image here" color="initials" name={userAuthInfo.getInitials()} size={'md'} src={userAuthInfo.avatarId} />
           </Menu.Target>
           <Menu.Dropdown>
-            {accountMenu.map((item, index) => 
-            {
-              return <CommandElement key={index} command={item} elementType="menuItem" size={'md'} />;
+            {accountMenu.map((item) => {
+              return <CommandElement key={item.name} command={item} elementType="menuItem" size={'md'} />;
             })}
           </Menu.Dropdown>
         </Menu>

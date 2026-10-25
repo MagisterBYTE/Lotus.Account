@@ -1,21 +1,18 @@
 import { ValidationResult, type IValidateObject } from 'lotus-core/modules/validation';
 import { UserAuthorizeInfo, type IUserAuthorizeInfo } from '#modules/auth';
 
-export class AccountProfile extends UserAuthorizeInfo implements IValidateObject
-{
+export class AccountProfile extends UserAuthorizeInfo implements IValidateObject {
   // #region Fields
   public validationStatus: ValidationResult;
   // #endregion
 
-  constructor(info?: Partial<IUserAuthorizeInfo>)
-  {
+  constructor(info?: Partial<IUserAuthorizeInfo>) {
     super(info);
     this.validationStatus = new ValidationResult();
   }
 
   // #region IValidateObject
-  public validate(): boolean 
-  {
+  public validate(): boolean {
     this.validationStatus.clear();
     this.validationStatus.addErrorMaxString('nikName', this.nickname, 20);
     this.validationStatus.addErrorRequired('email', this.email);

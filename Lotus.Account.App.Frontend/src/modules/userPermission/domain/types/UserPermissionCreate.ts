@@ -1,9 +1,7 @@
-
 /**
  * Интерфейс разрешения для его создания
  */
-export interface IUserPermissionCreate
-{
+export interface IUserPermissionCreate {
   /**
    * Наименование разрешения
    */

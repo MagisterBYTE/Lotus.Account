@@ -1,20 +1,18 @@
-
 /**
  * Информация о статус истечения токена
  */
-export interface ITokenExpiryDetails 
-{
-  /** 
+export interface ITokenExpiryDetails {
+  /**
    * Истек ли токен
    */
   isExpired: boolean;
 
-  /** 
+  /**
    * Дата и время истечения
    */
   expiryDate: Date | undefined;
 
-  /** 
+  /**
    * Оставшееся время в секундах
    */
   remainingSeconds: number;
@@ -30,9 +28,8 @@ export interface ITokenExpiryDetails
   formatted: ITokenExpiryFormattedInfo;
 }
 
-export interface ITokenExpiryFormattedInfo
-{
-  /** 
+export interface ITokenExpiryFormattedInfo {
+  /**
    * Короткий формат
    */
   short: string;
@@ -47,4 +44,3 @@ export interface ITokenExpiryFormattedInfo
    */
   full: string;
 }
-

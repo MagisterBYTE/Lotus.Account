@@ -3,8 +3,7 @@ import { ValidationResult, type IValidateObject } from 'lotus-core/modules/valid
 import { LocalizationAccount } from '#localization';
 import type { IAccountChangePassword } from './types';
 
-export class AccountChangePassword extends RefreshProxy implements IAccountChangePassword, IValidateObject
-{
+export class AccountChangePassword extends RefreshProxy implements IAccountChangePassword, IValidateObject {
   // #region Fields
   public currentPassword: string;
   public newPassword: string;
@@ -13,8 +12,7 @@ export class AccountChangePassword extends RefreshProxy implements IAccountChang
   public validationStatus: ValidationResult;
   // #endregion
 
-  constructor(hashId: string)
-  {
+  constructor(hashId: string) {
     super();
     this.currentPassword = '';
     this.newPassword = '';
@@ -24,28 +22,24 @@ export class AccountChangePassword extends RefreshProxy implements IAccountChang
   }
 
   // #region Update methods
-  public setCurrentPassword(currentPassword: string, isRefreshProxy: boolean = true): void
-  {
+  public setCurrentPassword(currentPassword: string, isRefreshProxy: boolean = true): void {
     this.currentPassword = currentPassword;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setNewPassword(newPassword: string, isRefreshProxy: boolean = true): void
-  {
+  public setNewPassword(newPassword: string, isRefreshProxy: boolean = true): void {
     this.newPassword = newPassword;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setConfirmPassword(confirmPassword: string, isRefreshProxy: boolean = true): void
-  {
+  public setConfirmPassword(confirmPassword: string, isRefreshProxy: boolean = true): void {
     this.confirmPassword = confirmPassword;
     if (isRefreshProxy) this.onRefreshProxy();
   }
   // #endregion
 
   // #region IValidateObject
-  public validate(): boolean 
-  {
+  public validate(): boolean {
     this.validationStatus.clear();
     this.validationStatus.addErrorRequired('currentPassword', this.currentPassword);
     this.validationStatus.addErrorMaxString('currentPassword', this.currentPassword, 20);

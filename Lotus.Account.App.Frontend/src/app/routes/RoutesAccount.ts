@@ -3,17 +3,16 @@ import { FunctionHelper, type IRoute, TypedRoute } from 'lotus-core';
 /**
  * Маршруты модуля аккаунта
  */
-export interface IRoutesAccount
-{
+export interface IRoutesAccount {
   //
   // ОБЩИЕ
-  //  
-  home: IRoute,
+  //
+  home: IRoute;
 
   /**
    * Информация об приложении
    */
-  about: IRoute,
+  about: IRoute;
 
   //
   // АВТОРИЗАЦИЯ И РЕГИСТРАЦИЯ
@@ -21,17 +20,17 @@ export interface IRoutesAccount
   /**
    * Вход через логин
    */
-  login: IRoute,
+  login: IRoute;
 
   /**
    * Зарегистрироваться
    */
-  register: IRoute,
+  register: IRoute;
 
   /**
    * Восстановить пароль
    */
-  restorePassword: IRoute,
+  restorePassword: IRoute;
 
   //
   // АККАУНТ ПОЛЬЗОВАТЕЛЯ
@@ -39,22 +38,22 @@ export interface IRoutesAccount
   /**
    * Профиль пользователя
    */
-  accountProfile: IRoute,
+  accountProfile: IRoute;
 
   /**
    * Настройки пользователя
    */
-  accountSettings: IRoute,
+  accountSettings: IRoute;
 
   /**
    * Безопасность пользователя
    */
-  accountSecurity: IRoute,
+  accountSecurity: IRoute;
 
   /**
    * Уведомления пользователя
    */
-  accountNotifications: IRoute,
+  accountNotifications: IRoute;
 
   //
   // УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ
@@ -62,40 +61,38 @@ export interface IRoutesAccount
   /**
    * Управление пользователями
    */
-  users: IRoute,
+  users: IRoute;
 
   /**
    * Управление ролями
    */
-  userRoles: IRoute,
+  userRoles: IRoute;
 
   /**
    * Управление разрешениями
    */
-  userPermissions: IRoute,
+  userPermissions: IRoute;
 
   /**
    * Управление должностями
    */
-  userPositions: IRoute,
+  userPositions: IRoute;
 
   /**
    * Управление группами
    */
-  userGroups: IRoute
+  userGroups: IRoute;
 }
 
 /**
  * Класс для определения маршрутов модуля аккаунта
  */
-class RoutesAccountClass implements IRoutesAccount
-{
+class RoutesAccountClass implements IRoutesAccount {
   // #region Static fields
   private static _routesAccount: RoutesAccountClass;
 
-  public static get Instance(): RoutesAccountClass 
-  {
-    return (this._routesAccount || (this._routesAccount = new this()));
+  public static get Instance(): RoutesAccountClass {
+    return this._routesAccount || (this._routesAccount = new this());
   }
   // #endregion
 
@@ -128,8 +125,7 @@ class RoutesAccountClass implements IRoutesAccount
   public readonly userGroups = TypedRoute.create('/user/groups', true);
   // #endregion
 
-  constructor()
-  {
+  constructor() {
     FunctionHelper.bindAllMethods(this);
   }
 
@@ -140,8 +136,7 @@ class RoutesAccountClass implements IRoutesAccount
    * @param uri URI для проверки
    * @returns true если требуется авторизация, false если нет
    */
-  public isAuthorizationRequired(uri: string): boolean
-  {
+  public isAuthorizationRequired(uri: string): boolean {
     // Нормализуем URI - удаляем начальные и конечные слеши для consistency
     const normalizedUri = uri.replace(/^\/+|\/+$/g, '');
 
@@ -158,31 +153,25 @@ class RoutesAccountClass implements IRoutesAccount
    * @param uri URI для поиска
    * @returns Найденный маршрут или undefined
    */
-  private findRouteByUri(uri: string): IRoute | undefined
-  {
+  private findRouteByUri(uri: string): IRoute | undefined {
     // Проходим по всем полям класса, которые являются маршрутами
-    for (const key in this)
-    {
-      if (Object.prototype.hasOwnProperty.call(this, key))
-      {
+    for (const key in this) {
+      if (Object.prototype.hasOwnProperty.call(this, key)) {
         const route = this[key] as IRoute;
 
         // Проверяем, что это объект маршрута и у него есть path
-        if (route && typeof route === 'object' && route.path)
-        {
+        if (route && typeof route === 'object' && route.path) {
           // Нормализуем path маршрута
           const normalizedRoutePath = route.path.replace(/^\/+|\/+$/g, '');
 
           // Сравниваем URI с path маршрута
-          if (normalizedRoutePath === uri)
-          {
+          if (normalizedRoutePath === uri) {
             return route;
           }
 
           // Дополнительно: поддержка параметризованных маршрутов
           // Например: /user/:id -> /user/123
-          if (this.isParametrizedRouteMatch(normalizedRoutePath, uri))
-          {
+          if (this.isParametrizedRouteMatch(normalizedRoutePath, uri)) {
             return route;
           }
         }
@@ -198,11 +187,9 @@ class RoutesAccountClass implements IRoutesAccount
    * @param uri URI для проверки
    * @returns true если URI соответствует шаблону маршрута
    */
-  private isParametrizedRouteMatch(routePath: string, uri: string): boolean
-  {
+  private isParametrizedRouteMatch(routePath: string, uri: string): boolean {
     // Если в routePath есть параметры (например, :id, :userId)
-    if (routePath.includes(':'))
-    {
+    if (routePath.includes(':')) {
       // Заменяем параметры на regex группы
       const regexPattern = routePath.replace(/:[^/]+/g, '([^/]+)');
       const regex = new RegExp(`^${regexPattern}$`);
@@ -217,17 +204,13 @@ class RoutesAccountClass implements IRoutesAccount
    * Получает все маршруты класса
    * @returns Массив всех маршрутов
    */
-  public getAllRoutes(): IRoute[]
-  {
+  public getAllRoutes(): IRoute[] {
     const routes: IRoute[] = [];
 
-    for (const key in this)
-    {
-      if (Object.prototype.hasOwnProperty.call(this, key))
-      {
+    for (const key in this) {
+      if (Object.prototype.hasOwnProperty.call(this, key)) {
         const route = this[key] as IRoute;
-        if (route && typeof route === 'object' && route.path)
-        {
+        if (route && typeof route === 'object' && route.path) {
           routes.push(route);
         }
       }
@@ -241,14 +224,12 @@ class RoutesAccountClass implements IRoutesAccount
    * @param key Ключ маршрута
    * @param route Объект маршрута
    */
-  public addRoute(key: string, route: IRoute): void
-  {
+  public addRoute(key: string, route: IRoute): void {
     // @ts-expect-error route
     this[key] = route;
   }
 
   // #endregion
-
 }
 
 /**

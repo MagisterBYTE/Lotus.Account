@@ -10,16 +10,14 @@ import { useNavigate } from 'react-router';
 import { LocalizationAccount } from '#localization';
 import { RegisterParameters } from '../../domain';
 
-export interface IRegistrationFormProps
-{
+export interface IRegistrationFormProps {
   /**
    * Путь в случае успешного входа
    */
   pathSuccess: string;
 }
 
-export function RegistrationForm(props: IRegistrationFormProps)
-{
+export function RegistrationForm(props: IRegistrationFormProps) {
   const { pathSuccess } = props;
 
   const navigate = useNavigate();
@@ -29,25 +27,21 @@ export function RegistrationForm(props: IRegistrationFormProps)
   const registerParameters = useProxyObject({ object: new RegisterParameters() });
 
   // #region Handlers
-  const handleButtonRegister = async () =>
-  {
+  const handleButtonRegister = async () => {
     setRegistering(true);
-    try
-    {
+    try {
       await registerParameters.register();
       setRegistering(false);
 
-      if (pathSuccess)
-      {
+      if (pathSuccess) {
         void navigate(pathSuccess);
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    catch (error)
-    {
+    // oxlint-disable-next-line no-unused-vars
+    catch (error) {
       setRegistering(false);
       // const response = error as any as IResult;
-      const okk:IResult = {
+      const okk: IResult = {
         succeeded: true
       };
       Notifications.showResult(okk); // (response, {position: 'top-right', message: '', autoClose: false});
@@ -58,8 +52,9 @@ export function RegistrationForm(props: IRegistrationFormProps)
 
   return (
     <VerticalStack bdRadius="sm" hAlign="stretch" m={'lg'} p="xs" spacing={'md'} w="min(400px, 80vw)">
-
-      <Box centerContent={'center'} style={{ fontSize: '1.5rem' }}>{LocalizationAccount.data.auth.registration}</Box>
+      <Box centerContent={'center'} style={{ fontSize: '1.5rem' }}>
+        {LocalizationAccount.data.auth.registration}
+      </Box>
 
       <Divider nml nmr ml={'xs'} mr={'xs'} />
 
@@ -67,12 +62,10 @@ export function RegistrationForm(props: IRegistrationFormProps)
         required
         error={registerParameters.validationStatus.getErrorByKey('login')}
         label="login"
-        textInputProps={
-          {
-            placeholder: LocalizationAccount.data.auth.placeholderLogin,
-            radius: 'sm'
-          }
-        }
+        textInputProps={{
+          placeholder: LocalizationAccount.data.auth.placeholderLogin,
+          radius: 'sm'
+        }}
         value={registerParameters.login}
         onChange={(event) => registerParameters.setLogin(event.target.value)}
       />
@@ -81,14 +74,14 @@ export function RegistrationForm(props: IRegistrationFormProps)
         required
         error={registerParameters.validationStatus.getErrorByKey('email')}
         label="email"
-        textInputProps={
-          {
-            placeholder: LocalizationAccount.data.auth.placeholderLogin,
-            radius: 'sm'
-          }
-        }
+        textInputProps={{
+          placeholder: LocalizationAccount.data.auth.placeholderLogin,
+          radius: 'sm'
+        }}
         value={registerParameters.email}
-        onChange={(event) => { registerParameters.setEmail(event.target.value); }}
+        onChange={(event) => {
+          registerParameters.setEmail(event.target.value);
+        }}
       />
 
       <Checkbox
@@ -103,10 +96,14 @@ export function RegistrationForm(props: IRegistrationFormProps)
         onChange={(event) => registerParameters.setRememberMe(event.currentTarget.checked)}
       />
 
-      <Button 
+      <Button
         disabled={!registerParameters.validate()}
-        loading={isRegistering} 
-        radius="sm" onClick={() => { void handleButtonRegister(); }}>
+        loading={isRegistering}
+        radius="sm"
+        onClick={() => {
+          void handleButtonRegister();
+        }}
+      >
         {LocalizationAccount.data.auth.register}
       </Button>
     </VerticalStack>

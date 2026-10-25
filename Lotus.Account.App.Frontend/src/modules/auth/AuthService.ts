@@ -6,8 +6,7 @@ import { castToSuccessAuthResponse, type ILoginParameters, type IRegisterParamet
 import { TokenService } from './domain/TokenService';
 import { AuthApiService } from './domain/api';
 
-class AuthServiceClass
-{
+class AuthServiceClass {
   // #region Const
   /**
    * Время последнего входя на сайт
@@ -18,8 +17,7 @@ class AuthServiceClass
   // #region Instance
   private static _authService: AuthServiceClass;
 
-  public static get Instance(): AuthServiceClass
-  {
+  public static get Instance(): AuthServiceClass {
     return this._authService || (this._authService = new this());
   }
   // #endregion
@@ -30,15 +28,13 @@ class AuthServiceClass
   // #endregion
 
   // #region Properties
-  public get isAuth()
-  {
+  public get isAuth() {
     return this.tokenService.hasValidAccessToken();
   }
   // #endregion
 
   // #region Constructor
-  constructor()
-  {
+  constructor() {
     this.tokenService = new TokenService(window.localStorage);
     this.authApiService = new AuthApiService(this.tokenService);
     FunctionHelper.bindAllMethods(this);
@@ -51,8 +47,7 @@ class AuthServiceClass
    * @param loginParameters Параметры для входа
    * @returns
    */
-  public async loginAsync(loginParameters: ILoginParameters): Promise<IUserAuthorizeInfo>
-  {
+  public async loginAsync(loginParameters: ILoginParameters): Promise<IUserAuthorizeInfo> {
     const response = await this.authApiService.loginCookieAsync(loginParameters);
     return response;
   }
@@ -62,8 +57,7 @@ class AuthServiceClass
    * @param loginParameters Параметры для входа
    * @returns
    */
-  public async loginGoogleAsync(): Promise<IUserAuthorizeInfo>
-  {
+  public async loginGoogleAsync(): Promise<IUserAuthorizeInfo> {
     const response = await this.authApiService.loginGoogleAsync();
     return response;
   }
@@ -71,20 +65,16 @@ class AuthServiceClass
   /**
    * Вход через сохраненную куку
    */
-  public async rememberMeAsync(redirectUrl?: string)
-  {
+  public async rememberMeAsync(redirectUrl?: string) {
     const response = await this.authApiService.rememberMeAsync();
-    if (response)
-    {
+    if (response) {
       const data = castToSuccessAuthResponse(response);
-      if (data)
-      {
+      if (data) {
         this.tokenService.setData(data);
 
         this.saveLastLoginTime();
 
-        if (redirectUrl)
-        {
+        if (redirectUrl) {
           location.assign(redirectUrl);
         }
       }
@@ -96,11 +86,9 @@ class AuthServiceClass
    * @param registerParameters Параметры для регистрации нового пользователя
    * @param redirectUrl URL-адрес перенаправления в случае успешной регистрации
    */
-  public async registerAsync(registerParameters: IRegisterParameters, redirectUrl?: string)
-  {
+  public async registerAsync(registerParameters: IRegisterParameters, redirectUrl?: string) {
     await this.authApiService.registerAsync(registerParameters);
-    if (redirectUrl)
-    {
+    if (redirectUrl) {
       location.assign(redirectUrl);
     }
   }
@@ -108,8 +96,7 @@ class AuthServiceClass
   /**
    * Выход из сайта
    */
-  public async logoutAsync()
-  {
+  public async logoutAsync() {
     await this.authApiService.logoutCookieAsync();
 
     location.assign('/');
@@ -117,14 +104,10 @@ class AuthServiceClass
   // #endregion
 
   // #region Common methods
-  public getUserInfoAsync(): Promise<IUserAuthorizeInfo>
-  {
-    if (Environment.isCookieAuth)
-    {
+  public getUserInfoAsync(): Promise<IUserAuthorizeInfo> {
+    if (Environment.isCookieAuth) {
       return this.authApiService.getUserInfoCookieAsync();
-    }
-    else
-    {
+    } else {
       return this.authApiService.getUserInfoTokenAsync();
     }
   }
@@ -135,17 +118,14 @@ class AuthServiceClass
    *
    * @returns true если есть возможность восстановить сессию
    */
-  public hasSavedSession(): boolean
-  {
+  public hasSavedSession(): boolean {
     // Проверяем валидный access токен
-    if (this.tokenService.hasValidAccessToken())
-    {
+    if (this.tokenService.hasValidAccessToken()) {
       return true;
     }
 
     // Проверяем возможность обновления через refresh токен
-    if (this.tokenService.canRefreshToken())
-    {
+    if (this.tokenService.canRefreshToken()) {
       return true;
     }
 
@@ -168,10 +148,8 @@ class AuthServiceClass
    * // "Сессия истекла. Требуется повторный вход"
    * ```
    */
-  public getAuthInfo(): string
-  {
-    if (!this.tokenService.hasValidAccessToken())
-    {
+  public getAuthInfo(): string {
+    if (!this.tokenService.hasValidAccessToken()) {
       return this.getUnauthenticatedInfo();
     }
 
@@ -181,13 +159,11 @@ class AuthServiceClass
   /**
    * Получает информацию для неаутентифицированного пользователя
    */
-  private getUnauthenticatedInfo(): string
-  {
+  private getUnauthenticatedInfo(): string {
     // Проверяем, был ли ранее вход
     const lastLogin = this.getLastLoginTime();
 
-    if (lastLogin)
-    {
+    if (lastLogin) {
       const formattedDate = DateTimeFormatter.dateTime(lastLogin);
       const timeAgo = DateTimeFormatter.formatRelativeOfDate(lastLogin);
 
@@ -195,8 +171,7 @@ class AuthServiceClass
     }
 
     // Проверяем, есть ли сохраненная сессия
-    if (this.hasSavedSession())
-    {
+    if (this.hasSavedSession()) {
       return LocalizationAccount.data.auth.infoSavedSession;
     }
 
@@ -206,12 +181,10 @@ class AuthServiceClass
   /**
    * Формирует информацию о времени истечения токена
    */
-  private getTokenExpiryInfo(): string
-  {
+  private getTokenExpiryInfo(): string {
     const expiryDetails = this.tokenService.getTokenExpiryDetails();
 
-    if (expiryDetails.isExpired)
-    {
+    if (expiryDetails.isExpired) {
       return 'Сессия истекла. Требуется повторный вход';
     }
 
@@ -223,13 +196,10 @@ class AuthServiceClass
     const formattedDate = DateTimeFormatter.dateTime(expiryDetails.expiryDate!, lang);
 
     let status = 'Аутентифицирован';
-    if (this.tokenService.isTokenExpiringSoon(300))
-    {
+    if (this.tokenService.isTokenExpiringSoon(300)) {
       // 5 минут
       status = '⚠️ Аутентифицирован (токен скоро истекает)';
-    }
-    else if (this.tokenService.isTokenExpiringSoon(60))
-    {
+    } else if (this.tokenService.isTokenExpiringSoon(60)) {
       // 1 минута
       status = '🔴 Аутентифицирован (токен почти истек)';
     }
@@ -240,18 +210,13 @@ class AuthServiceClass
   /**
    * Получает время последнего входа
    */
-  private getLastLoginTime(): Date | undefined
-  {
-    try
-    {
+  private getLastLoginTime(): Date | undefined {
+    try {
       const stored = localStorage.getItem(AuthServiceClass.LastLoginTime);
-      if (stored)
-      {
+      if (stored) {
         return new Date(parseInt(stored, 10));
       }
-    }
-    catch
-    {
+    } catch {
       // ignore
     }
 
@@ -261,14 +226,10 @@ class AuthServiceClass
   /**
    * Сохраняет время последнего входа
    */
-  private saveLastLoginTime(): void
-  {
-    try
-    {
+  private saveLastLoginTime(): void {
+    try {
       localStorage.setItem(AuthServiceClass.LastLoginTime, Date.now().toString());
-    }
-    catch
-    {
+    } catch {
       // ignore
     }
   }

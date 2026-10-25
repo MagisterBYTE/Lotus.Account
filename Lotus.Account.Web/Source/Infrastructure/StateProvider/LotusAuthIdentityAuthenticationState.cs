@@ -1,11 +1,10 @@
 using System.Security.Claims;
+using System.Text.Json;
 
 using IdentityModel.Client;
 
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
-
-using Newtonsoft.Json;
 
 namespace Lotus.Account
 {
@@ -148,7 +147,7 @@ namespace Lotus.Account
             response.EnsureSuccessStatusCode();
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var authorizeInfo = JsonConvert.DeserializeObject<UserAuthorizeInfo>(responseBody);
+            var authorizeInfo = JsonSerializer.Deserialize<UserAuthorizeInfo>(responseBody);
 
             _userInfo = authorizeInfo;
 

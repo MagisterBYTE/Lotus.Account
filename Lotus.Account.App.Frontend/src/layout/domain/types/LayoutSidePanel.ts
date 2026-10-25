@@ -3,8 +3,7 @@ import type { TCssWidth } from 'lotus-ui-react/types';
 /**
  * Параметры боковой панели сайта
  */
-export interface ILayoutSidePanel
-{
+export interface ILayoutSidePanel {
   /**
    * Видна/Не видна
    */
@@ -21,12 +20,12 @@ export interface ILayoutSidePanel
   width: TCssWidth;
 
   /**
-  * Максимальная ширина панели в открытом состоянии
-  */
+   * Максимальная ширина панели в открытом состоянии
+   */
   maxWidth: TCssWidth;
 
   /**
-  * Минимальная ширина панели в закрытом состоянии
-  */
+   * Минимальная ширина панели в закрытом состоянии
+   */
   minWidth: TCssWidth;
 }

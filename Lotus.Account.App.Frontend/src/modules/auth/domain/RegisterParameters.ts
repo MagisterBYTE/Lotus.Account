@@ -3,8 +3,7 @@ import { ValidationResult, type IValidateObject } from 'lotus-core/modules/valid
 import { AuthService } from '../AuthService';
 import type { IRegisterParameters } from './type';
 
-export class RegisterParameters extends RefreshProxy implements IRegisterParameters, IValidateObject 
-{
+export class RegisterParameters extends RefreshProxy implements IRegisterParameters, IValidateObject {
   // #region Fields
   public login: string;
   public email: string;
@@ -19,8 +18,7 @@ export class RegisterParameters extends RefreshProxy implements IRegisterParamet
   public validationStatus: ValidationResult;
   // #endregion
 
-  constructor() 
-  {
+  constructor() {
     super();
     this.login = '';
     this.email = '';
@@ -38,43 +36,36 @@ export class RegisterParameters extends RefreshProxy implements IRegisterParamet
    * Регистрация нового пользователя
    * @param registerParameters Параметры для регистрации нового пользователя
    */
-  public async register() 
-  {
+  public async register() {
     await AuthService.registerAsync(this);
   }
 
-
   // #region Update state
-  public setLogin(login: string, isRefreshProxy: boolean = true) 
-  {
+  public setLogin(login: string, isRefreshProxy: boolean = true) {
     this.login = login;
     this.hasInputLogin = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setEmail(email: string, isRefreshProxy: boolean = true) 
-  {
+  public setEmail(email: string, isRefreshProxy: boolean = true) {
     this.email = email;
     this.hasInputEmail = true;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setTerm(term: boolean, isRefreshProxy: boolean = true) 
-  {
+  public setTerm(term: boolean, isRefreshProxy: boolean = true) {
     this.term = term;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = false) 
-  {
+  public setRememberMe(rememberMe: boolean, isRefreshProxy: boolean = false) {
     this.rememberMe = rememberMe;
     if (isRefreshProxy) this.onRefreshProxy();
   }
   // #endregion
 
   // #region IValidateObject
-  public validate(): boolean 
-  {
+  public validate(): boolean {
     this.validationStatus.clear();
     if (this.hasInputLogin) this.validationStatus.addErrorRequired('login', this.login);
     if (this.hasInputPassword) this.validationStatus.addErrorRequired('password', this.password);

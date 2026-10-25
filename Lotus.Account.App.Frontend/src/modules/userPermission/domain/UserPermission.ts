@@ -8,8 +8,7 @@ import type { IUserPermission, IUserPermissionDatasave } from './types/UserPermi
 /**
  * Разрешение
  */
-export class UserPermission extends RefreshProxy implements IUserPermission, IConstantable, IEditable, IDatasavable<IUserPermissionDatasave>
-{
+export class UserPermission extends RefreshProxy implements IUserPermission, IConstantable, IEditable, IDatasavable<IUserPermissionDatasave> {
   // #region Fields
   public readonly id: number;
   public name: string;
@@ -21,19 +20,15 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
   public key: string;
   // endregion
 
-  constructor(datasave?: IUserPermissionDatasave)
-  {
+  constructor(datasave?: IUserPermissionDatasave) {
     super();
-    if (datasave)
-    {
+    if (datasave) {
       this.id = datasave.id;
       this.name = datasave.name;
       this.displayName = datasave.displayName;
       this.isNew = false;
       this.datasave = datasave;
-    }
-    else
-    {
+    } else {
       this.id = 0;
       this.name = '';
       this.displayName = '';
@@ -43,14 +38,12 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
   }
 
   // #region Update methods
-  public setName(name: string, isRefreshProxy: boolean = true): void
-  {
+  public setName(name: string, isRefreshProxy: boolean = true): void {
     this.name = name;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setDisplayName(displayName: string, isRefreshProxy: boolean = true): void
-  {
+  public setDisplayName(displayName: string, isRefreshProxy: boolean = true): void {
     this.displayName = displayName;
     if (isRefreshProxy) this.onRefreshProxy();
   }
@@ -62,8 +55,7 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
    * Объект необходимо сохранить, если он новый или имеет изменения по сравнению с изначальным состоянием и прошел валидацию
    * @returns Статус необходимости сохранения объекта
    */
-  public needSave(): boolean 
-  {
+  public needSave(): boolean {
     const hasChanges = this.hasChanges();
 
     if (hasChanges === false) return false;
@@ -75,17 +67,14 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
    * Проверка изменения объекта по сравнению с изначальным состоянием
    * @returns Статус изменения объекта
    */
-  public hasChanges(): boolean 
-  {
-    if (!this.datasave) 
-    {
+  public hasChanges(): boolean {
+    if (!this.datasave) {
       return true;
     }
 
     const currentState = this.toDatasave();
 
-    const isEqual = ObjectHelper.equality(this.datasave, currentState
-    );
+    const isEqual = ObjectHelper.equality(this.datasave, currentState);
 
     return !isEqual;
   }
@@ -96,18 +85,15 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
    * Возвращает статус возможности сброса изменений к изначальному состоянию
    * @returns Статус возможности сброса изменений
    */
-  public canReset(): boolean
-  {
+  public canReset(): boolean {
     return Assert.existValue(this.datasave);
   }
 
   /**
    * Сброс изменений к изначальному состоянию
    */
-  public resetState(isRefreshProxy: boolean = true): void
-  {
-    if (this.datasave)
-    {
+  public resetState(isRefreshProxy: boolean = true): void {
+    if (this.datasave) {
       this.name = this.datasave.name;
       this.displayName = this.datasave.displayName;
       if (isRefreshProxy) this.onRefreshProxy();
@@ -116,34 +102,32 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
 
   /**
    * Сброс значения поля по его имени к изначальному состоянию
-   * @param fieldName 
+   * @param fieldName
    */
-  public resetField(fieldName: keyof IUserPermissionDatasave, isRefreshProxy: boolean = true): void
-  {
-    if (this.datasave)
-    {
-      switch (fieldName)
-      {
-        case 'id': break;
-        case 'name': 
+  public resetField(fieldName: keyof IUserPermissionDatasave, isRefreshProxy: boolean = true): void {
+    if (this.datasave) {
+      switch (fieldName) {
+        case 'id':
+          break;
+        case 'name':
           {
-            this.name = this.datasave.name; 
+            this.name = this.datasave.name;
             if (isRefreshProxy) this.onRefreshProxy();
           }
           break;
-        case 'displayName': 
+        case 'displayName':
           {
-            this.displayName = this.datasave.displayName; 
+            this.displayName = this.datasave.displayName;
             if (isRefreshProxy) this.onRefreshProxy();
-          } break;
+          }
+          break;
       }
     }
   }
   // #endregion
 
   // #region IValidate
-  public validate():boolean
-  {
+  public validate(): boolean {
     this.validationStatus.clear();
     this.validationStatus.addErrorRequired('name', this.name);
     this.validationStatus.addErrorMaxString('name', this.name, 20);
@@ -154,10 +138,8 @@ export class UserPermission extends RefreshProxy implements IUserPermission, ICo
   // #endregion
 
   // #region IDatasavable
-  public toDatasave(): IUserPermissionDatasave
-  {
-    const datasave: IUserPermissionDatasave =
-    {
+  public toDatasave(): IUserPermissionDatasave {
+    const datasave: IUserPermissionDatasave = {
       id: this.isNew ? -1 : this.id,
       name: this.name,
       displayName: this.displayName

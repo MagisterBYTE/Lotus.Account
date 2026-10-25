@@ -1,0 +1,5 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "extends": ["../../../Lotus.Frontend/Lotus.Config/oxlint.react.jsonc"],
+  "ignorePatterns": ["dist/**", "node_modules/**", "coverage/**", "rsbuild.config.ts"]
+}

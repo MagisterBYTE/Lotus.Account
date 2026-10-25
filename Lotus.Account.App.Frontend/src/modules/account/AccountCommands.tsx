@@ -5,13 +5,11 @@ import { LanguageChangeEventType, type LanguageChangeEvent } from 'lotus-core/lo
 import { RoutesAccount } from '#app';
 import { LocalizationAccount } from '#localization';
 
-class AccountCommandsClass extends CommandActionService
-{
+class AccountCommandsClass extends CommandActionService {
   // #region Static fields
   private static _accountCommands: AccountCommandsClass;
 
-  public static get Instance(): AccountCommandsClass
-  {
+  public static get Instance(): AccountCommandsClass {
     return this._accountCommands || (this._accountCommands = new this());
   }
   // #endregion
@@ -23,8 +21,7 @@ class AccountCommandsClass extends CommandActionService
   security: NavigationCommand;
   // #endregion
 
-  constructor()
-  {
+  constructor() {
     super();
 
     this.account = new ActionCommand('account');
@@ -55,16 +52,14 @@ class AccountCommandsClass extends CommandActionService
     window.addEventListener(LanguageChangeEventType, (e) => this.onTranslate(e));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public onTranslate(_event: LanguageChangeEvent | any)
-  {
+  // oxlint-disable-next-line typescript/no-explicit-any
+  public onTranslate(_event: LanguageChangeEvent | any) {
     this.account.label = LocalizationAccount.data.auth.account;
     this.profile.label = LocalizationAccount.data.account.profile;
     this.settings.label = LocalizationAccount.data.account.settings;
     this.security.label = LocalizationAccount.data.account.security;
   }
 }
-
 
 /**
  * Глобальный доступ к командам аккаунта пользователя

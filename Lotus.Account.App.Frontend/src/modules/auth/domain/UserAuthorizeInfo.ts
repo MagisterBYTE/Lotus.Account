@@ -11,16 +11,13 @@ import type { IUserAuthorizeInfo } from './type';
 /**
  * Класс, реализующий интерфейс IUserAuthorizeInfo
  */
-export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInfo, IPersonInfo
-{
+export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInfo, IPersonInfo {
   // #region Static methods
   /**
    * Создает экземпляр класса из JSON строки
    */
-  static fromJSON(jsonString: string): UserAuthorizeInfo
-  {
-    try
-    {
+  static fromJSON(jsonString: string): UserAuthorizeInfo {
+    try {
       const data = JSON.parse(jsonString);
       return new UserAuthorizeInfo({
         ...data,
@@ -28,9 +25,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
         lockoutBeginDate: data.lockoutBeginDate ? new Date(data.lockoutBeginDate) : undefined,
         lockoutEndDate: data.lockoutEndDate ? new Date(data.lockoutEndDate) : undefined
       });
-    }
-    catch (error)
-    {
+    } catch (error) {
       console.error('Ошибка при парсинге JSON:', error);
       return new UserAuthorizeInfo();
     }
@@ -97,8 +92,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Основная реализация конструктора
    */
-  constructor(info?: Partial<IUserAuthorizeInfo>)
-  {
+  constructor(info?: Partial<IUserAuthorizeInfo>) {
     super();
 
     // Инициализация с значениями по умолчанию
@@ -117,8 +111,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
     this.groups = [];
 
     // Если передан объект, копируем его свойства
-    if (info)
-    {
+    if (info) {
       this.copyFrom(info);
     }
   }
@@ -128,16 +121,13 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Копирует свойства из объекта IUserAuthorizeInfo
    */
-  // eslint-disable-next-line complexity
-  public copyFrom(info: Partial<IUserAuthorizeInfo>): void
-  {
+  // oxlint-disable-next-line complexity
+  public copyFrom(info: Partial<IUserAuthorizeInfo>): void {
     // Аутентификация
-    if (Assert.existValue<string>(info.authScheme))
-    {
+    if (Assert.existValue<string>(info.authScheme)) {
       this.authScheme = info.authScheme;
     }
-    if (Assert.existValue<string | Date>(info.authExpires))
-    {
+    if (Assert.existValue<string | Date>(info.authExpires)) {
       this.authExpires = DateTimeConverter.toDateTime(info.authExpires, undefined);
     }
 
@@ -147,17 +137,14 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
     if (Assert.existValue<string>(info.email)) this.email = info.email;
     if (Assert.existValue<string>(info.emailConfirmed)) this.emailConfirmed = info.emailConfirmed;
     if (Assert.existValue<string>(info.isLockout)) this.isLockout = info.isLockout;
-    if (Assert.existValue<string | Date>(info.lockoutBeginDate))
-    {
+    if (Assert.existValue<string | Date>(info.lockoutBeginDate)) {
       this.lockoutBeginDate = DateTimeConverter.toDateTime(info.lockoutBeginDate, undefined);
     }
 
-    if (Assert.existValue<string | Date>(info.lockoutEndDate))
-    {
+    if (Assert.existValue<string | Date>(info.lockoutEndDate)) {
       this.lockoutEndDate = DateTimeConverter.toDateTime(info.lockoutEndDate, undefined);
     }
-    if (Assert.existValue<string>(info.hashId))
-    {
+    if (Assert.existValue<string>(info.hashId)) {
       this.hashId = info.hashId;
     }
 
@@ -183,14 +170,13 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
     if (Assert.existValue<IUserGroup[]>(info.groups)) this.groups = [...info.groups];
 
     // Аватар
-    if (Assert.existValue<string>(info.avatarId)) this.avatarId = info.avatarId; 
+    if (Assert.existValue<string>(info.avatarId)) this.avatarId = info.avatarId;
   }
 
   /**
    * Создает копию объекта
    */
-  public clone(): UserAuthorizeInfo
-  {
+  public clone(): UserAuthorizeInfo {
     return new UserAuthorizeInfo({
       authScheme: this.authScheme,
       authExpires: new Date(this.authExpires),
@@ -219,8 +205,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Создает роль по умолчанию
    */
-  private getDefaultRole(): IUserRole
-  {
+  private getDefaultRole(): IUserRole {
     return {
       id: 0,
       name: '',
@@ -231,8 +216,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Создает должность по умолчанию
    */
-  private getDefaultPosition(): IUserPosition
-  {
+  private getDefaultPosition(): IUserPosition {
     return {
       id: 0,
       name: ''
@@ -242,10 +226,8 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Проверяет, действительна ли авторизация
    */
-  public isAuthValid(): boolean
-  {
-    if (Assert.emptyValue(this.authScheme))
-    {
+  public isAuthValid(): boolean {
+    if (Assert.emptyValue(this.authScheme)) {
       return false;
     }
 
@@ -257,16 +239,13 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Проверяет, заблокирован ли пользователь
    */
-  public isLockedOut(): boolean
-  {
-    if (!this.isLockout)
-    {
+  public isLockedOut(): boolean {
+    if (!this.isLockout) {
       return false;
     }
 
     // Если есть дата окончания блокировки, проверяем её
-    if (this.lockoutEndDate)
-    {
+    if (this.lockoutEndDate) {
       const now = new Date();
       return now < this.lockoutEndDate;
     }
@@ -280,8 +259,7 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
    * @param permissionName Имя разрешения
    * @returns Статус проверки
    */
-  public hasPermissionByName(permissionName: string): boolean
-  {
+  public hasPermissionByName(permissionName: string): boolean {
     return this.permissions.some((p) => p.name === permissionName);
   }
 
@@ -290,22 +268,19 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
    * @param groupId Идентификатор группы
    * @returns Статус проверки
    */
-  public isInGroupById(groupId: number): boolean
-  {
+  public isInGroupById(groupId: number): boolean {
     return this.groups.some((g) => g.id === groupId);
   }
 
   /**
    * Сериализует объект в JSON строку
    */
-  public toJSON(): string
-  {
+  public toJSON(): string {
     const userInfo = this.toUserAuthorizeInfo();
     return JSON.stringify(userInfo);
   }
 
-  public toUserAuthorizeInfo():IUserAuthorizeInfo
-  {
+  public toUserAuthorizeInfo(): IUserAuthorizeInfo {
     return {
       authScheme: this.authScheme,
       authExpires: this.authExpires.toISOString(),
@@ -333,50 +308,42 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   // #endregion
 
   // #region Update methods
-  public setNickname(nickname: string, isRefreshProxy: boolean = true): void
-  {
+  public setNickname(nickname: string, isRefreshProxy: boolean = true): void {
     this.nickname = nickname;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setEmail(email: string, isRefreshProxy: boolean = true): void
-  {
+  public setEmail(email: string, isRefreshProxy: boolean = true): void {
     this.email = email;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setName(name: string, isRefreshProxy: boolean = true): void
-  {
+  public setName(name: string, isRefreshProxy: boolean = true): void {
     this.name = name;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setSurname(surname: string, isRefreshProxy: boolean = true): void
-  {
+  public setSurname(surname: string, isRefreshProxy: boolean = true): void {
     this.surname = surname;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setPatronymic(patronymic: string, isRefreshProxy: boolean = true): void
-  {
+  public setPatronymic(patronymic: string, isRefreshProxy: boolean = true): void {
     this.patronymic = patronymic;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setBirthday(birthday: string, isRefreshProxy: boolean = true): void
-  {
+  public setBirthday(birthday: string, isRefreshProxy: boolean = true): void {
     this.birthday = birthday;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setWhereabouts(whereabouts: string, isRefreshProxy: boolean = true): void
-  {
+  public setWhereabouts(whereabouts: string, isRefreshProxy: boolean = true): void {
     this.whereabouts = whereabouts;
     if (isRefreshProxy) this.onRefreshProxy();
   }
 
-  public setInterests(interests: string, isRefreshProxy: boolean = true): void
-  {
+  public setInterests(interests: string, isRefreshProxy: boolean = true): void {
     this.interests = interests;
     if (isRefreshProxy) this.onRefreshProxy();
   }
@@ -386,24 +353,21 @@ export class UserAuthorizeInfo extends RefreshProxy implements IUserAuthorizeInf
   /**
    * Возвращает отображаемое имя в неформальном стиле
    */
-  public getDisplayName(): string
-  {
+  public getDisplayName(): string {
     return HumanizerPerson.getDisplayName(this);
   }
 
   /**
    * Возвращает полное имя пользователя
    */
-  public getFullName(): string
-  {
+  public getFullName(): string {
     return HumanizerPerson.getFullName(this);
   }
 
   /**
    * Возвращает инициалы пользователя
    */
-  public getInitials(): string
-  {
+  public getInitials(): string {
     return HumanizerPerson.getInitials(this);
   }
   // #endregion

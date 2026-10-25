@@ -3,8 +3,7 @@ import type { TCssHeight } from 'lotus-ui-react/types';
 /**
  * Параметры шапки сайта
  */
-export interface ILayoutHeader
-{
+export interface ILayoutHeader {
   /**
    * Виден основной заголовок/шапка сайта по настройкам пользователя
    */
