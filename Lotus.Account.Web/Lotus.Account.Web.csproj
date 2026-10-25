@@ -44,11 +44,16 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Publish'">
-    <PackageReference Include="Lotus.Web.Common" Version="5.0.0" />
-    <PackageReference Include="Lotus.Account" Version="5.0.0" />
+    <PackageReference Include="Lotus.Core" Version="5.2.0" />
+    <PackageReference Include="Lotus.Repository" Version="5.2.0" />
+    <PackageReference Include="Lotus.Web.Common" Version="5.2.0" />
+    <PackageReference Include="Lotus.Account" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Publish'">
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
+    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
+    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
     <ProjectReference Include="..\Lotus.Account\Lotus.Account.csproj" />
   </ItemGroup>
 
@@ -63,12 +68,6 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="7.7.2" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore.Models" Version="7.7.2" />
     <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="7.7.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Core\Lotus.Core.csproj" />
-    <ProjectReference Include="..\..\..\Lotus.Basis\Lotus.Repository\Lotus.Repository.csproj" />
-    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
   </ItemGroup>
 
   <Target Name="PublishToNuget" Condition="'$(Configuration)'=='Publish'" AfterTargets="Build">

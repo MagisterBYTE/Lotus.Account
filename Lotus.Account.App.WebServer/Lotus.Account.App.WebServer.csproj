@@ -31,17 +31,14 @@
 
   <ItemGroup Condition="'$(Configuration)' == 'Publish'">
     <PackageReference Include="Lotus.Web.Common" Version="5.0.0" />
-    <PackageReference Include="Lotus.Account" Version="5.0.0" />
-    <PackageReference Include="Lotus.Account.Web" Version="5.0.0" />
+    <PackageReference Include="Lotus.Account" Version="5.2.0" />
+    <PackageReference Include="Lotus.Account.Web" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' != 'Publish'">
+    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
     <ProjectReference Include="..\Lotus.Account.Web\Lotus.Account.Web.csproj" />
     <ProjectReference Include="..\Lotus.Account\Lotus.Account.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Lotus.Web\Lotus.Web.Common\Lotus.Web.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
